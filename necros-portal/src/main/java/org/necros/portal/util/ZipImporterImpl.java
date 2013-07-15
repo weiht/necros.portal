@@ -8,15 +8,15 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author weiht
  *
  */
 public class ZipImporterImpl implements ZipImporter {
-	private static final Logger logger = LogManager.getLogger(ZipImporterImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(ZipImporterImpl.class);
 
 	@Override
 	public void importZip(String fn, ZipImportCallback callback) throws IOException {

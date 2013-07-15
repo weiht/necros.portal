@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.generic.ConversionTool;
@@ -39,6 +37,8 @@ import org.necros.portal.section.Section;
 import org.necros.portal.section.SectionService;
 import org.necros.portal.util.FileUtils;
 import org.necros.portal.util.RequestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.Resource;
@@ -51,7 +51,7 @@ import org.springframework.util.StringUtils;
  *
  */
 public class VelocityPageService implements PageService, InitializingBean {
-	private static final Logger logger = LogManager.getLogger(VelocityPageService.class);
+	private static final Logger logger = LoggerFactory.getLogger(VelocityPageService.class);
 
 	private static final String DEF_FILE_PREFIX = "file:///";
 	
@@ -73,7 +73,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		VelocityContext vctx = new VelocityContext();
 		initVelocityContext(vctx, req);
 		vctx.put("page", page);
-		logger.debug(vctx);
+		logger.debug("{}", vctx);
 		evaluateResource(w, vctx, config.getTemplatePath() + config.getHeaderFile());
 		if (StringUtils.hasText(config.getManagerHeaderFile())) {
 			evaluateResource(w, vctx, config.getTemplatePath() + config.getManagerHeaderFile());
@@ -101,7 +101,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		vctx.put("channel", ch.getId());
 		vctx.put("channelTitle", ch.getDisplayName());
 		vctx.put("sectionEvaluator", new SectionEvaluator(w, this, vctx));
-		logger.debug(vctx);
+		logger.debug("{}", vctx);
 		evaluateResource(w, vctx, config.getTemplatePath() + config.getHeaderFile());
 		doEvaluateChannel(w, vctx, ch);
 		evaluateResource(w, vctx, config.getTemplatePath() + config.getFooterFile());
@@ -110,14 +110,14 @@ public class VelocityPageService implements PageService, InitializingBean {
 	@Override
 	public void previewChannelWithId(String id, HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
-		logger.debug("channel:" + id);
+		logger.debug("channel:{}", id);
 		resp.setContentType("text/html; charset=utf-8");
 		BufferedWriter w = new BufferedWriter(resp.getWriter());
 		VelocityContext vctx = new VelocityContext();
 		initVelocityContext(vctx, req);
 		vctx.put("channel", id);
 		vctx.put("sectionEvaluator", new SectionEvaluator(w, this, vctx));
-		logger.debug(vctx);
+		logger.debug("{}", vctx);
 		evaluateResource(w, vctx, config.getTemplatePath() + config.getHeaderFile());
 		evaluateChannel(w, vctx, id);
 		evaluateResource(w, vctx, config.getTemplatePath() + config.getFooterFile());
@@ -170,7 +170,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		initVelocityContext(vctx, req);
 		vctx.put("sectionEvaluator", new SectionEvaluator(w, this, vctx));
 		if (logger.isTraceEnabled()) {
-			logger.trace(frag);
+			logger.trace("{}", frag);
 			logger.trace(frag.getTemplate());
 		}
 		BufferedReader r = evalFragment(frag, vctx);
@@ -198,7 +198,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		VelocityContext vctx = new VelocityContext();
 		initVelocityContext(vctx, req);
 		if (logger.isTraceEnabled()) {
-			logger.trace(call);
+			logger.trace("{}", call);
 			logger.trace(call.getTemplate());
 		}
 		Velocity.evaluate(vctx, w, "ajaxCall~" + call.getId(), call.getTemplate());
@@ -296,7 +296,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		if (serviceBeans == null) {
 			serviceBeans = new HashMap<String, Object>();
 		}
-		logger.trace(serviceBeans);
+		logger.trace("{}", serviceBeans);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -304,7 +304,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		if (beanName.indexOf('.') >= 0) {
 			Map<String, Object> m = serviceBeans;
 			String[] names = beanName.split("[\\.]");
-			logger.debug(names);
+			logger.debug("{}", names);
 			for (int i = 0; i < names.length - 1; i ++) {
 				String n = names[i];
 				logger.debug(n);
@@ -314,10 +314,10 @@ public class VelocityPageService implements PageService, InitializingBean {
 					m.put(n, ib);
 				}
 				m = (Map<String, Object>)ib;
-				logger.debug(m);
+				logger.debug("{}", m);
 			}
 			m.put(names[names.length - 1], bean);
-			logger.debug(m);
+			logger.debug("{}", m);
 		} else {
 			serviceBeans.put(beanName, bean);
 		}
@@ -375,7 +375,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		Channel ch = getChannelService().findById(id);
 		vctx.put("channelTitle", ch.getDisplayName());
 		vctx.put("sectionEvaluator", new SectionEvaluator(w, this, vctx));
-		logger.debug(vctx);
+		logger.debug("{}", vctx);
 		evaluateResource(w, vctx, DEF_FILE_PREFIX + fn);
 	}
 	
@@ -528,7 +528,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 			try {
 				props.load(ins);
 				if (logger.isTraceEnabled()) {
-					logger.trace(props);
+					logger.trace("{}", props);
 				}
 			} finally {
 				ins.close();

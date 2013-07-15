@@ -10,8 +10,8 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.StringUtils;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
  *
  */
 public class RequestUtils {
-	private static final Logger logger = LogManager.getLogger(RequestUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(RequestUtils.class);
 	
 	private Map<String, ObjectFactory<? extends Object>> beanFactories;
 	private ClassCache classCache;

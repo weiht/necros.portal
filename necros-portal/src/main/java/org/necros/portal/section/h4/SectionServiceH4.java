@@ -12,8 +12,6 @@ import java.util.zip.ZipOutputStream;
 
 import javax.xml.bind.JAXB;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.necros.portal.section.Section;
@@ -27,13 +25,15 @@ import org.necros.portal.util.ZipExportCallback;
 import org.necros.portal.util.ZipExporter;
 import org.necros.portal.util.ZipImportCallback;
 import org.necros.portal.util.ZipImporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 public class SectionServiceH4 implements SectionService {
 	private static final String SECTIONS_XML_NAME = "sections.xml";
 	private static final String HQL_FIND_OWNED_BY = "from Section where ownerId = ?";
 	private static final String HQL_FIND_ORPHANS = "from Section where ifnull(ownerId, '') = ''";
-	private static final Logger logger = LogManager.getLogger(SectionServiceH4.class);
+	private static final Logger logger = LoggerFactory.getLogger(SectionServiceH4.class);
 	
 	private ZipExporter zipExporter;
 	private ZipImporter zipImporter;

@@ -5,12 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 public class FileUtils {
-	private static final Logger logger = LogManager.getLogger(FileUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 	
 	private FileUtils() {}
 
@@ -37,7 +37,7 @@ public class FileUtils {
 	
 	public static String toTempFile(InputStream ins) throws IOException {
 		File f = createTempFile();
-		logger.debug(f);
+		logger.debug("{}", f);
 		FileOutputStream fos = new FileOutputStream(f);
 		try {
 			int l = 0;

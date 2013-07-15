@@ -12,8 +12,6 @@ import java.util.zip.ZipOutputStream;
 
 import javax.xml.bind.JAXB;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.necros.portal.fragment.Fragment;
@@ -27,13 +25,15 @@ import org.necros.portal.util.ZipExportCallback;
 import org.necros.portal.util.ZipExporter;
 import org.necros.portal.util.ZipImportCallback;
 import org.necros.portal.util.ZipImporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 public class FragmentServiceH4 implements FragmentService {
 	private static final String FRAGMENTS_XML_NAME = "ajaxcalls.xml";
 	private static final String HQL_FIND_OWNED_BY = "from Fragment where ownerId = ?";
 	private static final String HQL_FIND_ORPHANS = "from Fragment where ifnull(ownerId, '') = ''";
-	private static final Logger logger = LogManager.getLogger(FragmentServiceH4.class);
+	private static final Logger logger = LoggerFactory.getLogger(FragmentServiceH4.class);
 	
 	private ZipExporter zipExporter;
 	private ZipImporter zipImporter;

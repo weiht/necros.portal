@@ -8,16 +8,16 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author weiht
  *
  */
 public class JsonUtils {
-	private static final Logger logger = LogManager.getLogger(JsonUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 	
 	private ObjectMapper mapper = new ObjectMapper();
 	private ClassCache classCache;

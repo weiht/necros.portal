@@ -12,8 +12,6 @@ import java.util.zip.ZipOutputStream;
 
 import javax.xml.bind.JAXB;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -28,11 +26,13 @@ import org.necros.portal.util.ZipExportCallback;
 import org.necros.portal.util.ZipExporter;
 import org.necros.portal.util.ZipImportCallback;
 import org.necros.portal.util.ZipImporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 public class AjaxCallServiceH4 implements AjaxCallService {
 	private static final String CALLS_XML_NAME = "ajaxcalls.xml";
-	private static final Logger logger = LogManager.getLogger(AjaxCallServiceH4.class);
+	private static final Logger logger = LoggerFactory.getLogger(AjaxCallServiceH4.class);
 	
 	private SessionFactoryHelper sessionFactoryHelper;
 	

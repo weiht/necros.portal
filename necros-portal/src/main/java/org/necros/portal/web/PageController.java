@@ -13,8 +13,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.necros.portal.ajax.AjaxCall;
 import org.necros.portal.ajax.AjaxCallService;
 import org.necros.portal.channel.Channel;
@@ -24,6 +22,8 @@ import org.necros.portal.fragment.FragmentService;
 import org.necros.portal.section.Section;
 import org.necros.portal.section.SectionService;
 import org.necros.portal.util.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,7 +39,7 @@ public class PageController {
 	private static final String MSG_ACTION_OK = "OK";
 	private static final String MSG_JSON_OK = "{}";
 
-	private static final Logger logger = LogManager.getLogger(PageController.class);
+	private static final Logger logger = LoggerFactory.getLogger(PageController.class);
 
 	private static final String JAR_CONTENT_TYPE = "application/octet-stream";
 	
