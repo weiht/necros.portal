@@ -4,6 +4,12 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="necros-portal-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/necros-portal/necros-portal">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="necros-portal-ui-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/necros-portal-ui/necros-portal-ui">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="necros-portal-web"/>
         <property name="java-output-path" value="/necros-portal-web/target/classes"/>
     </wb-module>
