@@ -1,0 +1,15 @@
+<script type="text/javascript">
+$(function() {
+	if (location.href.indexOf('section') > 0) {
+		$('li.section').addClass('active');
+	} else if (location.href.indexOf('channel') > 0) {
+		$('li.channel').addClass('active');
+	} else if (location.href.indexOf('index') > 0) {
+		$('li.channel').addClass('active');
+	} else if (location.href.indexOf('call') > 0) {
+		$('li.ajaxcall').addClass('active');
+	} else if (location.href.indexOf('fragment') > 0) {
+		$('li.fragment').addClass('active');
+	}
+});
+</script>

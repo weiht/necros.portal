@@ -1,0 +1,7 @@
+#if($channel.substring(0,2)=="v2")
+<link rel="stylesheet" href="../res/css/hats.portal.v2.css"/>
+#else
+<link rel="stylesheet" href="../res/css/hats.portal.css"/>
+#end
+<div class="page-background"> 
+<div class="container page-content">

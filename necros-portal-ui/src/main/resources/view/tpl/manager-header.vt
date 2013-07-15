@@ -1,0 +1,26 @@
+<style>
+body {
+	padding-top: 60px;
+	padding-bottom: 200px;
+}
+</style>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="index">门户管理</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="channel"><a href="index">页面</a></li>
+          <li class="section"><a href="sections">组件</a></li>
+          <li class="ajaxcall"><a href="ajaxcalls">异步调用</a></li>
+          <li class="fragment"><a href="fragments">远程片段</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
