@@ -1,0 +1,64 @@
+#set ($fragments = $services.p.fragmentService.fragmentsOwnedBy(''))
+<link rel="stylesheet" href="../res/css/jquery.fileupload-ui.css"/>
+<div class="container">
+	<div class="row">
+	<div class="page-header span12">
+		<div class="span4">远程片段</div>
+		<div class="btn-group span4">
+			<a href="edit-fragment" class="btn btn-primary"><i class="icon-plus icon-white"></i>创建片段</a>
+			<a href="action/export-fragments" class="btn btn-success" title="导出数据库中的所有远程片段。"><i class="icon-download icon-white"></i>导出</a>
+			<a href="#dlg-import" data-toggle="modal" class="btn btn-success" title="导入一个zip/jar格式文件中的所有远程片段，将会覆盖同名片段。"><i class="icon-upload icon-white"></i>导入</a>
+		</div>
+	</div>
+	</div>
+	<div class="row">
+		<table id="serverlist" class="table table-bordered table-striped table-hover">
+			<thead><tr>
+				<th>ID</th><th>显示名称</th><th>返回类型</th><th></th>
+			</tr></thead>
+			<tbody>
+#if ($fragments.size() > 0)
+	#foreach ($fragment in $fragments)
+				<tr><td>
+					$fragment.id
+				</td><td>
+					$!fragment.displayName
+				</td><td>
+					$!fragment.resultType
+				</td><td>
+					<a class="btn btn-mini btn-primary" href="edit-fragment?id=$fragment.id">编辑</a>&nbsp;
+					<a class="btn btn-mini" href="javascript:remove('$fragment.id');">删除</a>
+				</td></tr>
+	#end
+#else
+				<tr><td colspan="4">未找到片段</td></tr>
+#end
+			</tbody>
+		</table>
+	</div>
+</div>
+<div id="dlg-import" class="modal hide fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>导入片段</h3>
+    </div>
+    <div class="modal-body">
+    	<div><span class="btn btn-success btn-large fileinput-button">
+    		<i class="icon-upload icon-white"></i>
+    		<span>上传压缩文件</span>
+			<input type="file" id="importFile" name="importFile"
+				data-url="action/import-fragments"/>
+		</span></div>
+		<div id="filelist">
+		</div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" onclick="importFragments();">确定</button>
+    </div>
+</div>
+<script type="text/javascript" src="../res/js/upload/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="../res/js/upload/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="../res/js/upload/jquery.fileupload.js"></script>
+<script type="text/javascript" src="../res/js/upload/jquery.fileupload-fp.js"></script>
+<script type="text/javascript" src="../res/js/upload/jquery.fileupload-ui.js"></script>
+<script type="text/javascript" src="../res/js/fragment-edit.js"></script>

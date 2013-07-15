@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://portal.necros.org/fragments" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:fragments="http://portal.necros.org/fragments">
+
+    <element name="fragments" type="fragments:FragmentsType"></element>
+
+    <complexType name="FragmentsType">
+    	<sequence>
+    		<element name="fragment" type="fragments:FragmentType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="FragmentType">
+    	<attribute name="id" type="string" use="required"></attribute>
+    	<attribute name="displayName" type="string" use="optional"></attribute>
+    	<attribute name="resultType" type="string"></attribute>
+    </complexType>
+</schema>

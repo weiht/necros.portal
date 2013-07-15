@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://portal.necros.org/ajaxcalls" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ajaxcalls="http://portal.necros.org/ajaxcalls">
+
+    <element name="ajaxCalls" type="ajaxcalls:AjaxCallsType"></element>
+
+    <complexType name="AjaxCallsType">
+    	<sequence>
+    		<element name="ajaxCall" type="ajaxcalls:AjaxCallType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="AjaxCallType">
+    	<attribute name="id" type="string" use="required"></attribute>
+    	<attribute name="displayName" type="string" use="optional"></attribute>
+    	<attribute name="resultType" type="string"></attribute>
+    </complexType>
+</schema>

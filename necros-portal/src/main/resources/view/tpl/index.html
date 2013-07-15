@@ -1,0 +1,67 @@
+#set ($channels = $services.p.channelService.channelsOwnedBy(''))
+<link rel="stylesheet" href="../res/css/jquery.fileupload-ui.css"/>
+<div class="container">
+	<div class="row">
+	<div class="page-header span12">
+		<div class="span4">页面</div>
+		<div class="btn-group span4">
+			<a href="edit-channel" class="btn btn-primary"><i class="icon-plus icon-white"></i>创建</a>
+			<a href="javascript:void(0)" onclick="generateAllChannels();" class="btn"><i class="icon-book"></i>生成</a>
+			<a href="action/export-channels" class="btn btn-success" title="导出数据库中的所有页面，不论是否已经生成文件。"><i class="icon-download icon-white"></i>导出</a>
+			<a href="#dlg-import" data-toggle="modal" class="btn btn-success" title="导入一个zip/jar格式文件中的所有页面，将会覆盖同名页面。"><i class="icon-upload icon-white"></i>导入</a>
+		</div>
+	</div>
+	</div>
+	<div class="row">
+		<table id="serverlist" class="table table-bordered table-striped table-hover">
+			<thead><tr>
+				<th>ID</th><th>显示名称</th><th></th>
+			</tr></thead>
+			<tbody>
+#if ($channels.size() > 0)
+	#foreach ($ch in $channels)
+				<tr><td>
+					$ch.id
+				</td><td>
+					$!ch.displayName
+				</td><td>
+					<a class="btn btn-mini btn-primary" href="channel-template?id=$ch.id">编辑页面</a>&nbsp;
+					<a class="btn btn-mini" href="../preview/$ch.id">预览</a>&nbsp;
+					<a class="btn btn-mini" href="edit-channel?id=$ch.id">修改</a>&nbsp;
+					<a class="btn btn-mini" href="javascript:generateChannel('$ch.id')">生成文件</a>&nbsp;
+					<span class="splitter"></span>
+					<a class="btn btn-mini" href="javascript:remove('$ch.id');">删除</a>
+				</td></tr>
+	#end
+#else
+				<tr><td colspan="3">未找到页面</td></tr>
+#end
+			</tbody>
+		</table>
+	</div>
+</div>
+<div id="dlg-import" class="modal hide fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>导入页面</h3>
+    </div>
+    <div class="modal-body">
+    	<div><span class="btn btn-success btn-large fileinput-button">
+    		<i class="icon-upload icon-white"></i>
+    		<span>上传压缩文件</span>
+			<input type="file" id="importChannelsFile" name="importChannelsFile"
+				data-url="action/import-channels"/>
+		</span></div>
+		<div id="filelist">
+		</div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" onclick="importChannels();">确定</button>
+    </div>
+</div>
+<script type="text/javascript" src="../res/js/upload/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="../res/js/upload/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="../res/js/upload/jquery.fileupload.js"></script>
+<script type="text/javascript" src="../res/js/upload/jquery.fileupload-fp.js"></script>
+<script type="text/javascript" src="../res/js/upload/jquery.fileupload-ui.js"></script>
+<script type="text/javascript" src="../res/js/channel-edit.js"></script>

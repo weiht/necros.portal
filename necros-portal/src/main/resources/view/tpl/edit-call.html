@@ -1,0 +1,120 @@
+#set ($id = $request.getParameter('id'))
+#if ($id)
+#set ($call = $services.p.ajaxCallService.findById($id))
+#end
+<link rel="stylesheet" href="../res/codemirror/codemirror.css"/>
+<link rel="stylesheet" href="../res/codemirror/theme/eclipse.css"/>
+<div class="container">
+	<div class="row">
+	<div class="page-header span12">
+		<div class="breadcumb span12">远程调用</div>
+#if ($call)
+		<h3>编辑异步调用</h3>
+#else
+		<h3>创建异步调用</h3>
+#end
+	</div>
+	</div>
+	<div class="row">
+		<form action="action/save-call" method="post" class="form-horizontal">
+			<div class="control-group">
+                <div class="controls">
+                	<a class="btn btn-primary" onclick="save();">保存</a>
+                	<a class="btn" href="ajaxcalls">返回</a>
+                </div>
+            </div>
+			<fieldset><legend>异步调用</legend>
+				<div class="control-group">
+	                <label class="control-label" for="call_id">ID</label>
+	                <input type="hidden" name="ownerId" value="$!call.ownerId"/>
+#if ($call)
+	                <div class="controls"><input type="hidden" id="call_id" name="id" value="$call.id"/>
+	                <span class="uneditable-input">$call.id</span></div>
+#else
+	                <div class="controls"><input type="text" id="call_id" name="id"/>
+	                <span class="help-inline">必须填写ID。</span></div>
+#end
+            	</div>
+				<div class="control-group">
+	                <label class="control-label" for="display_name">名称</label>
+	                <div class="controls"><input type="text" id="display_name" name="displayName" value="$!call.displayName"/>
+	                <span class="help-inline">显示名称，用在管理界面。</span></div>
+            	</div>
+				<div class="control-group">
+	                <label class="control-label" for="result_type">返回类型</label>
+	                <div class="controls"><input type="text" id="result_type" name="resultType" value="$!call.resultType"/>
+	                <span class="help-inline">返回给浏览器的类型。</span></div>
+            	</div>
+				<div class="control-group">
+	                <label class="control-label" for="template">模板</label>
+	                <div class="controls">
+	                <span class="help-inline">调用模板，可以加入Velocity模板以实现动态数据的展示。</span></div>
+            	</div>
+                <div class="span12"><textarea rows="20" class="input-block-level" id="template" name="template"></textarea></div>
+                <div class="hide"></div>
+			</fieldset>
+            	<div class="control-group">
+            		<label class="control-label">语法着色</label>
+            		<div class="controls synColor">
+            			<label class="radio inline"><input type="radio" name="rSynColor" value="velocity" checked="checked">Velocity</label>
+            			<label class="radio inline"><input type="radio" name="rSynColor" value="html">HTML</label>
+            			<label class="radio inline"><input type="radio" name="rSynColor" value="javascript">Javascript</label>
+            		</div>
+            	</div>
+			<div class="control-group">
+                <div class="controls">
+                	<a class="btn btn-primary" onclick="save();">保存</a>
+                	<a class="btn" href="ajaxcalls">返回</a>
+                </div>
+            </div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="../res/codemirror/codemirror.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/css.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/xml.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/htmlmixed.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/javascript.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/vbscript.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/velocity.js"></script>
+<script type="text/javascript" src="../res/js/call-edit.js"></script>
+<script type="text/javascript">
+$(function() {
+	var templateText = "$!stringEscapeUtils.escapeJavaScript($call.template)";
+	$('#template').val(templateText);
+	var mixedMode = {
+		'name': 'htmlmixed',
+		'scriptTypes': [{
+			matches: /\/x-handlebars-template|\/x-mustache/i,
+			mode: null
+		}, {
+			matches: /(text|application)\/(x-)?vb(a|script)/i,
+			mode: "vbscript"
+		}]
+	};
+	var velocityMode = {
+		'name': 'velocity'
+	};
+	var jsMode = {
+		'name': 'javascript'
+	};
+	function makeTemplateEditor(synMode) {
+		window.templateEditor = CodeMirror.fromTextArea(
+			$('#template').get(0),
+			{
+				mode: synMode,
+				tabMode: "indent",
+				lineNumbers: true,
+				theme: 'eclipse'
+			}
+		);
+	}
+	makeTemplateEditor(velocityMode);
+	$('input[name="rSynColor"]').on('click', function() {
+		var mode = velocityMode;
+		if ($('input[value="html"]').attr('checked')) mode = mixedMode;
+		if ($('input[value="javascript"]').attr('checked')) mode = jsMode;
+		window.templateEditor.setOption('mode', mode);
+	});
+});
+</script>

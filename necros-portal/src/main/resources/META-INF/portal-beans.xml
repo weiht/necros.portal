@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	">
+	
+	<bean id="p.zip.exporter" class="org.necros.portal.util.ZipExporterImpl">
+		<property name="charset"><value>${p.zip.charset:gb2312}</value></property>
+	</bean>
+	
+	<bean id="p.zip.importer" class="org.necros.portal.util.ZipImporterImpl">
+	</bean>
+	
+	<bean id="p.previewHelper" class="org.necros.portal.web.PreviewHelper">
+	</bean>
+	
+	<bean id="p.classCache" class="org.necros.portal.util.ClassCache">
+	</bean>
+	
+	<bean id="p.requestUtils" class="org.necros.portal.util.RequestUtils">
+		<property name="classCache" ref="p.classCache"></property>
+	</bean>
+	
+	<bean id="p.jsonUtils" class="org.necros.portal.util.JsonUtils">
+		<property name="classCache" ref="p.classCache"></property>
+	</bean>
+	
+	<bean id="p.pageHelper" class="org.necros.pagination.PageHelper">
+	</bean>
+	
+	<bean name="sessionFactoryHelper" class="org.necros.portal.util.SessionFactoryHelper">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="p.ajaxCallService" class="org.necros.portal.ajax.h4.AjaxCallServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="zipExporter" ref="p.zip.exporter"></property>
+		<property name="zipImporter" ref="p.zip.importer"></property>
+		<property name="callFileExtension"><value>${p.ajaxcall.fileExtension:.html}</value></property>
+	</bean>
+	
+	<bean id="p.channelService" class="org.necros.portal.channel.h4.ChannelServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="zipExporter" ref="p.zip.exporter"></property>
+		<property name="zipImporter" ref="p.zip.importer"></property>
+		<property name="channelFileExtension"><value>${p.channel.fileExtension:.html}</value></property>
+	</bean>
+	
+	<bean id="p.fragmentService" class="org.necros.portal.fragment.h4.FragmentServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="zipExporter" ref="p.zip.exporter"></property>
+		<property name="zipImporter" ref="p.zip.importer"></property>
+		<property name="fragmentFileExtension"><value>${p.fragment.fileExtension:.html}</value></property>
+	</bean>
+	
+	<bean id="p.sectionService" class="org.necros.portal.section.h4.SectionServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="zipExporter" ref="p.zip.exporter"></property>
+		<property name="zipImporter" ref="p.zip.importer"></property>
+		<property name="sectionFileExtension"><value>${p.channel.fileExtension:.html}</value></property>
+	</bean>
+	
+	<bean id="p.pageConfig" class="org.necros.portal.web.VelocityPageConfig">
+		<property name="templatePath"><value>${p.manager.templatePath:classpath:view/tpl/}</value></property>
+		<property name="templateExtension"><value>${p.manager.templateExtension:.html}</value></property>
+		<property name="headerFile"><value>${p.manager.headerFile:header.vt}</value></property>
+		<property name="extraHeader"><value>${p.manager.extraHeader:}</value></property>
+		<property name="managerHeaderFile"><value>${p.manager.extraHeaderFile:}</value></property>
+		<property name="footerFile"><value>${p.manager.footerFile:footer.vt}</value></property>
+		<property name="extraFooter"><value>${p.manager.extraFooter:}</value></property>
+		<property name="managerFooterFile"><value>${p.manager.extraFooterFile:}</value></property>
+		<property name="notfoundFile"><value>${p.manager.notfoundFile:404.vt}</value></property>
+		<property name="errorFile"><value>${p.manager.errorFile:500.vt}</value></property>
+		<property name="channelHeaderFile"><value>${p.channel.headerFile:channel-header.vt}</value></property>
+		<property name="channelFooterFile"><value>${p.channel.footerFile:channel-footer.vt}</value></property>
+		<property name="pageRootDir"><value>${p.page.rootDir:}</value></property>
+		<property name="pageFileDir"><value>${p.page.pageDir:portalPages}</value></property>
+		<property name="pageTempDir"><value>${p.page.tempDir:tempPages}</value></property>
+	</bean>
+	
+	<bean id="p.pageService" class="org.necros.portal.web.VelocityPageService">
+		<property name="channelService" ref="p.channelService"></property>
+		<property name="sectionService" ref="p.sectionService"></property>
+		<property name="config" ref="p.pageConfig"></property>
+		<property name="callService" ref="p.ajaxCallService"></property>
+		<property name="fragmentService" ref="p.fragmentService"></property>
+	</bean>
+	
+	<bean id="p.pageServiceBeansInjecter" class="org.necros.portal.web.PageServiceBeanInjecter"
+		abstract="true" init-method="doInject" lazy-init="false">
+		<property name="pageService" ref="p.pageService"></property>
+	</bean>
+	
+	<bean parent="p.pageServiceBeansInjecter">
+		<property name="serviceBeans"><map>
+			<entry key="p.channelService" value-ref="p.channelService"></entry>
+			<entry key="p.sectionService" value-ref="p.sectionService"></entry>
+			<entry key="p.ajaxCallService" value-ref="p.ajaxCallService"></entry>
+			<entry key="p.fragmentService" value-ref="p.fragmentService"></entry>
+			<entry key="p.previewHelper" value-ref="p.previewHelper"></entry>
+			<entry key="p.requestUtils" value-ref="p.requestUtils"></entry>
+			<entry key="p.jsonUtils" value-ref="p.jsonUtils"></entry>
+		</map></property>
+	</bean>
+	
+</beans>

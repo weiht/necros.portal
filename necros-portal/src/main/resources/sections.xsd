@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://portal.necros.org/sections" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:secs="http://portal.necros.org/sections">
+
+    <element name="sections" type="secs:SectionsType"></element>
+
+    <complexType name="SectionsType">
+    	<sequence>
+    		<element name="section" type="secs:SectionType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="SectionType">
+    	<attribute name="id" type="string" use="required"></attribute>
+    	<attribute name="displayName" type="string" use="optional"></attribute>
+    </complexType>
+</schema>

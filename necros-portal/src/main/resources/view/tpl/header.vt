@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title> </title>
+<link rel="stylesheet" href="../res/css/bootstrap.min.css"/>
+<script type="text/javascript" src="../res/js/jquery.min.js"></script>
+<script type="text/javascript" src="../res/js/jquery-cookie.js"></script>
+<script type="text/javascript" src="../res/js/bootstrap.min.js"></script>
+</head>
+<body>
+$extraHeader

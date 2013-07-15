@@ -1,0 +1,43 @@
+.floating {
+	position: absolute;
+}
+
+.ruler {
+	position: fixed;
+	width: 100%;
+	text-align: center;
+}
+
+.ruler .row {
+	outline: 1px dotted lightgray;
+}
+
+.ruler div[class*=span] {
+	padding-top: 2px;
+	background-color: gray;
+}
+
+div.hrow {
+	outline: solid 1px gray;
+	padding-top: 30px;
+}
+
+#container {
+	outline: dashed 1px lightgray;
+	padding-top: 30px;
+	padding-bottom: 120px;
+}
+
+div.hcol {
+	outline: dashed 1px gray;
+	padding-top: 30px;
+}
+
+div.ckeditible {
+	outline: solid 1px pink;
+}
+
+div.hsec {
+	outline: dotted 1px green;
+	padding-top: 30px;
+}

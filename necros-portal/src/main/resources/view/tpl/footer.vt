@@ -1,0 +1,8 @@
+$extraFooter
+#if ($channelTitle)
+<script type="text/javascript">
+window.document.title = '$channelTitle';
+</script>
+#end
+</body>
+</html>

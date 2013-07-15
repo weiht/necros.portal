@@ -1,0 +1,219 @@
+package org.necros.portal.channel.h4;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
+
+import javax.xml.bind.JAXB;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import org.necros.portal.channel.Channel;
+import org.necros.portal.channel.ChannelService;
+import org.necros.portal.channel.xsd.ChannelType;
+import org.necros.portal.channel.xsd.ChannelsType;
+import org.necros.portal.channel.xsd.ObjectFactory;
+import org.necros.portal.util.FileUtils;
+import org.necros.portal.util.SessionFactoryHelper;
+import org.necros.portal.util.ZipExportCallback;
+import org.necros.portal.util.ZipExporter;
+import org.necros.portal.util.ZipImportCallback;
+import org.necros.portal.util.ZipImporter;
+import org.springframework.util.StringUtils;
+
+public class ChannelServiceH4 implements ChannelService {
+	private static final String CHANNELS_XML_NAME = "channels.xml";
+	private static final String HQL_FIND_OWNED_BY = "from Channel where ownerId = ?";
+	private static final String HQL_FIND_ORPHANS = "from Channel where ifnull(ownerId, '') = ''";
+	private static final Logger logger = LogManager.getLogger(ChannelServiceH4.class);
+	
+	private ZipExporter zipExporter;
+	private ZipImporter zipImporter;
+	private String channelFileExtension;
+	
+	private SessionFactoryHelper sessionFactoryHelper;
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Channel> channelsOwnedBy(String ownerId) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Finding channels owned by: [" + ownerId + "]");
+		}
+		Criteria c = sessionFactoryHelper.createCriteria(Channel.class);
+		if (StringUtils.hasText(ownerId)) {
+			c.add(Restrictions.eq("ownerId", ownerId));
+		} else {
+			c.add(Restrictions.eqOrIsNull("ownerId", ""));
+		}
+		return c.list();
+	}
+
+	@Override
+	public Channel findById(String id) {
+		return (Channel) sessionFactoryHelper.getSession().get(Channel.class, id);
+	}
+
+	@Override
+	public void save(Channel channel) {
+		sessionFactoryHelper.getSession().saveOrUpdate(channel);
+	}
+
+	@Override
+	public void saveTemplate(Channel ch) {
+		Channel channel = findById(ch.getId());
+		channel.setTemplate(ch.getTemplate());
+		sessionFactoryHelper.getSession().saveOrUpdate(channel);
+	}
+
+	@Override
+	public void remove(String id) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Removing channel: " + id);
+		}
+		Channel ch = findById(id);
+		if (ch != null)
+			sessionFactoryHelper.getSession().delete(ch);
+	}
+	
+	@Override
+	public String exportAll() throws IOException {
+		File f = FileUtils.createTempFile();
+		String fn = zipExporter.exportZip(f.getAbsolutePath(), new ZipExportCallback() {
+			@Override
+			public void doZip(ZipOutputStream zos) throws IOException {
+				List<Channel> channels = channelsOwnedBy(null);
+				if (channels == null || channels.isEmpty()) throw new IOException("未找到任何页面。");
+				zipChannelXml(zos, channels);
+				for (Channel ch: channels) {
+					zipChannel(zos, ch);
+				}
+			}
+		});
+		return fn;
+	}
+
+	private void zipChannel(ZipOutputStream zos, Channel ch) throws IOException {
+		ZipEntry ze = new ZipEntry(ch.getId() + channelFileExtension);
+		zos.putNextEntry(ze);
+		String t = ch.getTemplate();
+		if (t == null) t = "";
+		zos.write(t.getBytes());
+	}
+
+	private void zipChannelXml(ZipOutputStream zos,
+			List<Channel> channels) throws IOException {
+		ObjectFactory of = new ObjectFactory();
+		ChannelsType ct = of.createChannelsType();
+		List<ChannelType> cts = ct.getChannel();
+		for (Channel ch: channels) {
+			ChannelType c = of.createChannelType();
+			c.setId(ch.getId());
+			c.setDisplayName(ch.getDisplayName());
+			cts.add(c);
+		}
+		ZipEntry ze = new ZipEntry(CHANNELS_XML_NAME);
+		zos.putNextEntry(ze);
+		JAXB.marshal(of.createChannels(ct), zos);
+	}
+
+	@Override
+	public void importAll(String fn) throws IOException {
+		logger.debug("fn:" + fn);
+		zipImporter.importZip(fn, new ZipImportCallback() {
+			@Override
+			public boolean doUnzip(String name, ZipInputStream zis) throws IOException {
+				BufferedReader r = new BufferedReader(new InputStreamReader(zis));
+				if (CHANNELS_XML_NAME.equals(name)) {
+					unzipChannelsXml(r);
+				} else {
+					if (name.endsWith(channelFileExtension)) {
+						name = name.substring(0, name.length() - channelFileExtension.length());
+					}
+					logger.debug(name);
+					StringBuilder buff = readToEnd(r);
+					Channel ch = findById(name);
+					if (ch == null) {
+						ch = new Channel();
+						ch.setId(name);
+						ch.setDisplayName(name);
+					}
+					ch.setTemplate(buff.toString());
+					save(ch);
+				}
+				return true;
+			}
+		});
+	}
+
+	private void unzipChannelsXml(BufferedReader r) throws IOException {
+		StringBuilder buff = readToEnd(r);
+		StringReader sr = new StringReader(buff.toString());
+		ChannelsType cst = JAXB.unmarshal(sr, ChannelsType.class);
+		List<ChannelType> chtypes = cst.getChannel();
+		for (ChannelType t: chtypes) {
+			String id = t.getId();
+			if (StringUtils.hasText(id)) {
+				Channel ch = findById(id);
+				String n = t.getDisplayName();
+				if (ch == null) {
+					ch = new Channel();
+					ch.setId(id);
+					ch.setDisplayName(StringUtils.hasText(n) ? n : id);
+					save(ch);
+				} else {
+					if (StringUtils.hasText(n)) {
+						ch.setDisplayName(n);
+						save(ch);
+					}
+				}
+			}
+		}
+	}
+
+	private StringBuilder readToEnd(BufferedReader r)
+			throws IOException {
+		String l;
+		StringBuilder buff = new StringBuilder();
+		while ((l = r.readLine()) != null) {
+			if (buff.length() > 0) buff.append("\n");
+			buff.append(l);
+		}
+		return buff;
+	}
+
+	public String getChannelFileExtension() {
+		return channelFileExtension;
+	}
+
+	public void setChannelFileExtension(String channelFileExtension) {
+		this.channelFileExtension = channelFileExtension;
+	}
+
+	public ZipExporter getZipExporter() {
+		return zipExporter;
+	}
+
+	public void setZipExporter(ZipExporter zipExporter) {
+		this.zipExporter = zipExporter;
+	}
+
+	public ZipImporter getZipImporter() {
+		return zipImporter;
+	}
+
+	public void setZipImporter(ZipImporter zipImporter) {
+		this.zipImporter = zipImporter;
+	}
+
+	public void setSessionFactoryHelper(SessionFactoryHelper sessionFactoryHelper) {
+		this.sessionFactoryHelper = sessionFactoryHelper;
+	}
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://portal.necros.org/channels" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:chns="http://portal.necros.org/channels">
+
+    <element name="channels" type="chns:ChannelsType"></element>
+
+    <complexType name="ChannelsType">
+    	<sequence>
+    		<element name="channel" type="chns:ChannelType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="ChannelType">
+    	<attribute name="id" type="string" use="required"></attribute>
+    	<attribute name="displayName" type="string" use="optional"></attribute>
+    </complexType>
+</schema>
