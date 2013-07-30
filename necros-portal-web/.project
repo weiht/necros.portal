@@ -3,6 +3,7 @@
 	<name>necros-portal-web</name>
 	<comment></comment>
 	<projects>
+		<project>necros-portal-data</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
