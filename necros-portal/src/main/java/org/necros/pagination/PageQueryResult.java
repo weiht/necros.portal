@@ -3,24 +3,29 @@
  */
 package org.necros.pagination;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author weiht
  *
  */
-@SuppressWarnings("serial")
-public class PaginationList<E> extends ArrayList<E> {
+public class PageQueryResult<T> {
 	private Pager pager;
+	private List<T> result;
 
 	public Pager getPager() {
-		if (pager == null) {
-			pager = new Pager();
-		}
 		return pager;
 	}
 
 	public void setPager(Pager pager) {
 		this.pager = pager;
+	}
+
+	public List<T> getResult() {
+		return result;
+	}
+
+	public void setResult(List<T> result) {
+		this.result = result;
 	}
 }
