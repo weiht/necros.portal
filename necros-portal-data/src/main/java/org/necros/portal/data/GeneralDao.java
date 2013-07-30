@@ -8,50 +8,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
 import org.necros.pagination.PageQueryResult;
 import org.necros.pagination.Pager;
+import org.necros.portal.util.SessionFactoryHelper;
 
 /**
  * @author weiht
  *
  */
 public class GeneralDao {
-	private SessionFactory sessionFactory;
+	private SessionFactoryHelper sessionFactoryHelper;
 	private IdGenerator idGenerator;
-	
-	protected Session getSession() {
-		return sessionFactory.getCurrentSession();
-	}
-	
-	protected Criteria createCriteria(String entity) {
-		return getSession().createCriteria(entity);
-	}
-
-	protected int count(Criteria c) {
-		return ((Long)c.setProjection(Projections.count(GeneralProperties.PROP_ID))
-				.uniqueResult()).intValue();
-	}
-	
-	@SuppressWarnings("rawtypes")
-	protected List page(Criteria c, Pager p) {
-		return c.setFirstResult(p.getQueryFirst())
-				.setFetchSize(p.getPageSize())
-				.list();
-	}
 	
 	@SuppressWarnings("rawtypes")
 	public Map get(String entity, Serializable id) {
-		return (Map) getSession().get(entity, id);
+		return (Map) sessionFactoryHelper.getSession().get(entity, id);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Map create(String entity, Map obj) {
 		obj.put(GeneralProperties.PROP_ID, idGenerator.generate());
-		getSession().save(entity, obj);
+		sessionFactoryHelper.getSession().save(entity, obj);
 		return obj;
 	}
 	
@@ -63,7 +40,7 @@ public class GeneralDao {
 			Entry e = (Entry)o;
 			orig.put(e.getKey(), e.getValue());
 		}
-		getSession().save(orig);
+		sessionFactoryHelper.getSession().save(orig);
 		return orig;
 	}
 	
@@ -71,18 +48,18 @@ public class GeneralDao {
 	public Map remove(String entity, Serializable id) {
 		Map orig = get(entity, id);
 		if (orig != null) {
-			getSession().delete(entity, orig);
+			sessionFactoryHelper.getSession().delete(entity, orig);
 		}
 		return orig;
 	}
 	
 	@SuppressWarnings("rawtypes")
 	public List all(String entity) {
-		return createCriteria(entity).list();
+		return sessionFactoryHelper.createCriteria(entity).list();
 	}
 	
 	public int countAll(String entity) {
-		return count(createCriteria(entity));
+		return sessionFactoryHelper.count(sessionFactoryHelper.createCriteria(entity));
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -90,19 +67,11 @@ public class GeneralDao {
 		PageQueryResult r = new PageQueryResult();
 		p.setRecordCount(countAll(entity));
 		r.setPager(p);
-		r.setResult(page(createCriteria(entity), p));
+		r.setResult(sessionFactoryHelper.page(sessionFactoryHelper.createCriteria(entity), p));
 		return r;
 	}
 
 	//TODO 加入常见方法过滤，例如创建时间、修改时间、名称等
-
-	protected SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
 
 	protected IdGenerator getIdGenerator() {
 		return idGenerator;
@@ -110,5 +79,13 @@ public class GeneralDao {
 
 	public void setIdGenerator(IdGenerator idGenerator) {
 		this.idGenerator = idGenerator;
+	}
+
+	protected SessionFactoryHelper getSessionFactoryHelper() {
+		return sessionFactoryHelper;
+	}
+
+	public void setSessionFactoryHelper(SessionFactoryHelper sessionFactoryHelper) {
+		this.sessionFactoryHelper = sessionFactoryHelper;
 	}
 }

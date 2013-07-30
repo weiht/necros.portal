@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	">
+	
+	<bean name="d.uuidGenerator" class="org.necros.portal.data.UuidGenerator"/>
+	
+	<bean name="d.dao" class="org.necros.portal.data.GeneralDao">
+		<property name="idGenerator" ref="d.uuidGenerator"></property>
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+	</bean>
+	
+	<bean parent="p.pageServiceBeansInjecter">
+		<property name="serviceBeans"><map>
+			<entry key="d.dao" value-ref="d.dao"></entry>
+		</map></property>
+	</bean>
+	
+</beans>
