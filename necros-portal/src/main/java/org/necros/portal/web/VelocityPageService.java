@@ -102,9 +102,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		vctx.put("channelTitle", ch.getDisplayName());
 		vctx.put("sectionEvaluator", new SectionEvaluator(w, this, vctx));
 		logger.debug("{}", vctx);
-		evaluateResource(w, vctx, config.getTemplatePath() + config.getHeaderFile());
 		doEvaluateChannel(w, vctx, ch);
-		evaluateResource(w, vctx, config.getTemplatePath() + config.getFooterFile());
 	}
 	
 	@Override
@@ -118,9 +116,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		vctx.put("channel", id);
 		vctx.put("sectionEvaluator", new SectionEvaluator(w, this, vctx));
 		logger.debug("{}", vctx);
-		evaluateResource(w, vctx, config.getTemplatePath() + config.getHeaderFile());
 		evaluateChannel(w, vctx, id);
-		evaluateResource(w, vctx, config.getTemplatePath() + config.getFooterFile());
 	}
 
 	@Override
@@ -304,7 +300,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		if (beanName.indexOf('.') >= 0) {
 			Map<String, Object> m = serviceBeans;
 			String[] names = beanName.split("[\\.]");
-			logger.debug("{}", names);
+			logger.debug("{}", (Object)names);
 			for (int i = 0; i < names.length - 1; i ++) {
 				String n = names[i];
 				logger.debug(n);
@@ -417,45 +413,11 @@ public class VelocityPageService implements PageService, InitializingBean {
 		f.createNewFile();
 		BufferedWriter w = new BufferedWriter(new FileWriter(f));
 		try {
-			generateHeader(w);
 			w.write(ch.getTemplate());
-			generateFooter(w);
 		} finally {
 			w.close();
 		}
 		return fn;
-	}
-
-	private void generateHeader(BufferedWriter w) throws IOException {
-		w.write(readFileStr(config.getTemplatePath() + config.getHeaderFile()));
-		w.write(readFileStr(config.getTemplatePath() + config.getChannelHeaderFile()));
-	}
-
-	private void generateFooter(BufferedWriter w) throws IOException {
-		w.write(readFileStr(config.getTemplatePath() + config.getChannelFooterFile()));
-		w.write(readFileStr(config.getTemplatePath() + config.getFooterFile()));
-	}
-
-	private String readFileStr(String fn) throws IOException {
-		logger.debug("reading file: " + fn);
-		if (!StringUtils.hasText(fn)) return "";
-		Resource res = resolver.getResource(fn);
-		InputStream ins = res.getInputStream();
-		try {
-			BufferedReader r = new BufferedReader(new InputStreamReader(ins));
-			StringBuilder b = new StringBuilder();
-			String l = null;
-			while ((l = r.readLine()) != null) {
-				if (b.length() > 0) b.append("\n");
-				b.append(l);
-			}
-			if (logger.isTraceEnabled()) {
-				logger.trace(b.toString());
-			}
-			return b.toString();
-		} finally {
-			ins.close();
-		}
 	}
 
 	@Override
