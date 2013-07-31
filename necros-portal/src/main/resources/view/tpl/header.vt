@@ -8,5 +8,21 @@
 <script type="text/javascript" src="../res/js/jquery-cookie.js"></script>
 <script type="text/javascript" src="../res/js/bootstrap.min.js"></script>
 </head>
+<style>
+body {
+	margin-top: 60px;
+}
+</style>
 <body>
 $extraHeader
+<div class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <a class="brand" href="index">站点管理</a>
+    <ul class="nav">
+    <li><a href="index">页面</a></li>
+    <li><a href="sections">组件</a></li>
+    <li><a href="ajaxcalls">调用</a></li>
+    <li><a href="fragments">片段</a></li>
+    </ul>
+  </div>
+</div>

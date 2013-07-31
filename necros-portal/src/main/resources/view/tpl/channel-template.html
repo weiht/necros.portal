@@ -3,25 +3,6 @@
 #set ($channel = $services.p.channelService.findById($id))
 #end
 #set ($sections = $services.p.sectionService.sectionsOwnedBy(''))
-<link rel="stylesheet" href="../res/css/channel-template.css"/>
-<div class="ruler">
-	<div class="container">
-		<div class="row-fluid">
-			<div class="span1"></div>
-			<div class="span1"></div>
-			<div class="span1"></div>
-			<div class="span1"></div>
-			<div class="span1"></div>
-			<div class="span1"></div>
-			<div class="span1"></div>
-			<div class="span1"></div>
-			<div class="span1"></div>
-			<div class="span1"></div>
-			<div class="span1"></div>
-			<div class="span1"></div>
-		</div>
-	</div>
-</div>
 <div id="container" class="container" channelid="$channel.id">$channel.template</div>
 <div id="main-toolbar" class="floating hide btn-toolbar">
 	<div class="btn-group">

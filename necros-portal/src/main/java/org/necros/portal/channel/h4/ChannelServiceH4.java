@@ -31,8 +31,6 @@ import org.springframework.util.StringUtils;
 
 public class ChannelServiceH4 implements ChannelService {
 	private static final String CHANNELS_XML_NAME = "channels.xml";
-	private static final String HQL_FIND_OWNED_BY = "from Channel where ownerId = ?";
-	private static final String HQL_FIND_ORPHANS = "from Channel where ifnull(ownerId, '') = ''";
 	private static final Logger logger = LoggerFactory.getLogger(ChannelServiceH4.class);
 	
 	private ZipExporter zipExporter;
@@ -62,22 +60,27 @@ public class ChannelServiceH4 implements ChannelService {
 	}
 
 	@Override
-	public void save(Channel channel) {
-		sessionFactoryHelper.getSession().saveOrUpdate(channel);
+	public void save(Channel ch) {
+		logger.trace("Saving channel: {}", ch);
+		Channel channel = findById(ch.getId());
+		if (channel == null) {
+			sessionFactoryHelper.getSession().save(ch);
+		} else {
+			sessionFactoryHelper.getSession().update(ch);
+		}
 	}
 
 	@Override
 	public void saveTemplate(Channel ch) {
+		logger.trace("Saving template for channel: {}", ch);
 		Channel channel = findById(ch.getId());
 		channel.setTemplate(ch.getTemplate());
-		sessionFactoryHelper.getSession().saveOrUpdate(channel);
+		sessionFactoryHelper.getSession().update(channel);
 	}
 
 	@Override
 	public void remove(String id) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Removing channel: " + id);
-		}
+		logger.debug("Removing channel: {}", id);
 		Channel ch = findById(id);
 		if (ch != null)
 			sessionFactoryHelper.getSession().delete(ch);

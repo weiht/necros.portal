@@ -234,6 +234,7 @@ public class PageController {
 	@RequestMapping(value="/html/action/save-channel", method=RequestMethod.POST)
 	public @ResponseBody String saveChannel(@ModelAttribute("channel") Channel ch) {
 		try {
+			logger.trace("Channel saving request received: {}", ch);
 			channelService.save(ch);
 			return MSG_ACTION_OK;
 		} catch (Exception ex) {
