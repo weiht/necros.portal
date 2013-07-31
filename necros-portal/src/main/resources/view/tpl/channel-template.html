@@ -3,139 +3,48 @@
 #set ($channel = $services.p.channelService.findById($id))
 #end
 #set ($sections = $services.p.sectionService.sectionsOwnedBy(''))
-<div id="container" class="container" channelid="$channel.id">$channel.template</div>
-<div id="main-toolbar" class="floating hide btn-toolbar">
-	<div class="btn-group">
-		<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
-			<i class="icon-cog"></i>页面<span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="javascript:void(0)" onclick="containerAppendRow();"><i class="icon-plus-sign"></i>附加行</a></li>
-			<li class="divider"></li>
-			<li><a href="javascript:void(0)" onclick="clearContainer();"><i class="icon-remove"></i>全部清除</a></li>
-			<li class="divider"></li>
-			<li><a href="javascript:void(0)" onclick="previewChannel();"><i class="icon-tasks"></i>预览</a></li>
-			<li><a href="javascript:void(0)" onclick="saveChannel();"><i class="icon-ok-sign"></i>保存</a></li>
-			<li><a href="javascript:void(0)" onclick="generateChannel();"><i class="icon-file"></i>生成文件</a></li>
-		</ul>
+<link rel="stylesheet" href="../res/codemirror/codemirror.css"/>
+<link rel="stylesheet" href="../res/codemirror/theme/eclipse.css"/>
+<style>
+.CodeMirror {
+	height: 600px;
+}
+</style>
+<div id="container" class="container" channelid="$channel.id">
+<div class="row">
+	<div class="span9 offset3">
+		<a class="btn btn-primary" onclick="saveChannel()">保存</a>
+		<a class="btn btn-success" onclick="previewChannel()">预览</a>
+		<a class="btn" href="index">取消</a>
+	</div>
+	<div class="span12">
+		<textarea rows="40" class="input-block-level" id="template" name="template"></textarea>
+	</div>
+	<div class="span12">
+		<div class="control-group">
+	   		<label class="control-label">语法着色</label>
+	   		<div class="controls synColor">
+	   			<label class="radio inline"><input type="radio" name="rSynColor" value="velocity" checked="checked">Velocity</label>
+	   			<label class="radio inline"><input type="radio" name="rSynColor" value="html">HTML</label>
+	   		</div>
+   		</div>
+	</div>
+	<div class="span9 offset3">
+		<a class="btn btn-primary" onclick="saveChannel()">保存</a>
+		<a class="btn btn-success" onclick="previewChannel()">预览</a>
+		<a class="btn" href="index">取消</a>
 	</div>
 </div>
-<div id="row-toolbar" class="floating hide btn-toolbar">
-	<div class="btn-group">
-		<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
-			<i class="icon-cog"></i>行<span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="#dlg-col" data-toggle="modal"><i class="icon-plus-sign"></i>附加列</a></li>
-			<li class="divider"></li>
-			<li><a href="javascript:void(0)" onclick="deleteRow();"><i class="icon-minus-sign"></i>删除此行</a></li>
-		</ul>
-	</div>
-	<div class="btn-group">
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="fullRowUp();">
-			<i class="icon-circle-arrow-up" title="向上移动"></i>
-		</a>
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="fullRowDown();">
-			<i class="icon-circle-arrow-down" title="向下移动"></i>
-		</a>
-	</div>
-	<!-- div class="btn-group">
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="rowUp();">
-			<i class="icon-arrow-up" title="移动到上方容器"></i>
-		</a>
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="rowDown();">
-			<i class="icon-arrow-down" title="移动到下方容器"></i>
-		</a>
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="rowLeft();">
-			<i class="icon-arrow-left" title="移动到左侧容器"></i>
-		</a>
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="rowRight();">
-			<i class="icon-arrow-right" title="移动到右侧容器"></i>
-		</a>
-	</div-->
-</div>
-<div id="col-toolbar" class="floating hide btn-toolbar">
-	<div class="btn-group">
-		<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
-			<i class="icon-cog"></i>列<span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="javascript:void(0)" onclick="insertRow();"><i class="icon-plus-sign"></i>附加行</a></li>
-			<li><a href="#dlg-select-section" data-toggle="modal"><i class="icon-plus-sign"></i>附加组件</a></li>
-			<li class="divider"></li>
-			<li><a href="javascript:void(0)" onclick="deleteCol();"><i class="icon-minus-sign"></i>删除此列</a></li>
-		</ul>
-	</div>
-	<div class="btn-group">
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="colPlus();">
-			<i class="icon-plus" title="加宽一栏"></i>
-		</a>
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="colMinus();">
-			<i class="icon-minus" title="减少一栏"></i>
-		</a>
-	</div>
-	<div class="btn-group">
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="colLeft();">
-			<i class="icon-arrow-left" title="向左移动"></i>
-		</a>
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="colRight();">
-			<i class="icon-arrow-right" title="向右移动"></i>
-		</a>
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="colUp();">
-			<i class="icon-arrow-up" title="移动到上一行"></i>
-		</a>
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="colDown();">
-			<i class="icon-arrow-down" title="移动到下一行"></i>
-		</a>
-	</div>
-</div>
-<div id="sec-toolbar" class="floating hide btn-toolbar">
-	<div class="btn-group">
-		<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
-			<i class="icon-cog"></i>组件<span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="javascript:void(0)" onclick="deleteSec();"><i class="icon-minus-sign"></i>删除此组件</a></li>
-		</ul>
-	</div>
-	<div class="btn-group">
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="secUp();">
-			<i class="icon-arrow-up" title="向上移动"></i>
-		</a>
-		<a class="btn btn-mini" href="javascript:void(0)" onclick="secDown();">
-			<i class="icon-arrow-down" title="向下移动"></i>
-		</a>
-	</div>
-</div>
-<div id="dlg-col" class="modal hide fade">
-    <div class="modal-header">
-        <button class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>列设置</h3>
-    </div>
-    <div class="modal-body">
-        <div class="control-group">
-            <label class="control-label" for="spancols">占用栏位</label>
-            <div class="controls"><input type="text" id="spancols"/></div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="offsetcols">偏移栏位</label>
-            <div class="controls"><input type="text" id="offsetcols"/></div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" onclick="colEdited();">确定</button>
-    </div>
 </div>
 <div id="dlg-select-section" class="modal hide fade">
     <div class="modal-header">
         <button class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>组件设置</h3>
+        <h3>组件选择</h3>
     </div>
     <div class="modal-body">
         <div class="control-group">
             <label class="control-label" for="selsection">可用组件</label>
             <div class="controls"><select id="selsection">
-            	<option value="">&lt;&lt;静态文字内容&gt;&gt;</option>
             </select></div>
         </div>
     </div>
@@ -157,5 +66,47 @@
 	<input type="text" name="id" value="$channel.id"/>
 	<textarea name="template" id="previewTemplate"></textarea>
 </form>
-<script type="text/javascript" src="../res/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="../res/codemirror/codemirror.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/css.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/xml.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/htmlmixed.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/javascript.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/vbscript.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/velocity.js"></script>
+<script type="text/javascript" src="../res/js/call-edit.js"></script>
 <script type="text/javascript" src="../res/js/channel-template.js"></script>
+<script type="text/javascript">
+$(function() {
+	var templateText = "$!stringEscapeUtils.escapeJavaScript($channel.template)";
+	$('#template').val(templateText);
+	var mixedMode = {
+		'name': 'htmlmixed',
+		'scriptTypes': [{
+			matches: /\/x-handlebars-template|\/x-mustache/i,
+			mode: null
+		}, {
+			matches: /(text|application)\/(x-)?vb(a|script)/i,
+			mode: "vbscript"
+		}]
+	};
+	var velocityMode = {
+		'name': 'velocity'
+	};
+	function makeTemplateEditor(synMode) {
+		window.templateEditor = CodeMirror.fromTextArea(
+			$('#template').get(0),
+			{
+				mode: synMode,
+				tabMode: "indent",
+				lineNumbers: true,
+				theme: 'eclipse'
+			}
+		);
+	}
+	makeTemplateEditor(velocityMode);
+	$('input[name="rSynColor"]').on('click', function() {
+		var s = $('input[value="html"]').attr('checked');
+		window.templateEditor.setOption('mode', s ? mixedMode : velocityMode);
+	});
+});
+</script>

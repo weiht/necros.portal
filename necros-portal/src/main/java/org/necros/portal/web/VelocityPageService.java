@@ -82,7 +82,6 @@ public class VelocityPageService implements PageService, InitializingBean {
 		if (StringUtils.hasText(config.getManagerFooterFile())) {
 			evaluateResource(w, vctx, config.getTemplatePath() + config.getManagerFooterFile());
 		}
-		evaluateResource(w, vctx, config.getTemplatePath() + config.getFooterFile());
 	}
 
 	@Override
@@ -248,12 +247,11 @@ public class VelocityPageService implements PageService, InitializingBean {
 
 	private void doEvaluateChannel(BufferedWriter w, VelocityContext vctx,
 			Channel ch) throws IOException {
-		evaluateResource(w, vctx, config.getTemplatePath() + config.getChannelHeaderFile(), false);
 		if (logger.isTraceEnabled()) {
 			logger.trace(ch.getTemplate());
 		}
 		Velocity.evaluate(vctx, w, "channel~" + ch.getId(), ch.getTemplate());
-		evaluateResource(w, vctx, config.getTemplatePath() + config.getChannelFooterFile(), false);
+		w.flush();
 	}
 	
 	private void evaluateChannel(BufferedWriter w, VelocityContext vctx,
@@ -264,7 +262,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 			evaluateResource(w, vctx, config.getTemplatePath() + config.getNotfoundFile());
 		} else {
 			if (logger.isTraceEnabled()) {
-				logger.trace("Channl found: " + ch.getTemplate());
+				logger.trace("Channel found: " + ch.getTemplate());
 			}
 			vctx.put("channelTitle", ch.getDisplayName());
 			doEvaluateChannel(w, vctx, ch);
