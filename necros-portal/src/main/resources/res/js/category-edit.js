@@ -6,15 +6,14 @@ var decodeMap = {
 
 function save() {
 	if (!$('#param_id').val()) {
-		alert('必须填写键。');
+		alert('必须填写名称。');
 		return;
 	}
-	window.templateEditor.save();
 	var data = $('form').serialize();
 	$.post($('form').attr('action') + '?action=' + $('#action').val(), data, function(ret) {
 		if (ret == "OK") {
 			alert('保存成功。');
-			location.href = "sysparams";
+			location.href = "categories";
 		} else {
 			alert(ret);
 		}
@@ -22,7 +21,7 @@ function save() {
 }
 
 function doRemove(id) {
-	$.post('action/del-sysparam', {id: id}, function(ret) {
+	$.post('action/del-category', {id: id}, function(ret) {
 		if (ret == "OK") {
 			location.reload();
 		} else {

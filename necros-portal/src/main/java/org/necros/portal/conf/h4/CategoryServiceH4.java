@@ -63,6 +63,7 @@ public class CategoryServiceH4 implements CategoryService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public PageQueryResult<DictCategory> pageAll(Pager p) {
+		p.setRecordCount(countAll());
 		return sessionFactoryHelper.pageResult(createCriteria(), p);
 	}
 
@@ -74,7 +75,8 @@ public class CategoryServiceH4 implements CategoryService {
 
 	private Criteria createFilter(String filter) {
 		return createCriteria()
-				.add(Restrictions.or(Restrictions.like("key", filter, MatchMode.ANYWHERE),
+				.add(Restrictions.or(Restrictions.like("name", filter, MatchMode.ANYWHERE),
+						Restrictions.like("displayName", filter, MatchMode.ANYWHERE),
 						Restrictions.like("description", filter, MatchMode.ANYWHERE)));
 	}
 
@@ -86,6 +88,7 @@ public class CategoryServiceH4 implements CategoryService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public PageQueryResult<DictCategory> pageFiltered(Pager p, String filter) {
+		p.setRecordCount(countFiltered(filter));
 		return sessionFactoryHelper.pageResult(createFilter(filter), p);
 	}
 

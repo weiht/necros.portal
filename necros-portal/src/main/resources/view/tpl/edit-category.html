@@ -1,0 +1,57 @@
+#set ($id = $request.getParameter('id'))
+#if ($id)
+#set ($cat = $services.p.categoryService.get($id))
+#end
+<div class="container">
+	<div class="row">
+	<div class="page-header span12">
+		<div class="breadcumb span12">字典</div>
+#if ($cat)
+		<h3>编辑字典</h3>
+		<input type="hidden" id="action" value="edit"/>
+#else
+		<h3>创建字典</h3>
+		<input type="hidden" id="action" value="new"/>
+#end
+	</div>
+	</div>
+	<div class="row">
+		<form action="action/save-category" method="post" class="form-horizontal">
+			<div class="control-group">
+                <div class="controls">
+                	<a class="btn btn-primary" onclick="save();">保存</a>
+                	<a class="btn" href="categories">返回</a>
+                </div>
+            </div>
+			<fieldset><legend>字典</legend>
+				<div class="control-group">
+	                <label class="control-label" for="param_id">名称</label>
+#if ($cat)
+	                <div class="controls"><input type="hidden" id="param_id" name="name" value="$cat.name"/>
+	                <span class="uneditable-input">$sysParam.key</span></div>
+#else
+	                <div class="controls"><input type="text" id="param_id" name="name"/>
+	                <span class="help-inline">必须填写名称。</span></div>
+#end
+            	</div>
+				<div class="control-group">
+	                <label class="control-label" for="display_name">名称</label>
+	                <div class="controls"><input type="text" id="display_name" name="displayName" value="$!cat.displayName"/>
+	                <span class="help-inline">用于管理界面。</span></div>
+            	</div>
+				<div class="control-group">
+	                <label class="control-label" for="description">说明</label>
+	                <div class="controls"><input type="text" id="description" name="description" value="$!cat.description"/>
+	                </div>
+            	</div>
+			</fieldset>
+			<div class="control-group">
+                <div class="controls">
+                	<a class="btn btn-primary" onclick="save();">保存</a>
+                	<a class="btn" href="categories">返回</a>
+                </div>
+            </div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="../res/js/category-edit.js"></script>

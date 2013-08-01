@@ -81,6 +81,7 @@ public class EntryServiceH4 implements EntryService {
 	private Criteria createFilter(String filter) {
 		return createCriteria()
 				.add(Restrictions.or(Restrictions.like("key", filter, MatchMode.ANYWHERE),
+						Restrictions.like("displayText", filter, MatchMode.ANYWHERE),
 						Restrictions.like("description", filter, MatchMode.ANYWHERE)));
 	}
 

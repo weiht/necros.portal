@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class DictCategory implements Serializable {
 	@Id @Column(name="cat_name", length=200)
 	private String name;
-	@Column(name="display_name", length=200, nullable=false)
+	@Column(name="display_name", length=200)
 	private String displayName;
 	@Column(name="cat_description", length=200)
 	private String description;

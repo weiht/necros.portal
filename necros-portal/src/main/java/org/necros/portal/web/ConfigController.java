@@ -3,6 +3,8 @@
  */
 package org.necros.portal.web;
 
+import org.necros.portal.conf.CategoryService;
+import org.necros.portal.conf.DictCategory;
 import org.necros.portal.conf.SysParam;
 import org.necros.portal.conf.SysParamService;
 import org.slf4j.Logger;
@@ -27,6 +29,8 @@ public class ConfigController {
 	
 	@Resource(name="p.sysParamService")
 	private SysParamService sysParamService;
+	@Resource(name="p.categoryService")
+	private CategoryService categoryService;
 	
 	@RequestMapping(value="/html/action/save-sysparam", method=RequestMethod.POST)
 	public @ResponseBody String saveSysParam(
@@ -51,6 +55,35 @@ public class ConfigController {
 		try {
 			if (StringUtils.hasText(id))
 				sysParamService.remove(id);
+			return PageController.MSG_ACTION_OK;
+		} catch (Exception ex) {
+			return PageController.translateExceptionMessage(ex);
+		}
+	}
+	
+	@RequestMapping(value="/html/action/save-category", method=RequestMethod.POST)
+	public @ResponseBody String saveCategory(
+			@ModelAttribute("category") DictCategory cat,
+			@RequestParam("action") String act) {
+		try {
+			if ("new".equalsIgnoreCase(act)) {
+				logger.debug("Adding new category: {}", cat);
+				categoryService.create(cat);
+			} else {
+				logger.debug("Updating category: {}", cat);
+				categoryService.update(cat);
+			}
+			return PageController.MSG_ACTION_OK;
+		} catch (Exception ex) {
+			return PageController.translateExceptionMessage(ex);
+		}
+	}
+	
+	@RequestMapping(value="/html/action/del-category", method=RequestMethod.POST)
+	public @ResponseBody String removeCategory(@RequestParam("id") String id) {
+		try {
+			if (StringUtils.hasText(id))
+				categoryService.remove(id);
 			return PageController.MSG_ACTION_OK;
 		} catch (Exception ex) {
 			return PageController.translateExceptionMessage(ex);
