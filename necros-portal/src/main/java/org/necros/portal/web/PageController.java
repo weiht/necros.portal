@@ -36,8 +36,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class PageController {
-	private static final String MSG_ACTION_OK = "OK";
-	private static final String MSG_JSON_OK = "{}";
+	public static final String MSG_ACTION_OK = "OK";
+	public static final String MSG_JSON_OK = "{}";
 
 	private static final Logger logger = LoggerFactory.getLogger(PageController.class);
 
@@ -242,7 +242,7 @@ public class PageController {
 		}
 	}
 
-	private String translateExceptionMessage(Exception ex) {
+	public static String translateExceptionMessage(Exception ex) {
 		logger.error("", ex);
 		String msg = ex.getMessage();
 		if (!StringUtils.hasText(msg)) msg = "发生未知异常。";

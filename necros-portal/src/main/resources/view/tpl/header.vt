@@ -23,6 +23,8 @@ $extraHeader
     <li><a href="sections">组件</a></li>
     <li><a href="ajaxcalls">调用</a></li>
     <li><a href="fragments">片段</a></li>
+    <li><a href="sysparams">系统参数</a></li>
+    <li><a href="dict">字典</a></li>
     </ul>
   </div>
 </div>

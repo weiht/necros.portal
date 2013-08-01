@@ -22,6 +22,11 @@ public class SysParamServiceH4 extends AbstractSysParamService {
 	private SessionFactoryHelper sessionFactoryHelper;
 	
 	@Override
+	public SysParam get(String key) {
+		return (SysParam) sessionFactoryHelper.getSession().get(SysParam.class, key);
+	}
+	
+	@Override
 	public SysParam create(SysParam p) {
 		sessionFactoryHelper.getSession().save(p);
 		return p;
@@ -58,6 +63,7 @@ public class SysParamServiceH4 extends AbstractSysParamService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public PageQueryResult<SysParam> pageAll(Pager p) {
+		p.setRecordCount(countAll());
 		return sessionFactoryHelper.pageResult(createCriteria(), p);
 	}
 
@@ -69,8 +75,8 @@ public class SysParamServiceH4 extends AbstractSysParamService {
 
 	private Criteria createFilter(String filter) {
 		return createCriteria()
-				.add(Restrictions.like("key", filter, MatchMode.ANYWHERE))
-				.add(Restrictions.like("description", filter, MatchMode.ANYWHERE));
+				.add(Restrictions.or(Restrictions.like("key", filter, MatchMode.ANYWHERE),
+						Restrictions.like("description", filter, MatchMode.ANYWHERE)));
 	}
 
 	@Override
@@ -81,6 +87,7 @@ public class SysParamServiceH4 extends AbstractSysParamService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public PageQueryResult<SysParam> pageFiltered(Pager p, String filter) {
+		p.setRecordCount(countFiltered(filter));
 		return sessionFactoryHelper.pageResult(createFilter(filter), p);
 	}
 

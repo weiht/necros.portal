@@ -1,0 +1,109 @@
+#set ($id = $request.getParameter('id'))
+#if ($id)
+#set ($sysParam = $services.p.sysParamService.get($id))
+#end
+<link rel="stylesheet" href="../res/codemirror/codemirror.css"/>
+<link rel="stylesheet" href="../res/codemirror/theme/eclipse.css"/>
+<div class="container">
+	<div class="row">
+	<div class="page-header span12">
+		<div class="breadcumb span12">系统参数</div>
+#if ($sysParam)
+		<h3>编辑系统参数</h3>
+		<input type="hidden" id="action" value="edit"/>
+#else
+		<h3>创建系统参数</h3>
+		<input type="hidden" id="action" value="new"/>
+#end
+	</div>
+	</div>
+	<div class="row">
+		<form action="action/save-sysparam" method="post" class="form-horizontal">
+			<div class="control-group">
+                <div class="controls">
+                	<a class="btn btn-primary" onclick="save();">保存</a>
+                	<a class="btn" href="sysparams">返回</a>
+                </div>
+            </div>
+			<fieldset><legend>系统参数</legend>
+				<div class="control-group">
+	                <label class="control-label" for="param_id">键</label>
+#if ($sysParam)
+	                <div class="controls"><input type="hidden" id="param_id" name="key" value="$sysParam.key"/>
+	                <span class="uneditable-input">$sysParam.key</span></div>
+#else
+	                <div class="controls"><input type="text" id="param_id" name="key"/>
+	                <span class="help-inline">必须填写键。</span></div>
+#end
+            	</div>
+				<div class="control-group">
+	                <label class="control-label" for="template">模板</label>
+	                <div class="controls">
+	                <span class="help-inline">内容模板，可以加入Velocity模板以实现动态数据的展示。</span></div>
+            	</div>
+                <div class="span12"><textarea rows="20" class="input-block-level" id="template" name="value"></textarea></div>
+				<div class="control-group">
+	                <label class="control-label" for="display_name">说明</label>
+	                <div class="controls"><input type="text" id="display_name" name="description" value="$!sysParam.description"/>
+	                </div>
+            	</div>
+			</fieldset>
+            	<div class="control-group">
+            		<label class="control-label">语法着色</label>
+            		<div class="controls synColor">
+            			<label class="radio inline"><input type="radio" name="rSynColor" value="velocity" checked="checked">Velocity</label>
+            			<label class="radio inline"><input type="radio" name="rSynColor" value="html">HTML</label>
+            		</div>
+            	</div>
+			<div class="control-group">
+                <div class="controls">
+                	<a class="btn btn-primary" onclick="save();">保存</a>
+                	<a class="btn" href="sysparams">返回</a>
+                </div>
+            </div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="../res/codemirror/codemirror.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/css.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/xml.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/htmlmixed.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/javascript.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/vbscript.js"></script>
+<script type="text/javascript" src="../res/codemirror/mode/velocity.js"></script>
+<script type="text/javascript" src="../res/js/sysparam-edit.js"></script>
+<script type="text/javascript">
+$(function() {
+	var templateText = "$!stringEscapeUtils.escapeJavaScript($sysParam.value)";
+	$('#template').val(templateText);
+	var mixedMode = {
+		'name': 'htmlmixed',
+		'scriptTypes': [{
+			matches: /\/x-handlebars-template|\/x-mustache/i,
+			mode: null
+		}, {
+			matches: /(text|application)\/(x-)?vb(a|script)/i,
+			mode: "vbscript"
+		}]
+	};
+	var velocityMode = {
+		'name': 'velocity'
+	};
+	function makeTemplateEditor(synMode) {
+		window.templateEditor = CodeMirror.fromTextArea(
+			$('#template').get(0),
+			{
+				mode: synMode,
+				tabMode: "indent",
+				lineNumbers: true,
+				theme: 'eclipse'
+			}
+		);
+	}
+	makeTemplateEditor(velocityMode);
+	$('input[name="rSynColor"]').on('click', function() {
+		var s = $('input[value="html"]').attr('checked');
+		window.templateEditor.setOption('mode', s ? mixedMode : velocityMode);
+	});
+});
+</script>

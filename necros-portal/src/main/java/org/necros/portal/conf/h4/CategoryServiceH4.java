@@ -74,8 +74,8 @@ public class CategoryServiceH4 implements CategoryService {
 
 	private Criteria createFilter(String filter) {
 		return createCriteria()
-				.add(Restrictions.like("key", filter, MatchMode.ANYWHERE))
-				.add(Restrictions.like("description", filter, MatchMode.ANYWHERE));
+				.add(Restrictions.or(Restrictions.like("key", filter, MatchMode.ANYWHERE),
+						Restrictions.like("description", filter, MatchMode.ANYWHERE)));
 	}
 
 	@Override

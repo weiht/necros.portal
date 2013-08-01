@@ -22,7 +22,7 @@ public abstract class AbstractSysParamService implements SysParamService {
 	private String baseKey;
 	
 	@Override
-	public SysParam get(String key) {
+	public SysParam eval(String key) {
 		if (key == null) throw new RuntimeException("未指定系统参数的名称。");
 		if (!key.startsWith(SysParam.splitter)) key = baseKey + key;
 		return formatParam(doFindParamByKey(key));

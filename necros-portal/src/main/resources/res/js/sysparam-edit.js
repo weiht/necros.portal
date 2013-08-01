@@ -5,15 +5,16 @@ var decodeMap = {
 };
 
 function save() {
-	if (!$('#section_id').val()) {
+	if (!$('#param_id').val()) {
 		alert('必须填写ID。');
 		return;
 	}
 	window.templateEditor.save();
 	var data = $('form').serialize();
-	$.post($('form').attr('action'), data, function(ret) {
+	$.post($('form').attr('action') + '?action=' + $('#action').val(), data, function(ret) {
 		if (ret == "OK") {
 			alert('保存成功。');
+			location.href = "sysparams";
 		} else {
 			alert(ret);
 		}
@@ -21,7 +22,7 @@ function save() {
 }
 
 function doRemove(id) {
-	$.post('action/del-section', {id: id}, function(ret) {
+	$.post('action/del-sysparam', {id: id}, function(ret) {
 		if (ret == "OK") {
 			location.reload();
 		} else {
@@ -37,7 +38,7 @@ function remove(id) {
 }
 
 function importSections() {
-	var d = $('#importSectionsFile').data('files');
+	var d = $('#importSysParamsFile').data('files');
 	if (!d || !d.files || !d.files.length) {
 		alert('未选中要导入的文件。');
 	} else {
@@ -46,10 +47,10 @@ function importSections() {
 }
 
 $(function() {
-	if ($('#importSectionsFile').size() > 0) {
-		$('#importSectionsFile').fileupload({
+	if ($('#importSysParamsFile').size() > 0) {
+		$('#importSysParamsFile').fileupload({
 			'add': function(e, d) {
-				$('#importSectionsFile').data('files', d);
+				$('#importSysParamsFile').data('files', d);
 				var f = d.files[0];
 				$('#filelist').html(f && f.name || '');
 			},
@@ -60,7 +61,7 @@ $(function() {
 				console.log(d);
 				if (d.result && !d.result.error) {
 					alert('导入完成。');
-					$('#importSectionsFile').removeData('files');
+					$('#importSysParamsFile').removeData('files');
 					$('#filelist').empty();
 					$('#dlg-import').modal('hide');
 				} else {

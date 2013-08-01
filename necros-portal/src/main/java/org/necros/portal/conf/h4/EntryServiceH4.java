@@ -31,12 +31,14 @@ public class EntryServiceH4 implements EntryService {
 	
 	@Override
 	public DictEntry create(DictEntry p) {
+		p.setCategoryId(categoryId);
 		sessionFactoryHelper.getSession().save(p);
 		return p;
 	}
 
 	@Override
 	public DictEntry update(DictEntry p) {
+		p.setCategoryId(categoryId);
 		sessionFactoryHelper.getSession().update(p);
 		return p;
 	}
@@ -78,8 +80,8 @@ public class EntryServiceH4 implements EntryService {
 
 	private Criteria createFilter(String filter) {
 		return createCriteria()
-				.add(Restrictions.like("key", filter, MatchMode.ANYWHERE))
-				.add(Restrictions.like("description", filter, MatchMode.ANYWHERE));
+				.add(Restrictions.or(Restrictions.like("key", filter, MatchMode.ANYWHERE),
+						Restrictions.like("description", filter, MatchMode.ANYWHERE)));
 	}
 
 	@Override

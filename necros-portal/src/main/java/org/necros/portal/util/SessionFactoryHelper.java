@@ -28,7 +28,7 @@ public class SessionFactoryHelper {
 	}
 
 	public int count(Criteria c) {
-		return ((Long)c.setProjection(Projections.count("*"))
+		return ((Long)c.setProjection(Projections.rowCount())
 				.uniqueResult()).intValue();
 	}
 	
@@ -36,12 +36,13 @@ public class SessionFactoryHelper {
 	public List page(Criteria c, Pager p) {
 		return c.setFirstResult(p.getQueryFirst())
 				.setFetchSize(p.getPageSize())
+				.setMaxResults(p.getPageSize())
 				.list();
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public PageQueryResult pageResult(Criteria c, Pager p) {
-		return new PageQueryResult<>(p, page(c, p));
+		return new PageQueryResult(p, page(c, p));
 	}
 	
 	public Session getSession() {

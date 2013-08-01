@@ -14,6 +14,7 @@ import org.necros.pagination.Pager;
  */
 public interface SysParamService {
 	public abstract SysParam get(String key);
+	public abstract SysParam eval(String key);
 	public abstract SysParam create(SysParam p);
 	public abstract SysParam update(SysParam p);
 	public abstract SysParam remove(String key);

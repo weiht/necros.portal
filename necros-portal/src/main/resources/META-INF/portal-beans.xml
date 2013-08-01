@@ -110,6 +110,7 @@
 	
 	<bean parent="p.pageServiceBeansInjecter">
 		<property name="serviceBeans"><map>
+			<entry key="p.pageHelper" value-ref="p.pageHelper"></entry>
 			<entry key="p.channelService" value-ref="p.channelService"></entry>
 			<entry key="p.sectionService" value-ref="p.sectionService"></entry>
 			<entry key="p.ajaxCallService" value-ref="p.ajaxCallService"></entry>

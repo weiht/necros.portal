@@ -60,6 +60,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
 				<prop key="query*">PROPAGATION_REQUIRED,readOnly</prop>
 				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
 				<prop key="insert*">PROPAGATION_REQUIRED</prop>
 				<prop key="update*">PROPAGATION_REQUIRED</prop>
 				<prop key="delete*">PROPAGATION_REQUIRED</prop>
