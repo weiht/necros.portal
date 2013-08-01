@@ -9,6 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
+import org.necros.pagination.PageQueryResult;
 import org.necros.pagination.Pager;
 
 /**
@@ -36,6 +37,11 @@ public class SessionFactoryHelper {
 		return c.setFirstResult(p.getQueryFirst())
 				.setFetchSize(p.getPageSize())
 				.list();
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public PageQueryResult pageResult(Criteria c, Pager p) {
+		return new PageQueryResult<>(p, page(c, p));
 	}
 	
 	public Session getSession() {

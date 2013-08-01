@@ -65,6 +65,18 @@
 		<property name="sectionFileExtension"><value>${p.channel.fileExtension:.html}</value></property>
 	</bean>
 	
+	<bean id="p.sysParamService" class="org.necros.portal.conf.h4.SysParamServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+	</bean>
+	
+	<bean id="p.categoryService" class="org.necros.portal.conf.h4.CategoryServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+	</bean>
+	
+	<bean id="p.entryServiceFactory" class="org.necros.portal.conf.h4.EntryServiceFactoryH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+	</bean>
+	
 	<bean id="p.pageConfig" class="org.necros.portal.web.VelocityPageConfig">
 		<property name="templatePath"><value>${p.manager.templatePath:classpath:view/tpl/}</value></property>
 		<property name="templateExtension"><value>${p.manager.templateExtension:.html}</value></property>
@@ -102,6 +114,9 @@
 			<entry key="p.sectionService" value-ref="p.sectionService"></entry>
 			<entry key="p.ajaxCallService" value-ref="p.ajaxCallService"></entry>
 			<entry key="p.fragmentService" value-ref="p.fragmentService"></entry>
+			<entry key="p.sysParamService" value-ref="p.sysParamService"></entry>
+			<entry key="p.categoryService" value-ref="p.categoryService"></entry>
+			<entry key="p.entryServiceFactory" value-ref="p.entryServiceFactory"></entry>
 			<entry key="p.previewHelper" value-ref="p.previewHelper"></entry>
 			<entry key="p.requestUtils" value-ref="p.requestUtils"></entry>
 			<entry key="p.jsonUtils" value-ref="p.jsonUtils"></entry>
