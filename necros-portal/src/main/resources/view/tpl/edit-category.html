@@ -28,7 +28,7 @@
 	                <label class="control-label" for="param_id">名称</label>
 #if ($cat)
 	                <div class="controls"><input type="hidden" id="param_id" name="name" value="$cat.name"/>
-	                <span class="uneditable-input">$sysParam.key</span></div>
+	                <span class="uneditable-input">$cat.name</span></div>
 #else
 	                <div class="controls"><input type="text" id="param_id" name="name"/>
 	                <span class="help-inline">必须填写名称。</span></div>

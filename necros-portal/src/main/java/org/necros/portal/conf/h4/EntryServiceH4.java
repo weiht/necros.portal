@@ -69,6 +69,7 @@ public class EntryServiceH4 implements EntryService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public PageQueryResult<DictEntry> pageAll(Pager p) {
+		p.setRecordCount(countAll());
 		return sessionFactoryHelper.pageResult(createCriteria(), p);
 	}
 
@@ -93,6 +94,7 @@ public class EntryServiceH4 implements EntryService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public PageQueryResult<DictEntry> pageFiltered(Pager p, String filter) {
+		p.setRecordCount(countFiltered(filter));
 		return sessionFactoryHelper.pageResult(createFilter(filter), p);
 	}
 
@@ -104,6 +106,7 @@ public class EntryServiceH4 implements EntryService {
 		return categoryId;
 	}
 
+	@Override
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
 	}

@@ -28,6 +28,8 @@ public class DictEntry implements Serializable {
 	private String displayText;
 	@Column(name="entry_description", length=200)
 	private String description;
+	@Column(name="display_order", nullable=false)
+	private Integer displayOrder = 0;
 
 	public String getCategoryId() {
 		return categoryId;
@@ -59,5 +61,34 @@ public class DictEntry implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getDisplayOrder() {
+		return displayOrder;
+	}
+
+	public void setDisplayOrder(Integer order) {
+		this.displayOrder = order;
+	}
+
+	public String getDisplayText() {
+		return displayText;
+	}
+
+	public void setDisplayText(String text) {
+		this.displayText = text;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder buff = new StringBuilder();
+		buff.append("Class=").append(DictEntry.class).append('\n');
+		buff.append("id=").append(id).append('\n');
+		buff.append("categoryId=").append(categoryId).append('\n');
+		buff.append("displayOrder=").append(displayOrder).append('\n');
+		buff.append("key=").append(key).append('\n');
+		buff.append("displayText=").append(displayText).append('\n');
+		buff.append("description=").append(description).append('\n');
+		return buff.toString();
 	}
 }

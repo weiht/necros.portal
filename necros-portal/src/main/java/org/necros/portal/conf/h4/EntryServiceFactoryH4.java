@@ -3,19 +3,26 @@
  */
 package org.necros.portal.conf.h4;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.necros.portal.conf.EntryService;
+import org.necros.portal.conf.EntryServiceFactory;
 import org.necros.portal.util.SessionFactoryHelper;
+
+import org.springframework.context.ApplicationContext;  
+import org.springframework.context.ApplicationContextAware;  
 
 /**
  * @author weiht
  *
  */
-public class EntryServiceFactoryH4 {
+public class EntryServiceFactoryH4 implements EntryServiceFactory, ApplicationContextAware {
 	private SessionFactoryHelper sessionFactoryHelper;
-	private Map<String, EntryService> storage;
+	private Map<String, EntryService> storage = new HashMap<String, EntryService>();
+	private ApplicationContext context;
 	
+	@Override
 	public EntryService get(String categoryId) {
 		EntryService svc = storage.get(categoryId);
 		if (svc == null) {
@@ -29,14 +36,18 @@ public class EntryServiceFactoryH4 {
 	 * @return
 	 */
 	private EntryService constructService(String categoryId) {
-		EntryServiceH4 svc = new EntryServiceH4();
+		EntryService svc = (EntryService)context.getBean("p.entryService");
 		svc.setCategoryId(categoryId);
-		svc.setSessionFactoryHelper(sessionFactoryHelper);
 		storage.put(categoryId, svc);
 		return svc;
 	}
 
 	public void setSessionFactoryHelper(SessionFactoryHelper sessionFactoryHelper) {
 		this.sessionFactoryHelper = sessionFactoryHelper;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext context) {
+		this.context = context;
 	}
 }

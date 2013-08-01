@@ -5,8 +5,11 @@ package org.necros.portal.web;
 
 import org.necros.portal.conf.CategoryService;
 import org.necros.portal.conf.DictCategory;
+import org.necros.portal.conf.DictEntry;
+import org.necros.portal.conf.EntryService;
 import org.necros.portal.conf.SysParam;
 import org.necros.portal.conf.SysParamService;
+import org.necros.portal.conf.h4.EntryServiceFactoryH4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -31,6 +34,8 @@ public class ConfigController {
 	private SysParamService sysParamService;
 	@Resource(name="p.categoryService")
 	private CategoryService categoryService;
+	@Resource(name="p.entryServiceFactory")
+	private EntryServiceFactoryH4 entryServiceFactory;
 	
 	@RequestMapping(value="/html/action/save-sysparam", method=RequestMethod.POST)
 	public @ResponseBody String saveSysParam(
@@ -84,6 +89,42 @@ public class ConfigController {
 		try {
 			if (StringUtils.hasText(id))
 				categoryService.remove(id);
+			return PageController.MSG_ACTION_OK;
+		} catch (Exception ex) {
+			return PageController.translateExceptionMessage(ex);
+		}
+	}
+	
+	@RequestMapping(value="/html/action/save-entry", method=RequestMethod.POST)
+	public @ResponseBody String saveEntry(
+			@ModelAttribute("entry") DictEntry e,
+			@RequestParam("action") String act,
+			@RequestParam("cid") String cid) {
+		EntryService service = entryServiceFactory.get(cid);
+		try {
+			if ("new".equalsIgnoreCase(act)) {
+				logger.debug("Adding new entry: {}", e);
+				service.create(e);
+			} else {
+				logger.debug("Updating entry: {}", e);
+				DictEntry entry = service.get(e.getKey());
+				entry.setDisplayText(e.getDisplayText());
+				entry.setDescription(e.getDescription());
+				service.update(entry);
+			}
+			return PageController.MSG_ACTION_OK;
+		} catch (Exception ex) {
+			return PageController.translateExceptionMessage(ex);
+		}
+	}
+	
+	@RequestMapping(value="/html/action/del-entry", method=RequestMethod.POST)
+	public @ResponseBody String removeEntry(@RequestParam("id") String id,
+			@RequestParam("cid") String cid) {
+		EntryService service = entryServiceFactory.get(cid);
+		try {
+			if (StringUtils.hasText(id))
+				service.remove(id);
 			return PageController.MSG_ACTION_OK;
 		} catch (Exception ex) {
 			return PageController.translateExceptionMessage(ex);

@@ -1,0 +1,60 @@
+#set ($cid = $request.getParameter('cid'))
+#set ($id = $request.getParameter('id'))
+#set ($entryService = $services.p.entryServiceFactory.get($cid))
+#if ($id)
+	#set ($entry = $entryService.get($id))
+#end
+<div class="container">
+	<div class="row">
+	<div class="page-header span12">
+		<div class="breadcumb span12">条目</div>
+		<input type="hidden" id="cid" value="$cid"/>
+#if ($entry)
+		<h3>编辑条目</h3>
+		<input type="hidden" id="action" value="edit"/>
+#else
+		<h3>创建条目</h3>
+		<input type="hidden" id="action" value="new"/>
+#end
+	</div>
+	</div>
+	<div class="row">
+		<form action="action/save-entry" method="post" class="form-horizontal">
+			<div class="control-group">
+                <div class="controls">
+                	<a class="btn btn-primary" onclick="save();">保存</a>
+                	<a class="btn" href="entries?cid=$cid">返回</a>
+                </div>
+            </div>
+			<fieldset><legend>条目</legend>
+				<div class="control-group">
+	                <label class="control-label" for="param_id">键</label>
+#if ($entry)
+	                <div class="controls"><input type="hidden" id="param_id" name="key" value="$entry.key"/>
+	                <span class="uneditable-input">$entry.key</span></div>
+#else
+	                <div class="controls"><input type="text" id="param_id" name="key"/>
+	                <span class="help-inline">必须填写键。</span></div>
+#end
+            	</div>
+				<div class="control-group">
+	                <label class="control-label" for="display_name">显示文字</label>
+	                <div class="controls"><input type="text" id="display_name" name="displayText" value="$!entry.displayText"/>
+	                <span class="help-inline">必须填写。用于在界面供人识别。</span></div>
+            	</div>
+				<div class="control-group">
+	                <label class="control-label" for="description">说明</label>
+	                <div class="controls"><input type="text" id="description" name="description" value="$!entry.description"/>
+	                </div>
+            	</div>
+			</fieldset>
+			<div class="control-group">
+                <div class="controls">
+                	<a class="btn btn-primary" onclick="save();">保存</a>
+                	<a class="btn" href="entries?cid=$cid">返回</a>
+                </div>
+            </div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="../res/js/entry-edit.js"></script>

@@ -1,22 +1,24 @@
+#set ($cid = $request.getParameter('cid'))
+#set ($entryService = $services.p.entryServiceFactory.get($cid))
 #set ($filterText = $request.getParameter('q'))
 #set ($pager = $services.p.pageHelper.parseRequest($request))
 #set ($pager.pageSize = 10)
 #if ($filterText)
-	#set ($qr = $services.p.categoryService.pageFiltered($pager, $filterText))
+	#set ($qr = $entryService.pageFiltered($pager, $filterText))
 #else
-	#set ($qr = $services.p.categoryService.pageAll($pager))
+	#set ($qr = $entryService.pageAll($pager))
 #end
 #set ($pager = $qr.pager)
-#set ($cats = $qr.result)
+#set ($entries = $qr.result)
 <link rel="stylesheet" href="../res/css/jquery.fileupload-ui.css"/>
 <div class="container">
 	<div class="row">
 	<div class="page-header span10">
-		<div class="span4">字典</div>
+		<div class="span4">条目<input type="hidden" id="cid" value="$cid"/></div>
 		<div class="btn-group span4">
-			<a href="edit-category" class="btn btn-primary"><i class="icon-plus icon-white"></i>创建字典</a>
-			<a href="action/export-categories" class="hide btn btn-success" title="导出数据库中的所有字典。"><i class="icon-download icon-white"></i>导出</a>
-			<a href="#dlg-import" data-toggle="modal" class="hide btn btn-success" title="导入一个zip/jar格式文件中的所有字典，将会覆盖同名字典。"><i class="icon-upload icon-white"></i>导入</a>
+			<a href="edit-entry?cid=$cid" class="btn btn-primary"><i class="icon-plus icon-white"></i>创建条目</a>
+			<a href="action/export-entries" class="hide btn btn-success" title="导出数据库中的所有条目。"><i class="icon-download icon-white"></i>导出</a>
+			<a href="#dlg-import" data-toggle="modal" class="hide btn btn-success" title="导入一个zip/jar格式文件中的所有条目，将会覆盖同名条目。"><i class="icon-upload icon-white"></i>导入</a>
 		</div>
 	</div>
 	<div class="span2">
@@ -31,21 +33,20 @@
 	<div class="row">
 		<table id="serverlist" class="table table-bordered table-striped table-hover">
 			<thead><tr>
-				<th>名称</th><th>显示名</th><th>说明</th><th></th>
+				<th>键</th><th>显示文字</th><th>说明</th><th></th>
 			</tr></thead>
 			<tbody>
-#if ($cats.size() > 0)
-	#foreach ($sp in $cats)
+#if ($entries.size() > 0)
+	#foreach ($sp in $entries)
 				<tr><td>
-					$sp.name
+					$sp.key
 				</td><td>
-					$!sp.displayName
+					$!sp.displayText
 				</td><td>
 					$!sp.description
 				</td><td>
-					<a class="btn btn-mini btn-primary" href="edit-category?id=$sp.name">编辑</a>&nbsp;
-					<a class="btn btn-mini" href="javascript:remove('$sp.name');">删除</a>
-					<a class="btn btn-mini btn-success" href="entries?cid=$sp.name">管理条目</a>
+					<a class="btn btn-mini btn-primary" href="edit-entry?cid=$cid&id=$sp.key">编辑</a>&nbsp;
+					<a class="btn btn-mini" href="javascript:remove('$sp.key');">删除</a>
 				</td></tr>
 	#end
 #else
@@ -96,13 +97,13 @@
     		<i class="icon-upload icon-white"></i>
     		<span>上传压缩文件</span>
 			<input type="file" id="importFile" name="importFile"
-				data-url="action/import-categories"/>
+				data-url="action/import-entries"/>
 		</span></div>
 		<div id="filelist">
 		</div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" onclick="importCategories();">确定</button>
+        <button class="btn btn-primary" onclick="importEntries();">确定</button>
     </div>
 </div>
 <!-- <script type="text/javascript" src="../res/js/upload/jquery.ui.widget.js"></script> -->
@@ -110,4 +111,4 @@
 <!-- <script type="text/javascript" src="../res/js/upload/jquery.fileupload.js"></script> -->
 <!-- <script type="text/javascript" src="../res/js/upload/jquery.fileupload-fp.js"></script> -->
 <!-- <script type="text/javascript" src="../res/js/upload/jquery.fileupload-ui.js"></script> -->
-<script type="text/javascript" src="../res/js/category-edit.js"></script>
+<script type="text/javascript" src="../res/js/entry-edit.js"></script>

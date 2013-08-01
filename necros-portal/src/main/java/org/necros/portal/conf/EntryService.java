@@ -13,6 +13,7 @@ import org.necros.pagination.Pager;
  *
  */
 public interface EntryService {
+	public abstract void setCategoryId(String categoryId);
 	public abstract DictEntry get(String key);
 	public abstract DictEntry create(DictEntry p);
 	public abstract DictEntry update(DictEntry p);
