@@ -5,11 +5,15 @@ package org.necros.portal.org.h4;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.necros.pagination.PageQueryResult;
 import org.necros.pagination.Pager;
 import org.necros.portal.data.BasicObjectService;
 import org.necros.portal.data.IdGenerator;
 import org.necros.portal.org.PasswordEncoder;
+import org.necros.portal.org.PasswordGenerator;
 import org.necros.portal.org.Person;
 import org.necros.portal.org.PersonService;
 import org.necros.portal.util.SessionFactoryHelper;
@@ -25,9 +29,22 @@ public class PersonServiceH4 implements PersonService {
 	protected BasicObjectService basicObjectService;
 	protected IdGenerator idGenerator;
 	protected PasswordEncoder passwordEncoder;
+	protected PasswordGenerator passwordGenerator;
 
-	private void doUpdate(Person p) {
+	protected void doUpdate(Person p) {
 		sessionFactoryHelper.getSession().update(p);
+	}
+	
+	protected Criteria createCriteria() {
+		return sessionFactoryHelper.createCriteria(clazz);
+	}
+	
+	protected Criteria filterCriteria(Criteria c, String filterText) {
+		return c.add(Restrictions.or(
+				Restrictions.like("info.name", filterText, MatchMode.ANYWHERE),
+				Restrictions.like("info.altName", filterText, MatchMode.ANYWHERE),
+				Restrictions.like("loginName", filterText, MatchMode.ANYWHERE)
+				));
 	}
 
 	public Person get(String id) {
@@ -79,56 +96,43 @@ public class PersonServiceH4 implements PersonService {
 	}
 
 	public String resetPassword(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		Person p = get(id);
+		String newPwd = passwordGenerator.generate();
+		p.setLoginPassword(passwordEncoder.encode(newPwd, p.getLoginName(), p));
+		doUpdate(p);
+		return newPwd;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.necros.portal.org.PersonService#all()
-	 */
+	@SuppressWarnings("unchecked")
 	public List<Person> all() {
-		// TODO Auto-generated method stub
-		return null;
+		return createCriteria().list();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.necros.portal.org.PersonService#countAll()
-	 */
 	public int countAll() {
-		// TODO Auto-generated method stub
-		return 0;
+		return sessionFactoryHelper.count(createCriteria());
 	}
 
-	/* (non-Javadoc)
-	 * @see org.necros.portal.org.PersonService#pageAll()
-	 */
-	public PageQueryResult<Person> pageAll() {
-		// TODO Auto-generated method stub
-		return null;
+	@SuppressWarnings("unchecked")
+	public PageQueryResult<Person> pageAll(Pager p) {
+		p.setRecordCount(countAll());
+		return new PageQueryResult<Person>(p,
+				sessionFactoryHelper.page(createCriteria(), p));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.necros.portal.org.PersonService#filter(java.lang.String)
-	 */
-	public List<Person> filter(String filter) {
-		// TODO Auto-generated method stub
-		return null;
+	@SuppressWarnings("unchecked")
+	public List<Person> filter(String filterText) {
+		return filterCriteria(createCriteria(), filterText)
+				.list();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.necros.portal.org.PersonService#countFiltered()
-	 */
-	public int countFiltered() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int countFiltered(String filterText) {
+		return sessionFactoryHelper.count(filterCriteria(createCriteria(), filterText));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.necros.portal.org.PersonService#pageFiltered(org.necros.pagination.Pager, java.lang.String)
-	 */
-	public PageQueryResult<Person> pageFiltered(Pager p, String filter) {
-		// TODO Auto-generated method stub
-		return null;
+	@SuppressWarnings("unchecked")
+	public PageQueryResult<Person> pageFiltered(Pager p, String filterText) {
+		p.setRecordCount(countFiltered(filterText));
+		return new PageQueryResult<Person>(p, filterCriteria(createCriteria(), filterText).list());
 	}
 
 	public void setSessionFactoryHelper(SessionFactoryHelper sessionFactoryHelper) {
@@ -145,5 +149,9 @@ public class PersonServiceH4 implements PersonService {
 
 	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
+	}
+
+	public void setPasswordGenerator(PasswordGenerator passwordGenerator) {
+		this.passwordGenerator = passwordGenerator;
 	}
 }

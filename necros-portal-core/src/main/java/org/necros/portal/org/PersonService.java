@@ -23,9 +23,9 @@ public interface PersonService {
 	
 	public abstract List<Person> all();
 	public abstract int countAll();
-	public abstract PageQueryResult<Person> pageAll();
+	public abstract PageQueryResult<Person> pageAll(Pager p);
 	
-	public abstract List<Person> filter(String filter);
-	public abstract int countFiltered();
-	public abstract PageQueryResult<Person> pageFiltered(Pager p, String filter);
+	public abstract List<Person> filter(String filterText);
+	public abstract int countFiltered(String filterText);
+	public abstract PageQueryResult<Person> pageFiltered(Pager p, String filterText);
 }
