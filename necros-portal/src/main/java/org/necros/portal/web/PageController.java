@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerMapping;
 
 @Controller
 public class PageController {
@@ -42,6 +43,11 @@ public class PageController {
 	private static final Logger logger = LoggerFactory.getLogger(PageController.class);
 
 	private static final String JAR_CONTENT_TYPE = "application/octet-stream";
+	private static final String BASE_URL_CTX = "/html";
+	private static final String PREVIEW_URL_CTX = "/preview";
+	private static final String CHANNEL_URL_CTX = "/channel";
+	private static final String AJAX_CALL_URL_CTX = "/ajax";
+	private static final String FRAGMENT_URL_CTX = "/fragment";
 	
 	@Resource(name="p.pageService")
 	private PageService pageService;
@@ -54,48 +60,62 @@ public class PageController {
 	@Resource(name="p.fragmentService")
 	private FragmentService fragmentService;
 	
-	@RequestMapping("/html/{page}")
-	public void html(@PathVariable("page") String page,
-			HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		pageService.renderPage(page, req, resp);
+	@RequestMapping(BASE_URL_CTX + "/**")
+	public void html(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		String path = (String) req.getAttribute( HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE );
+		path = path.substring(BASE_URL_CTX.length() + 1);
+		logger.debug("Rendering page: {}", path);
+		pageService.renderPage(path, req, resp);
 	}
 	
-	@RequestMapping("/preview/{id}")
+	@RequestMapping(PREVIEW_URL_CTX + "/**")
 	public void preview(@ModelAttribute("channel") Channel ch,
-			@PathVariable("id") String id,
 			HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		if (!StringUtils.hasText(id) || ch != null && StringUtils.hasText(ch.getTemplate())) {
+		String path = (String) req.getAttribute( HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE );
+		if (path.length() < 2 || ch != null && StringUtils.hasText(ch.getTemplate())) {
 			pageService.previewChannel(ch, req, resp);
 		} else {
-			pageService.previewChannelWithId(id, req, resp);
+			path = path.substring(PREVIEW_URL_CTX.length() + 1);
+			logger.debug("Previewing channel: {}", path);
+			pageService.previewChannelWithId(path, req, resp);
 		}
 	}
 	
-	@RequestMapping("/channel/{channelid}")
-	public void channel(@PathVariable("channelid")String id,
-			HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	@RequestMapping(CHANNEL_URL_CTX + "/**")
+	public void channel(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 		if (logger.isTraceEnabled()) {
 			traceRequest(req);
 		}
-		pageService.renderChannel(id, req, resp);
+		String path = (String) req.getAttribute( HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE );
+		path = path.substring(CHANNEL_URL_CTX.length() + 1);
+		logger.debug("Rendering Channel: {}", path);
+		pageService.renderChannel(path, req, resp);
 	}
 	
-	@RequestMapping("/ajax/{callid}")
-	public void ajax(@PathVariable("callid")String id,
-			HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	@RequestMapping(AJAX_CALL_URL_CTX + "/**")
+	public void ajax(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 		if (logger.isTraceEnabled()) {
 			traceRequest(req);
 		}
-		pageService.ajaxCall(id, req, resp);
+		String path = (String) req.getAttribute( HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE );
+		path = path.substring(AJAX_CALL_URL_CTX.length() + 1);
+		logger.debug("Rendering ajax call: {}", path);
+		pageService.ajaxCall(path, req, resp);
 	}
 	
-	@RequestMapping("/fragment/{html}")
-	public void htmlFragment(@PathVariable("html")String id,
-			HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	@RequestMapping(FRAGMENT_URL_CTX + "/**")
+	public void htmlFragment(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 		if (logger.isTraceEnabled()) {
 			traceRequest(req);
 		}
-		pageService.htmlFragment(id, req, resp);
+		String path = (String) req.getAttribute( HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE );
+		path = path.substring(FRAGMENT_URL_CTX.length() + 1);
+		logger.debug("Rendering HTML fragment: {}", path);
+		pageService.htmlFragment(path, req, resp);
 	}
 
 	@RequestMapping(value="/html/action/generate-channel", method=RequestMethod.POST)

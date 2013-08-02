@@ -181,7 +181,9 @@ public class VelocityPageService implements PageService, InitializingBean {
 	private BufferedReader evalFragment(Fragment frag, VelocityContext vctx)
 			throws IOException {
 		StringWriter sw = new StringWriter();
-		Velocity.evaluate(vctx, sw, "fragment~" + frag.getId(), frag.getTemplate());
+		String tpl = frag.getTemplate();
+		if (tpl == null) tpl = "";
+		Velocity.evaluate(vctx, sw, "fragment~" + frag.getId(), tpl);
 		return new BufferedReader(new StringReader(sw.toString()));
 	}
 
@@ -196,7 +198,9 @@ public class VelocityPageService implements PageService, InitializingBean {
 			logger.trace("{}", call);
 			logger.trace(call.getTemplate());
 		}
-		Velocity.evaluate(vctx, w, "ajaxCall~" + call.getId(), call.getTemplate());
+		String tpl = call.getTemplate();
+		if (tpl == null) tpl = "";
+		Velocity.evaluate(vctx, w, "ajaxCall~" + call.getId(), tpl);
 		w.flush();
 	}
 
@@ -250,7 +254,9 @@ public class VelocityPageService implements PageService, InitializingBean {
 		if (logger.isTraceEnabled()) {
 			logger.trace(ch.getTemplate());
 		}
-		Velocity.evaluate(vctx, w, "channel~" + ch.getId(), ch.getTemplate());
+		String tpl = ch.getTemplate();
+		if (tpl == null) tpl = "";
+		Velocity.evaluate(vctx, w, "channel~" + ch.getId(), tpl);
 		w.flush();
 	}
 	
@@ -328,7 +334,9 @@ public class VelocityPageService implements PageService, InitializingBean {
 				logger.trace(sec.getTemplate());
 			}
 			try {
-				Velocity.evaluate(vctx, w, "section~" + id, sec.getTemplate());
+				String tpl = sec.getTemplate();
+				if (tpl == null) tpl = "";
+				Velocity.evaluate(vctx, w, "section~" + id, tpl);
 			} catch (Exception ex) {
 				logger.error(ex.getMessage(), ex);
 				evaluateResource(w, vctx, config.getTemplatePath() + config.getErrorFile());

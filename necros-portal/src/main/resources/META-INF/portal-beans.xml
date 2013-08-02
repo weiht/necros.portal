@@ -78,7 +78,6 @@
 	</bean>
 	
 	<bean id="p.entryServiceFactory" class="org.necros.portal.conf.h4.EntryServiceFactoryH4">
-		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
 	</bean>
 	
 	<bean id="p.pageConfig" class="org.necros.portal.web.VelocityPageConfig">
