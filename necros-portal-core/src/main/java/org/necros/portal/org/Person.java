@@ -26,6 +26,8 @@ public class Person implements Serializable {
 	private String loginPassword;
 	@Column(name="org_id", length=200)
 	private String orgId;
+	@Column(name="org_path", length=2000)
+	private String orgPath;
 	@Embedded
 	private PersonInfo info = new PersonInfo();
 	@Column(name="display_order", nullable=false)
@@ -87,5 +89,13 @@ public class Person implements Serializable {
 
 	public void setOrgId(String orgId) {
 		this.orgId = orgId;
+	}
+
+	public String getOrgPath() {
+		return orgPath;
+	}
+
+	public void setOrgPath(String orgPath) {
+		this.orgPath = orgPath;
 	}
 }

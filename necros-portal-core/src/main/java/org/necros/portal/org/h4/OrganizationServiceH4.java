@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.necros.portal.data.BasicObjectService;
 import org.necros.portal.data.IdGenerator;
@@ -95,6 +96,15 @@ public class OrganizationServiceH4 implements OrganizationService {
 	@SuppressWarnings("unchecked")
 	public List<Organization> children(String id) {
 		return createCriteria().add(Restrictions.eq("parentId", id))
+				.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Organization> decendents(String rootId) {
+		Organization o = get(rootId);
+		if (o == null) return null;
+		return createCriteria()
+				.add(Restrictions.like("path", o.getPath() + Organization.SPLITTER, MatchMode.START))
 				.list();
 	}
 

@@ -23,7 +23,7 @@ import org.necros.portal.util.SessionFactoryHelper;
  *
  */
 public class PersonServiceH4 implements PersonService {
-	private static final Class<?> clazz = Person.class;
+	protected static final Class<?> clazz = Person.class;
 	
 	protected SessionFactoryHelper sessionFactoryHelper;
 	protected BasicObjectService basicObjectService;

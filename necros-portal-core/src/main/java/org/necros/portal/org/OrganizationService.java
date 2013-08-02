@@ -19,4 +19,5 @@ public interface OrganizationService {
 	public abstract List<Organization> root();
 	public abstract List<Organization> children(String id);
 	public abstract List<Organization> path(String id);
+	public abstract List<Organization> decendents(String rootId);
 }
