@@ -16,9 +16,14 @@
 		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
 	</bean>
 	
+	<bean name="d.basicObjectService" class="org.necros.portal.data.h4.BasicObjectServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+	</bean>
+	
 	<bean parent="p.pageServiceBeansInjecter">
 		<property name="serviceBeans"><map>
 			<entry key="d.dao" value-ref="d.dao"></entry>
+			<entry key="d.basicObjectService" value-ref="d.basicObjectService"></entry>
 		</map></property>
 	</bean>
 	
