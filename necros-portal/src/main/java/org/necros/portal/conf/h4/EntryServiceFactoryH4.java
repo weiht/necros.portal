@@ -18,7 +18,6 @@ import org.springframework.context.ApplicationContextAware;
  *
  */
 public class EntryServiceFactoryH4 implements EntryServiceFactory, ApplicationContextAware {
-	private SessionFactoryHelper sessionFactoryHelper;
 	private Map<String, EntryService> storage = new HashMap<String, EntryService>();
 	private ApplicationContext context;
 	
@@ -40,10 +39,6 @@ public class EntryServiceFactoryH4 implements EntryServiceFactory, ApplicationCo
 		svc.setCategoryId(categoryId);
 		storage.put(categoryId, svc);
 		return svc;
-	}
-
-	public void setSessionFactoryHelper(SessionFactoryHelper sessionFactoryHelper) {
-		this.sessionFactoryHelper = sessionFactoryHelper;
 	}
 
 	@Override
