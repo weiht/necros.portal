@@ -42,6 +42,7 @@ public class CategoryServiceH4 implements CategoryService {
 	public DictCategory remove(String key) {
 		DictCategory p = get(key);
 		sessionFactoryHelper.getSession().delete(p);
+		//TODO Remove entries also.
 		return p;
 	}
 
