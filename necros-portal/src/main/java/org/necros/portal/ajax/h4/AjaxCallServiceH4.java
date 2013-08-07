@@ -14,7 +14,10 @@ import javax.xml.bind.JAXB;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.necros.pagination.PageQueryResult;
+import org.necros.pagination.Pager;
 import org.necros.portal.ajax.AjaxCall;
 import org.necros.portal.ajax.AjaxCallService;
 import org.necros.portal.ajax.xsd.AjaxCallType;
@@ -181,6 +184,55 @@ public class AjaxCallServiceH4 implements AjaxCallService {
 				}
 			}
 		}
+	}
+	
+	private Criteria createCriteria() {
+		return sessionFactoryHelper.createCriteria(AjaxCall.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AjaxCall> all() {
+		return createCriteria()
+				.list();
+	}
+
+	@Override
+	public int countAll() {
+		return sessionFactoryHelper.count(createCriteria());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public PageQueryResult<AjaxCall> pageAll(Pager pager) {
+		pager.setRecordCount(countAll());
+		return sessionFactoryHelper.pageResult(createCriteria(), pager);
+	}
+	
+	private Criteria filterCriteria(String filterText) {
+		return createCriteria()
+				.add(Restrictions.or(
+						Restrictions.like("id", filterText, MatchMode.ANYWHERE),
+						Restrictions.like("displayName", filterText, MatchMode.ANYWHERE)
+						));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AjaxCall> filter(String filterText) {
+		return filterCriteria(filterText).list();
+	}
+
+	@Override
+	public int countFiltered(String filterText) {
+		return sessionFactoryHelper.count(filterCriteria(filterText));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public PageQueryResult<AjaxCall> pageFiltered(Pager pager, String filterText) {
+		pager.setRecordCount(countFiltered(filterText));
+		return sessionFactoryHelper.pageResult(filterCriteria(filterText), pager);
 	}
 
 	public ZipExporter getZipExporter() {
