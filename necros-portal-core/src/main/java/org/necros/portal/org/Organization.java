@@ -20,9 +20,9 @@ import javax.persistence.Table;
 public class Organization implements Serializable {
 	public static final String SPLITTER = "/";
 	
-	@Id @Column(name="org_id", length=200)
+	@Id @Column(name="org_id", length=64)
 	private String id;
-	@Column(name="parent_id", length=200)
+	@Column(name="parent_id", length=64)
 	private String parentId;
 	@Column(name="org_path", length=2000, nullable=false)
 	private String path;

@@ -48,6 +48,12 @@ public class OrganizationServiceH4 implements OrganizationService {
 				editor == null ? null : editor.getId(),
 				editor == null ? null : editor.getInfo().getName());
 		org.setId(id);
+		generatePath(org);
+		sessionFactoryHelper.getSession().save(org);
+		return org;
+	}
+
+	private void generatePath(Organization org) {
 		String pid = org.getParentId();
 		Organization porg = get(pid);
 		if (porg == null) {
@@ -57,8 +63,6 @@ public class OrganizationServiceH4 implements OrganizationService {
 			org.setPath(porg.getPath() + Organization.SPLITTER + org.getName());
 			org.setLevel(porg.getLevel() + 1);
 		}
-		sessionFactoryHelper.getSession().save(org);
-		return org;
 	}
 
 	public Organization update(Organization org, Person editor) {
@@ -68,6 +72,7 @@ public class OrganizationServiceH4 implements OrganizationService {
 				editor == null ? null : editor.getId(),
 				editor == null ? null : editor.getInfo().getName());
 		orig.setName(org.getName());
+		generatePath(orig);
 		orig.setAltName(org.getAltName());
 		orig.setContact(org.getContact());
 		orig.setDescription(org.getDescription());
