@@ -1,14 +1,31 @@
-#set ($fragments = $services.p.fragmentService.fragmentsOwnedBy(''))
+#set ($filterText = $request.getParameter('q'))
+#set ($pager = $services.p.pageHelper.parseRequest($request))
+#set ($pager.pageSize = 10)
+#if ($filterText)
+	#set ($qr = $services.p.fragmentService.pageFiltered($pager, $filterText))
+#else
+	#set ($qr = $services.p.fragmentService.pageAll($pager))
+#end
+#set ($pager = $qr.pager)
+#set ($fragments = $qr.result)
 <link rel="stylesheet" href="../res/css/jquery.fileupload-ui.css"/>
 <div class="container">
 	<div class="row">
-	<div class="page-header span12">
+	<div class="page-header span10">
 		<div class="span4">远程片段</div>
 		<div class="btn-group span4">
 			<a href="edit-fragment" class="btn btn-primary"><i class="icon-plus icon-white"></i>创建片段</a>
 			<a href="action/export-fragments" class="btn btn-success" title="导出数据库中的所有远程片段。"><i class="icon-download icon-white"></i>导出</a>
 			<a href="#dlg-import" data-toggle="modal" class="btn btn-success" title="导入一个zip/jar格式文件中的所有远程片段，将会覆盖同名片段。"><i class="icon-upload icon-white"></i>导入</a>
 		</div>
+	</div>
+	<div class="span2">
+		<form class="form form-search">
+			<div class="input-append">
+			    <input type="text" class="search-query" name="q" value="$!filterText"/>
+			    <button class="btn btn-query">过滤</button>
+			</div>
+		</form>
 	</div>
 	</div>
 	<div class="row">
@@ -36,6 +53,37 @@
 			</tbody>
 		</table>
 	</div>
+#if ($pager.pageCount > 1)
+	<div class="row">
+		<div class="pagination pagination-centered">
+			<ul>
+#if ($pager.pageNum > 1)
+#set ($pn = $pager.pageNum - 1)
+				<li><a href="$services.p.pageHelper.constructPageUrl($request, 1)">&laquo;</a></li>
+				<li><a href="$services.p.pageHelper.constructPageUrl($request, $pn)">&lsaquo;</a></li>
+#else
+				<li class="disabled"><a>&laquo;</a></li>
+				<li class="disabled"><a>&lsaquo;</a></li>
+#end
+#foreach ($pn in [$pager.listFirst..$pager.listLast])
+  #if ($pn == $pager.pageNum)
+				<li class="active"><a href="$services.p.pageHelper.constructPageUrl($request, $pn)">$pn</a></li>
+  #else
+				<li><a href="$services.p.pageHelper.constructPageUrl($request, $pn)">$pn</a></li>
+  #end
+#end
+#if ($pager.pageNum < $pager.pageCount)
+#set ($pn = $pager.pageNum + 1)
+				<li><a href="$services.p.pageHelper.constructPageUrl($request, $pn)">&rsaquo;</a></li>
+				<li><a href="$services.p.pageHelper.constructPageUrl($request, $pager.pageCount)">&raquo;</a></li>
+#else
+				<li class="disabled"><a>&rsaquo;</a></li>
+				<li class="disabled"><a>&raquo;</a></li>
+#end
+			</ul>
+		</div>
+	</div>
+#end
 </div>
 <div id="dlg-import" class="modal hide fade">
     <div class="modal-header">
