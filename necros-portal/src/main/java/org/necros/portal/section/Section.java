@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class Section implements Serializable {
 	private static final long serialVersionUID = -7568751035115556298L;
 
-	@Id @Column(name="section_id", length=200)
+	@Id @Column(name="section_id", length=2000)
 	private String id;
 	@Column(name="owner_id", length=200)
 	private String ownerId;

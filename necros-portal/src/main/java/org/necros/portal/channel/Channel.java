@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Channel implements Serializable {
 	private static final long serialVersionUID = -3581831870658374484L;
 
-	@Id @Column(name="channel_id", length=200)
+	@Id @Column(name="channel_id", length=2000)
 	private String id;
 	@Column(name="owner_id", length=200)
 	private String ownerId;

@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class Fragment implements Serializable {
 	private static final long serialVersionUID = 6177984132876654977L;
 
-	@Id @Column(name="fragment_id", length=200)
+	@Id @Column(name="fragment_id", length=2000)
 	private String id;
 	@Column(name="owner_id", length=200)
 	private String ownerId;
