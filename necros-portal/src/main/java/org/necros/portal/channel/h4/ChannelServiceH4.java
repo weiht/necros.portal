@@ -13,7 +13,10 @@ import java.util.zip.ZipOutputStream;
 import javax.xml.bind.JAXB;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.necros.pagination.PageQueryResult;
+import org.necros.pagination.Pager;
 import org.necros.portal.channel.Channel;
 import org.necros.portal.channel.ChannelService;
 import org.necros.portal.channel.xsd.ChannelType;
@@ -45,13 +48,17 @@ public class ChannelServiceH4 implements ChannelService {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Finding channels owned by: [" + ownerId + "]");
 		}
-		Criteria c = sessionFactoryHelper.createCriteria(Channel.class);
+		Criteria c = createCriteria();
 		if (StringUtils.hasText(ownerId)) {
 			c.add(Restrictions.eq("ownerId", ownerId));
 		} else {
 			c.add(Restrictions.eqOrIsNull("ownerId", ""));
 		}
 		return c.list();
+	}
+
+	private Criteria createCriteria() {
+		return sessionFactoryHelper.createCriteria(Channel.class);
 	}
 
 	@Override
@@ -190,6 +197,50 @@ public class ChannelServiceH4 implements ChannelService {
 			buff.append(l);
 		}
 		return buff;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Channel> all() {
+		return createCriteria()
+				.list();
+	}
+
+	@Override
+	public int countAll() {
+		return sessionFactoryHelper.count(createCriteria());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public PageQueryResult<Channel> pageAll(Pager pager) {
+		pager.setRecordCount(countAll());
+		return sessionFactoryHelper.pageResult(createCriteria(), pager);
+	}
+	
+	private Criteria filterCriteria(String filterText) {
+		return createCriteria().add(Restrictions.or(
+				Restrictions.like("id", filterText, MatchMode.ANYWHERE),
+				Restrictions.like("displayName", filterText, MatchMode.ANYWHERE)
+				));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Channel> filter(String filterText) {
+		return filterCriteria(filterText).list();
+	}
+
+	@Override
+	public int countFiltered(String filterText) {
+		return sessionFactoryHelper.count(filterCriteria(filterText));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public PageQueryResult<Channel> pageFiltered(Pager pager, String filterText) {
+		pager.setRecordCount(countFiltered(filterText));
+		return sessionFactoryHelper.pageResult(filterCriteria(filterText), pager);
 	}
 
 	public String getChannelFileExtension() {
