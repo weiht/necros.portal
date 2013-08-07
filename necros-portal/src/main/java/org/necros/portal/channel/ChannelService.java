@@ -11,13 +11,13 @@ public interface ChannelService {
 	Channel findById(String id);
 	void save(Channel channel);
 	void saveTemplate(Channel channel);
+	void remove(String id);
 	List<Channel> all();
 	int countAll();
 	PageQueryResult<Channel> pageAll(Pager pager);
 	List<Channel> filter(String filterText);
 	int countFiltered(String filterText);
 	PageQueryResult<Channel> pageFiltered(Pager pager, String filterText);
-	void remove(String id);
 	String exportAll() throws IOException;
 	void importAll(String fn) throws IOException;
 }

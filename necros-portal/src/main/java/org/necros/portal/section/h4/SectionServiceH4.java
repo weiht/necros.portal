@@ -13,7 +13,10 @@ import java.util.zip.ZipOutputStream;
 import javax.xml.bind.JAXB;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.necros.pagination.PageQueryResult;
+import org.necros.pagination.Pager;
 import org.necros.portal.section.Section;
 import org.necros.portal.section.SectionService;
 import org.necros.portal.section.xsd.ObjectFactory;
@@ -31,8 +34,6 @@ import org.springframework.util.StringUtils;
 
 public class SectionServiceH4 implements SectionService {
 	private static final String SECTIONS_XML_NAME = "sections.xml";
-	private static final String HQL_FIND_OWNED_BY = "from Section where ownerId = ?";
-	private static final String HQL_FIND_ORPHANS = "from Section where ifnull(ownerId, '') = ''";
 	private static final Logger logger = LoggerFactory.getLogger(SectionServiceH4.class);
 	
 	private ZipExporter zipExporter;
@@ -180,6 +181,55 @@ public class SectionServiceH4 implements SectionService {
 			buff.append(l);
 		}
 		return buff;
+	}
+	
+	private Criteria createCriteria() {
+		return sessionFactoryHelper.createCriteria(Section.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Section> all() {
+		return createCriteria()
+				.list();
+	}
+
+	@Override
+	public int countAll() {
+		return sessionFactoryHelper.count(createCriteria());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public PageQueryResult<Section> pageAll(Pager pager) {
+		pager.setRecordCount(countAll());
+		return sessionFactoryHelper.pageResult(createCriteria(), pager);
+	}
+	
+	private Criteria filterCriteria(String filterText) {
+		return createCriteria()
+				.add(Restrictions.or(
+						Restrictions.like("id", filterText, MatchMode.ANYWHERE),
+						Restrictions.like("displayName", filterText, MatchMode.ANYWHERE)
+						));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Section> filter(String filterText) {
+		return filterCriteria(filterText).list();
+	}
+
+	@Override
+	public int countFiltered(String filterText) {
+		return sessionFactoryHelper.count(filterCriteria(filterText));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public PageQueryResult<Section> pageFiltered(Pager pager, String filterText) {
+		pager.setRecordCount(countFiltered(filterText));
+		return sessionFactoryHelper.pageResult(filterCriteria(filterText), pager);
 	}
 
 	public ZipExporter getZipExporter() {
