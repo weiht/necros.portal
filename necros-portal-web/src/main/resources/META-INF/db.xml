@@ -66,6 +66,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<prop key="update*">PROPAGATION_REQUIRED</prop>
 				<prop key="delete*">PROPAGATION_REQUIRED</prop>
 				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="import*">PROPAGATION_REQUIRED</prop>
 			</props>
 		</property>
 	</bean>

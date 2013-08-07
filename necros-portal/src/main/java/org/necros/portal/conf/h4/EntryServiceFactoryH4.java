@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.necros.portal.conf.EntryService;
 import org.necros.portal.conf.EntryServiceFactory;
-import org.necros.portal.util.SessionFactoryHelper;
 
 import org.springframework.context.ApplicationContext;  
 import org.springframework.context.ApplicationContextAware;  

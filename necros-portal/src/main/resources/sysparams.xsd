@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://portal.necros.org/sysparams" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:spns="http://portal.necros.org/sysparams">
+
+    <element name="sysParams" type="spns:SysParamsType"></element>
+
+    <complexType name="SysParamsType">
+    	<sequence>
+    		<element name="sysParam" minOccurs="0" maxOccurs="unbounded" type="spns:SysParamType">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="SysParamType">
+    	<attribute name="key" type="string"></attribute>
+    	<attribute name="value" type="string"></attribute>
+    	<attribute name="description" type="string"></attribute>
+    </complexType>
+</schema>

@@ -3,6 +3,7 @@
  */
 package org.necros.portal.conf;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.necros.pagination.PageQueryResult;
@@ -24,4 +25,6 @@ public interface SysParamService {
 	public abstract List<SysParam> filter(String filter);
 	public abstract int countFiltered(String filter);
 	public abstract PageQueryResult<SysParam> pageFiltered(Pager p, String filter);
+	public abstract String exportAll() throws IOException;
+	public abstract void importAll(String fn) throws IOException;
 }

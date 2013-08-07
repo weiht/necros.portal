@@ -3,12 +3,24 @@
  */
 package org.necros.portal.conf;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.bind.JAXB;
+
+import org.necros.portal.conf.sysparamxsd.ObjectFactory;
+import org.necros.portal.conf.sysparamxsd.SysParamType;
+import org.necros.portal.conf.sysparamxsd.SysParamsType;
+import org.necros.portal.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 
 /**
  * @author weiht
@@ -59,5 +71,43 @@ public abstract class AbstractSysParamService implements SysParamService {
 			logger.debug("Param formatted to: [{}].", value);
 		}
 		return value;
+	}
+	
+	public String exportAll() throws IOException {
+		ObjectFactory of = new ObjectFactory();
+		SysParamsType spst = of.createSysParamsType();
+		List<SysParamType> sptlst = spst.getSysParam();
+		for (SysParam p: all()) {
+			SysParamType pt = new SysParamType();
+			pt.setKey(p.getKey());
+			pt.setValue(p.getValue());
+			pt.setDescription(p.getDescription());
+			sptlst.add(pt);
+		}
+		File f = FileUtils.createTempFile();
+		JAXB.marshal(of.createSysParams(spst), f);
+		return f.getAbsolutePath();
+	}
+	
+	public void importAll(String fn) throws IOException {
+		SysParamsType spst = JAXB.unmarshal(new File(fn), SysParamsType.class);
+		for (SysParamType pt: spst.getSysParam()) {
+			String k = pt.getKey();
+			if (StringUtils.hasText(k)) {
+				SysParam p = get(k);
+				if (p == null) {
+					p = new SysParam();
+					p.setKey(k);
+					p.setValue(pt.getValue());
+					p.setDescription(pt.getDescription());
+					create(p);
+				} else {
+					p.setValue(pt.getValue());
+					p.setDescription(pt.getDescription());
+					update(p);
+				}
+			}
+		}
+		
 	}
 }

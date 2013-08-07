@@ -3,6 +3,9 @@
  */
 package org.necros.portal.web;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.necros.portal.conf.CategoryService;
 import org.necros.portal.conf.DictCategory;
 import org.necros.portal.conf.DictEntry;
@@ -10,6 +13,7 @@ import org.necros.portal.conf.EntryService;
 import org.necros.portal.conf.SysParam;
 import org.necros.portal.conf.SysParamService;
 import org.necros.portal.conf.h4.EntryServiceFactoryH4;
+import org.necros.portal.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,8 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author weiht
@@ -64,6 +71,30 @@ public class ConfigController {
 		} catch (Exception ex) {
 			return PageController.translateExceptionMessage(ex);
 		}
+	}
+	
+	@RequestMapping(value="/html/action/export-sysparams")
+	public void exportAllChannels(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		String fn = sysParamService.exportAll();
+		String downloadName = "sysparams.xml";
+		if (logger.isDebugEnabled()) {
+			logger.debug("Downloading exported sysparams as: " + fn);
+		}
+		PageController.downloadFile(resp, fn, downloadName);
+	}
+	
+	@RequestMapping(value="/html/action/import-sysparams", method=RequestMethod.POST)
+	public @ResponseBody String importChannels(@RequestParam("importFile") MultipartFile file)
+			throws IOException {
+		logger.debug("SysParams file uploaded: {}", file.getOriginalFilename());
+		InputStream ins = file.getInputStream();
+		try {
+			sysParamService.importAll(FileUtils.toTempFile(ins));
+		} finally {
+			ins.close();
+		}
+		return PageController.MSG_JSON_OK;
 	}
 	
 	@RequestMapping(value="/html/action/save-category", method=RequestMethod.POST)

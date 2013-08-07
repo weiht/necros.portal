@@ -183,7 +183,7 @@ public class PageController {
 		downloadFile(resp, fn, downloadName);
 	}
 
-	private void downloadFile(HttpServletResponse resp, String fn,
+	static void downloadFile(HttpServletResponse resp, String fn,
 			String downloadName) throws FileNotFoundException, IOException {
 		File f = new File(fn);
 		resp.setContentType(JAR_CONTENT_TYPE);

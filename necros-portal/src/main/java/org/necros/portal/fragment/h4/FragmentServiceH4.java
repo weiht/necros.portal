@@ -177,9 +177,9 @@ public class FragmentServiceH4 implements FragmentService {
 				} else {
 					if (StringUtils.hasText(n)) {
 						frag.setDisplayName(n);
-						frag.setResultType(t.getResultType());
-						save(frag);
 					}
+					frag.setResultType(t.getResultType());
+					save(frag);
 				}
 			}
 		}

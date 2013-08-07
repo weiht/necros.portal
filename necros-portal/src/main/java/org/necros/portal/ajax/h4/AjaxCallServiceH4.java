@@ -13,7 +13,6 @@ import java.util.zip.ZipOutputStream;
 import javax.xml.bind.JAXB;
 
 import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.necros.pagination.PageQueryResult;
@@ -178,9 +177,9 @@ public class AjaxCallServiceH4 implements AjaxCallService {
 				} else {
 					if (StringUtils.hasText(n)) {
 						ch.setDisplayName(n);
-						ch.setResultType(t.getResultType());
-						save(ch);
 					}
+					ch.setResultType(t.getResultType());
+					save(ch);
 				}
 			}
 		}
