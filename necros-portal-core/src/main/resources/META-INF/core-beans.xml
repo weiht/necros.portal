@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	">
+	
+	<bean name="passwordEncoder" class="org.necros.portal.org.SaltMd5PasswordEncoder"/>
+	<bean name="passwordGenerator" class="org.necros.portal.org.CharRangePasswordGenerator"/>
+	
+	<bean name="c.menuService" class="org.necros.portal.menu.h4.MenuServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="idGenerator" ref="d.uuidGenerator"></property>
+		<property name="basicObjectService" ref="d.basicObjectService"></property>
+	</bean>
+	
+	<bean name="c.organizationService" class="org.necros.portal.org.h4.OrganizationServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="idGenerator" ref="d.uuidGenerator"></property>
+		<property name="basicObjectService" ref="d.basicObjectService"></property>
+	</bean>
+	
+	<bean name="c.personService" class="org.necros.portal.org.h4.PersonServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="idGenerator" ref="d.uuidGenerator"></property>
+		<property name="basicObjectService" ref="d.basicObjectService"></property>
+		<property name="passwordEncoder" ref="passwordEncoder"></property>
+		<property name="passwordGenerator" ref="passwordGenerator"></property>
+	</bean>
+	
+	<bean parent="p.pageServiceBeansInjecter">
+		<property name="serviceBeans"><map>
+			<entry key="c.menuService" value-ref="c.menuService"></entry>
+			<entry key="c.organizationService" value-ref="c.organizationService"></entry>
+			<entry key="c.personService" value-ref="c.personService"></entry>
+		</map></property>
+	</bean>
+	
+</beans>
