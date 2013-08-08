@@ -36,8 +36,8 @@ function remove(id) {
 	}
 }
 
-function importSections() {
-	var d = $('#importSysParamsFile').data('files');
+function importCategories() {
+	var d = $('#importFile').data('files');
 	if (!d || !d.files || !d.files.length) {
 		alert('未选中要导入的文件。');
 	} else {
@@ -46,10 +46,10 @@ function importSections() {
 }
 
 $(function() {
-	if ($('#importSysParamsFile').size() > 0) {
-		$('#importSysParamsFile').fileupload({
+	if ($('#importFile').size() > 0) {
+		$('#importFile').fileupload({
 			'add': function(e, d) {
-				$('#importSysParamsFile').data('files', d);
+				$('#importFile').data('files', d);
 				var f = d.files[0];
 				$('#filelist').html(f && f.name || '');
 			},
@@ -59,7 +59,7 @@ $(function() {
 			'done': function(e, d) {
 				if (d.result && !d.result.error) {
 					alert('导入完成。');
-					$('#importSysParamsFile').removeData('files');
+					$('#importFile').removeData('files');
 					$('#filelist').empty();
 					$('#dlg-import').modal('hide');
 				} else {

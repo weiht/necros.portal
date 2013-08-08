@@ -71,6 +71,7 @@
 	
 	<bean id="p.categoryService" class="org.necros.portal.conf.h4.CategoryServiceH4">
 		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="entryServiceFactory" ref="p.entryServiceFactory"></property>
 	</bean>
 
 	<bean id="p.entryService" class="org.necros.portal.conf.h4.EntryServiceH4" scope="prototype">

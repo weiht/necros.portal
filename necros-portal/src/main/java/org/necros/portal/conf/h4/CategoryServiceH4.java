@@ -21,6 +21,7 @@ import org.necros.portal.conf.EntryService;
 import org.necros.portal.conf.EntryServiceFactory;
 import org.necros.portal.conf.dictxsd.CategoryType;
 import org.necros.portal.conf.dictxsd.DictionaryType;
+import org.necros.portal.conf.dictxsd.EntriesType;
 import org.necros.portal.conf.dictxsd.EntryType;
 import org.necros.portal.conf.dictxsd.ObjectFactory;
 import org.necros.portal.util.FileUtils;
@@ -112,6 +113,7 @@ public class CategoryServiceH4 implements CategoryService {
 	 * @param ct
 	 */
 	private void exportEntries(CategoryType ct) {
+		ct.setEntries(new EntriesType());
 		List<EntryType> ets = ct.getEntries().getEntry();
 		for (DictEntry e: entryServiceFactory.get(ct.getName()).all()) {
 			EntryType et = new EntryType();

@@ -74,7 +74,7 @@ public class ConfigController {
 	}
 	
 	@RequestMapping(value="/html/action/export-sysparams")
-	public void exportAllChannels(HttpServletRequest req,
+	public void exportAllSysParams(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 		String fn = sysParamService.exportAll();
 		String downloadName = "sysparams.xml";
@@ -85,7 +85,7 @@ public class ConfigController {
 	}
 	
 	@RequestMapping(value="/html/action/import-sysparams", method=RequestMethod.POST)
-	public @ResponseBody String importChannels(@RequestParam("importFile") MultipartFile file)
+	public @ResponseBody String importSysParams(@RequestParam("importFile") MultipartFile file)
 			throws IOException {
 		logger.debug("SysParams file uploaded: {}", file.getOriginalFilename());
 		InputStream ins = file.getInputStream();
@@ -160,5 +160,29 @@ public class ConfigController {
 		} catch (Exception ex) {
 			return PageController.translateExceptionMessage(ex);
 		}
+	}
+	
+	@RequestMapping(value="/html/action/export-dictionary")
+	public void exportDictionary(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		String fn = categoryService.exportAll();
+		String downloadName = "dictionary.xml";
+		if (logger.isDebugEnabled()) {
+			logger.debug("Downloading exported dictionary as: " + fn);
+		}
+		PageController.downloadFile(resp, fn, downloadName);
+	}
+	
+	@RequestMapping(value="/html/action/import-categories", method=RequestMethod.POST)
+	public @ResponseBody String importCategories(@RequestParam("importFile") MultipartFile file)
+			throws IOException {
+		logger.debug("Dictionary file uploaded: {}", file.getOriginalFilename());
+		InputStream ins = file.getInputStream();
+		try {
+			categoryService.importAll(FileUtils.toTempFile(ins));
+		} finally {
+			ins.close();
+		}
+		return PageController.MSG_JSON_OK;
 	}
 }
