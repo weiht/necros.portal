@@ -73,7 +73,6 @@ $(function() {
 				alert('导入失败。');
 			},
 			'done': function(e, d) {
-				console.log(d);
 				if (d.result && !d.result.error) {
 					alert('导入完成。');
 					$('#importChannelsFile').removeData('files');
