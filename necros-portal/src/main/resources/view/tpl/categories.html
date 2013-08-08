@@ -10,23 +10,21 @@
 #set ($cats = $qr.result)
 <link rel="stylesheet" href="../res/css/jquery.fileupload-ui.css"/>
 <div class="container">
-	<div class="row">
-	<div class="page-header span10">
-		<div class="span4">字典</div>
+	<div class="row page-header">
+		<div class="span2">字典</div>
 		<div class="btn-group span4">
 			<a href="edit-category" class="btn btn-primary"><i class="icon-plus icon-white"></i>创建字典</a>
 			<a href="action/export-dictionary" class="btn btn-success" title="导出数据库中的所有字典。"><i class="icon-download icon-white"></i>导出</a>
 			<a href="#dlg-import" data-toggle="modal" class="btn btn-success" title="导入一个xml格式文件中的所有字典，将会覆盖同名字典。"><i class="icon-upload icon-white"></i>导入</a>
 		</div>
-	</div>
-	<div class="span2">
-		<form class="form form-search">
-			<div class="input-append">
-			    <input type="text" class="search-query" name="q" value="$!filterText"/>
-			    <button class="btn btn-query">过滤</button>
-			</div>
-		</form>
-	</div>
+		<div class="span3 offset2">
+			<form class="form form-search">
+				<div class="input-append">
+				    <input type="text" class="search-query span2" name="q" value="$!filterText"/>
+				    <button class="btn btn-query">过滤</button>
+				</div>
+			</form>
+		</div>
 	</div>
 	<div class="row">
 		<table id="serverlist" class="table table-bordered table-striped table-hover">
