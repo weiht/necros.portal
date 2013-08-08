@@ -19,6 +19,7 @@ public interface MenuService {
 	
 	public abstract List<MenuItem> root();
 	public abstract List<MenuItem> children(String parentId);
+	public abstract List<MenuItem> display(String id);
 	
 	public abstract List<MenuItem> allRoot();
 	public abstract List<MenuItem> allChildren(String parentId);

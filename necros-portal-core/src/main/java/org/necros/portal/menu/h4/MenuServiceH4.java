@@ -106,6 +106,22 @@ public class MenuServiceH4 implements MenuService {
 				.list();
 	}
 
+	private void fetchChildren(List<MenuItem> items) {
+		for (MenuItem itm: items) {
+			List<MenuItem> children = children(itm.getId());
+			if (children != null && !children.isEmpty()) {
+				itm.setChildren(children);
+				fetchChildren(children);
+			}
+		}
+	}
+	
+	public List<MenuItem> display(String id) {
+		List<MenuItem> root = children(id);
+		fetchChildren(root);
+		return root;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<MenuItem> allRoot() {
 		return rootCriteria()

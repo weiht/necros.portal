@@ -4,11 +4,13 @@
 package org.necros.portal.menu;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author weiht
@@ -38,6 +40,8 @@ public class MenuItem implements Serializable {
 	private String channelId;
 	@Column(name="destination_url", length=2000)
 	private String url;
+	@Transient
+	private List<MenuItem> children;
 
 	public String getId() {
 		return id;
@@ -109,5 +113,13 @@ public class MenuItem implements Serializable {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public List<MenuItem> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<MenuItem> children) {
+		this.children = children;
 	}
 }
