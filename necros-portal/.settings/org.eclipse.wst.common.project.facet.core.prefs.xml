@@ -1,7 +1,7 @@
 <root>
   <facet id="jpt.jaxb">
     <node name="classgen">
-      <attribute name="package" value="org.necros.portal.conf.xsd"/>
+      <attribute name="package" value="org.necros.portal.conf.dictxsd"/>
     </node>
   </facet>
 </root>

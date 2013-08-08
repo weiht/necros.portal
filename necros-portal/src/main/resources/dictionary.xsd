@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://portal.necros.org/dictionary" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:dns="http://portal.necros.org/dictionary">
+
+    <element name="Dictionary" type="dns:DictionaryType"></element>
+
+    <complexType name="DictionaryType">
+    	<sequence>
+    		<element name="category" type="dns:CategoryType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="CategoryType">
+    	<sequence>
+    		<element name="entries" type="dns:EntriesType"></element>
+    	</sequence>
+    	<attribute name="name" type="string"></attribute>
+    	<attribute name="displayName" type="string"></attribute>
+    	<attribute name="description" type="string"></attribute>
+    </complexType>
+
+    <complexType name="EntriesType">
+    	<sequence>
+    		<element name="entry" type="dns:EntryType"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="EntryType">
+    	<attribute name="categoryId" type="string"></attribute>
+    	<attribute name="key" type="string"></attribute>
+    	<attribute name="displayText" type="string"></attribute>
+    	<attribute name="description" type="string"></attribute>
+    	<attribute name="displayOrder" type="string"></attribute>
+    </complexType>
+</schema>
