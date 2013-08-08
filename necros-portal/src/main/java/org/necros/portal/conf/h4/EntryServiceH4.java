@@ -19,6 +19,7 @@ import org.necros.portal.util.SessionFactoryHelper;
  *
  */
 public class EntryServiceH4 implements EntryService {
+	private static final String HQL_REMOVE_ALL_ENTRIES = "delete from DictEntry e where e.categoryId = ?";
 	private SessionFactoryHelper sessionFactoryHelper;
 	private String categoryId;
 	
@@ -48,6 +49,12 @@ public class EntryServiceH4 implements EntryService {
 		DictEntry p = get(key);
 		sessionFactoryHelper.getSession().delete(p);
 		return p;
+	}
+	
+	public void removeAll() {
+		sessionFactoryHelper.getSession().createQuery(HQL_REMOVE_ALL_ENTRIES)
+			.setString(0, categoryId)
+			.executeUpdate();
 	}
 
 	@SuppressWarnings("unchecked")

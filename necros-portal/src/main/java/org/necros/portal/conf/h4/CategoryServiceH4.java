@@ -12,6 +12,7 @@ import org.necros.pagination.PageQueryResult;
 import org.necros.pagination.Pager;
 import org.necros.portal.conf.CategoryService;
 import org.necros.portal.conf.DictCategory;
+import org.necros.portal.conf.EntryServiceFactory;
 import org.necros.portal.util.SessionFactoryHelper;
 
 /**
@@ -20,6 +21,7 @@ import org.necros.portal.util.SessionFactoryHelper;
  */
 public class CategoryServiceH4 implements CategoryService {
 	private SessionFactoryHelper sessionFactoryHelper;
+	private EntryServiceFactory entryServiceFactory;
 	
 	@Override
 	public DictCategory get(String key) {
@@ -42,7 +44,8 @@ public class CategoryServiceH4 implements CategoryService {
 	public DictCategory remove(String key) {
 		DictCategory p = get(key);
 		sessionFactoryHelper.getSession().delete(p);
-		//TODO Remove entries also.
+		entryServiceFactory.get(p.getName()).removeAll();
+		entryServiceFactory.remove(key);
 		return p;
 	}
 
@@ -95,5 +98,9 @@ public class CategoryServiceH4 implements CategoryService {
 
 	public void setSessionFactoryHelper(SessionFactoryHelper sessionFactoryHelper) {
 		this.sessionFactoryHelper = sessionFactoryHelper;
+	}
+
+	public void setEntryServiceFactory(EntryServiceFactory entryServiceFactory) {
+		this.entryServiceFactory = entryServiceFactory;
 	}
 }

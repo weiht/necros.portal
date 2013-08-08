@@ -18,6 +18,7 @@ public interface EntryService {
 	public abstract DictEntry create(DictEntry p);
 	public abstract DictEntry update(DictEntry p);
 	public abstract DictEntry remove(String key);
+	public abstract void removeAll();
 	public abstract List<DictEntry> all();
 	public abstract int countAll();
 	public abstract PageQueryResult<DictEntry> pageAll(Pager p);

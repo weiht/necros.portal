@@ -28,6 +28,11 @@ public class EntryServiceFactoryH4 implements EntryServiceFactory, ApplicationCo
 		}
 		return svc;
 	}
+	
+	public EntryService remove(String categoryId) {
+		EntryService svc = storage.remove(categoryId);
+		return svc;
+	}
 
 	/**
 	 * @param categoryId
