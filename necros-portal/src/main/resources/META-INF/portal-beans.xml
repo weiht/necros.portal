@@ -69,6 +69,10 @@
 		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
 	</bean>
 	
+	<bean id="p.safeParamService" class="org.necros.portal.conf.SafeParamServiceImpl">
+		<property name="sysParamService" ref="p.sysParamService"></property>
+	</bean>
+	
 	<bean id="p.categoryService" class="org.necros.portal.conf.h4.CategoryServiceH4">
 		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
 		<property name="entryServiceFactory" ref="p.entryServiceFactory"></property>
@@ -120,6 +124,7 @@
 			<entry key="p.ajaxCallService" value-ref="p.ajaxCallService"></entry>
 			<entry key="p.fragmentService" value-ref="p.fragmentService"></entry>
 			<entry key="p.sysParamService" value-ref="p.sysParamService"></entry>
+			<entry key="p.safeParamService" value-ref="p.safeParamService"></entry>
 			<entry key="p.categoryService" value-ref="p.categoryService"></entry>
 			<entry key="p.entryServiceFactory" value-ref="p.entryServiceFactory"></entry>
 			<entry key="p.previewHelper" value-ref="p.previewHelper"></entry>
