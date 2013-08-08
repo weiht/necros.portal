@@ -4,8 +4,6 @@
 package org.necros.portal.conf;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;

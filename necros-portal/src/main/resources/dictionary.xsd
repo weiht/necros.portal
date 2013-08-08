@@ -20,7 +20,7 @@
 
     <complexType name="EntriesType">
     	<sequence>
-    		<element name="entry" type="dns:EntryType"></element>
+    		<element name="entry" type="dns:EntryType" minOccurs="0" maxOccurs="unbounded"></element>
     	</sequence>
     </complexType>
 
@@ -29,6 +29,6 @@
     	<attribute name="key" type="string"></attribute>
     	<attribute name="displayText" type="string"></attribute>
     	<attribute name="description" type="string"></attribute>
-    	<attribute name="displayOrder" type="string"></attribute>
+    	<attribute name="displayOrder" type="int"></attribute>
     </complexType>
 </schema>

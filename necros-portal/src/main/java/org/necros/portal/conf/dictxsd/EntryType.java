@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;attribute name="key" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="displayText" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="description" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="displayOrder" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="displayOrder" type="{http://www.w3.org/2001/XMLSchema}int" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -41,7 +41,7 @@ public class EntryType {
     @XmlAttribute(name = "description")
     protected String description;
     @XmlAttribute(name = "displayOrder")
-    protected String displayOrder;
+    protected Integer displayOrder;
 
     /**
      * Gets the value of the categoryId property.
@@ -144,10 +144,10 @@ public class EntryType {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Integer }
      *     
      */
-    public String getDisplayOrder() {
+    public Integer getDisplayOrder() {
         return displayOrder;
     }
 
@@ -156,10 +156,10 @@ public class EntryType {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Integer }
      *     
      */
-    public void setDisplayOrder(String value) {
+    public void setDisplayOrder(Integer value) {
         this.displayOrder = value;
     }
 

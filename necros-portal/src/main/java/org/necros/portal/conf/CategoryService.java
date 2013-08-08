@@ -3,6 +3,7 @@
  */
 package org.necros.portal.conf;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.necros.pagination.PageQueryResult;
@@ -23,4 +24,6 @@ public interface CategoryService {
 	public abstract List<DictCategory> filter(String filter);
 	public abstract int countFiltered(String filter);
 	public abstract PageQueryResult<DictCategory> pageFiltered(Pager p, String filter);
+	public abstract String exportAll() throws IOException;
+	public abstract void importAll(String fn) throws IOException;
 }
