@@ -76,6 +76,12 @@
 					<value>.py</value>
 				</list></property>
 			</bean>
+			<bean class="org.necros.portal.scripting.ScriptEngine">
+				<property name="name" value="javascript"></property>
+				<property name="extensions"><list>
+					<value>.js</value>
+				</list></property>
+			</bean>
 		</list></property>
 	</bean>
 	

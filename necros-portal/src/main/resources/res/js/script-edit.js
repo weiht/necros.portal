@@ -11,9 +11,11 @@ function save() {
 	}
 	window.templateEditor.save();
 	var data = $('form').serialize();
-	$.post($('form').attr('action') + '?action=' + $('#action').val(), data, function(ret) {
+	var act = $('#action').val();
+	$.post($('form').attr('action') + '?action=' + act, data, function(ret) {
 		if (ret == "OK") {
 			alert('保存成功。');
+			if (act == 'new') location.href = 'scripts';
 		} else {
 			alert(ret);
 		}

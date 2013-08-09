@@ -29,7 +29,7 @@
 				<div class="control-group">
 	                <label class="control-label" for="script_id">名称</label>
 #if ($script)
-	                <div class="controls"><input type="hidden" id="script_id" name="id" value="$script.name"/>
+	                <div class="controls"><input type="hidden" id="script_id" name="name" value="$script.name"/>
 	                <span class="uneditable-input">$script.name</span></div>
 #else
 	                <div class="controls"><input type="text" id="script_id" name="name"/>
@@ -44,8 +44,12 @@
             	<div class="control-group">
             		<label class="control-label">脚本引擎</label>
             		<div class="controls synColor">
+ #if ($script && $script.engine != 'unkown')
+ 						<label>$!script.engine</label>
+ #else
             			<label class="radio inline"><input type="radio" name="engine" value="python" checked="checked">python</label>
             			<label class="radio inline"><input type="radio" name="engine" value="javascript">javascript</label>
+ #end
             		</div>
             	</div>
 				<div class="control-group">
