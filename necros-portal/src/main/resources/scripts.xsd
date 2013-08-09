@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://portal.necros.org/scripts" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:scns="http://portal.necros.org/scripts">
+
+    <element name="scripts" type="scns:ScriptsType"></element>
+
+    <complexType name="ScriptsType">
+    	<sequence>
+    		<element name="script" type="scns:ScriptType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="ScriptType">
+    	<attribute name="name" type="string"></attribute>
+    	<attribute name="displayName" type="string"></attribute>
+    	<attribute name="engine" type="string"></attribute>
+    	<attribute name="description" type="string"></attribute>
+    </complexType>
+</schema>
