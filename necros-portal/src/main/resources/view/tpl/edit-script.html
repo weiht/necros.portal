@@ -70,15 +70,10 @@
 <script type="text/javascript" src="../res/js/script-edit.js"></script>
 <script type="text/javascript">
 $(function() {
-	$('[name="engine"]').val('$!script.engine');
+	var engine = '$!script.engine';
+	$('input[name="engine"][value="' + engine + '"]').attr('checked', 'checked');
 	var templateText = "$!stringEscapeUtils.escapeJavaScript($script.sourceCode)";
 	$('#template').val(templateText);
-	var pythonMode = {
-		'name': 'python'
-	};
-	var javascriptMode = {
-		'name': 'javascript'
-	};
 	function makeTemplateEditor(synMode) {
 		window.templateEditor = CodeMirror.fromTextArea(
 			$('#template').get(0),
@@ -90,10 +85,10 @@ $(function() {
 			}
 		);
 	}
-	makeTemplateEditor(pythonMode);
-	$('input[name="rSynColor"]').on('click', function() {
-		var s = $('input[value="python"]').attr('checked');
-		window.templateEditor.setOption('mode', s ? pythonMode : javascriptMode);
+	makeTemplateEditor(engine || 'python');
+	$('input[name="engine"]').on('click', function() {
+		var s = $('input[name="engine"]:checked').val();
+		window.templateEditor.setOption('mode', s || 'python');
 	});
 });
 </script>
