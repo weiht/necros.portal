@@ -60,9 +60,7 @@ $(function() {
 			'done': function(e, d) {
 				if (d.result && !d.result.error) {
 					alert('导入完成。');
-					$('#importSysParamsFile').removeData('files');
-					$('#filelist').empty();
-					$('#dlg-import').modal('hide');
+					location.reload();
 				} else {
 					alert('导入失败：' + (d.result ? d.result.error : '原因未知。'));
 				}

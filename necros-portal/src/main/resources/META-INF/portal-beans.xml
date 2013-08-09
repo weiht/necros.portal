@@ -65,6 +65,20 @@
 		<property name="sectionFileExtension"><value>${p.channel.fileExtension:.html}</value></property>
 	</bean>
 	
+	<bean id="p.scriptService" class="org.necros.portal.scripting.h4.ScriptServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="zipExporter" ref="p.zip.exporter"></property>
+		<property name="zipImporter" ref="p.zip.importer"></property>
+		<property name="engines"><list>
+			<bean class="org.necros.portal.scripting.ScriptEngine">
+				<property name="name" value="python"></property>
+				<property name="extensions"><list>
+					<value>.py</value>
+				</list></property>
+			</bean>
+		</list></property>
+	</bean>
+	
 	<bean id="p.sysParamService" class="org.necros.portal.conf.h4.SysParamServiceH4">
 		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
 	</bean>
@@ -123,6 +137,7 @@
 			<entry key="p.sectionService" value-ref="p.sectionService"></entry>
 			<entry key="p.ajaxCallService" value-ref="p.ajaxCallService"></entry>
 			<entry key="p.fragmentService" value-ref="p.fragmentService"></entry>
+			<entry key="p.scriptService" value-ref="p.scriptService"></entry>
 			<entry key="p.sysParamService" value-ref="p.sysParamService"></entry>
 			<entry key="p.safeParamService" value-ref="p.safeParamService"></entry>
 			<entry key="p.categoryService" value-ref="p.categoryService"></entry>
