@@ -41,7 +41,7 @@ public class SysParamServiceH4 extends AbstractSysParamService {
 	@Override
 	public SysParam remove(String key) {
 		SysParam p = get(key);
-		sessionFactoryHelper.getSession().delete(p);
+		if (p != null) sessionFactoryHelper.getSession().delete(p);
 		return p;
 	}
 
