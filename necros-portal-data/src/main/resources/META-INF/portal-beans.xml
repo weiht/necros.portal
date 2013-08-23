@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 	">
 	
-	<bean name="d.uuidGenerator" class="org.necros.portal.data.UuidGenerator"/>
+	<bean name="d.uuidGenerator" class="org.necros.portal.data.UuidStringGenerator"/>
 	
 	<bean name="d.dao" class="org.necros.portal.data.GeneralDao">
 		<property name="idGenerator" ref="d.uuidGenerator"></property>

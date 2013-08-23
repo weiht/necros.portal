@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author weiht
  *
  */
-@Controller(MenuController.BASE_CTX_URL)
+@Controller
 public class MenuController {
 	public static final String BASE_CTX_URL = "/menu";
 	
 	@Resource(name="c.menuService")
 	private MenuService menuService;
 	
-	@RequestMapping(value="/display/{id}", method=RequestMethod.GET)
+	@RequestMapping(value=BASE_CTX_URL + "/display/{id}", method=RequestMethod.GET)
 	public @ResponseBody List<MenuItem> displayMenu(@PathVariable("id") String id) {
 		return menuService.display(id);
 	}
