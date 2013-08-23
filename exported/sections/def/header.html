@@ -1,0 +1,18 @@
+#set ($ctxPath = $!request.contextPath)
+#set ($mvcRoot = "${ctxPath}/pm")
+#set ($resRoot = "${mvcRoot}/res")
+#set ($ajaxRoot = "${mvcRoot}/ajax")
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>$!{channelTitle}</title>
+<link rel="stylesheet" href="${resRoot}/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="${ajaxRoot}/def/styles.css"/>
+<style>
+body {
+	margin-top: 60px;
+}
+</style>
+</head>
+<body>

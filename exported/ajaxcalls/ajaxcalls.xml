@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ajaxCalls xmlns="http://portal.necros.org/ajaxcalls">
+    <ajaxCall id="def/styles.css" displayName="全局样式表" resultType="text/css"/>
+    <ajaxCall id="js/menu.js" displayName="显示菜单的脚本" resultType="text/javascript"/>
+</ajaxCalls>

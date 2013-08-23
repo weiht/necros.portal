@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<channels xmlns="http://portal.necros.org/channels">
+    <channel id="index" displayName="首页"/>
+    <channel id="mgr/menu" displayName="菜单管理"/>
+    <channel id="mgr/org" displayName="组织机构管理"/>
+</channels>

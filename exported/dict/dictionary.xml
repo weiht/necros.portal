@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Dictionary xmlns="http://portal.necros.org/dictionary">
+    <category name="gender" displayName="性别" description="m/f">
+        <entries>
+            <entry categoryId="gender" key="m" displayText="男" description="male" displayOrder="0"/>
+            <entry categoryId="gender" key="f" displayText="女" description="female" displayOrder="0"/>
+            <entry categoryId="gender" key="n" displayText="未填写" description="" displayOrder="0"/>
+        </entries>
+    </category>
+    <category name="orgType" displayName="单位类型" description="公司、部门、小组等">
+        <entries>
+            <entry categoryId="orgType" key="com" displayText="公司" description="" displayOrder="0"/>
+            <entry categoryId="orgType" key="branch" displayText="分公司" description="" displayOrder="0"/>
+            <entry categoryId="orgType" key="dept" displayText="部门" description="" displayOrder="0"/>
+        </entries>
+    </category>
+</Dictionary>
