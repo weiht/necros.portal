@@ -20,6 +20,10 @@ import org.necros.portal.util.SessionFactoryHelper;
  */
 public class MenuServiceH4 implements MenuService {
 	public static final Class<?> clazz = MenuItem.class;
+	public static final String HQL_PATH_TO_ROOT =
+		"from MenuItem i where ? like concat(i.path, '"
+		+ MenuItem.SPLITTER + "%')";
+
 	private BasicObjectService basicObjectService;
 	private IdGenerator idGenerator;
 	
@@ -89,7 +93,7 @@ public class MenuServiceH4 implements MenuService {
 	private Criteria childrenCriteria(String id) {
 		return createCriteria().add(Restrictions.eq("parentId", id));
 	}
-	
+
 	private Criteria usable(Criteria c) {
 		return c.add(Restrictions.eq("usableStatus", MenuItem.USABLE));
 	}
@@ -132,6 +136,15 @@ public class MenuServiceH4 implements MenuService {
 	public List<MenuItem> allChildren(String parentId) {
 		return childrenCriteria(parentId)
 				.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<MenuItem> pathToRoot(MenuItem leaf) {
+		List<MenuItem> itm = sessionFactoryHelper.getSession().createQuery(HQL_PATH_TO_ROOT)
+			.setString(0, leaf.getPath())
+			.list();
+		itm.add(leaf);
+		return itm;
 	}
 
 	public void setSessionFactoryHelper(SessionFactoryHelper sessionFactoryHelper) {

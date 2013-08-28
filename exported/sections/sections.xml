@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <sections xmlns="http://portal.necros.org/sections">
     <section id="def/footer" displayName="默认页脚代码"/>
-    <section id="def/header" displayName="默认页首代码"/>
     <section id="def/mainmenu" displayName="主菜单"/>
-    <section id="mgr/angular.js" displayName="管理用的AngularJS引用"/>
-    <section id="mgr/menu" displayName="管理菜单的html代码"/>
     <section id="mgr/menu.js" displayName="菜单依赖的js脚本"/>
-    <section id="mgr/org" displayName="组织机构管理"/>
 </sections>

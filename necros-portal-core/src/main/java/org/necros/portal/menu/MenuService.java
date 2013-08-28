@@ -23,4 +23,6 @@ public interface MenuService {
 	
 	public abstract List<MenuItem> allRoot();
 	public abstract List<MenuItem> allChildren(String parentId);
+
+	public abstract List<MenuItem> pathToRoot(MenuItem leaf);
 }
