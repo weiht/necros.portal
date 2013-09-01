@@ -1,0 +1,34 @@
+$sectionEvaluator.evaluate('context')
+angular.module('MenuManager', ['ngResource'])
+.factory('Menu', ['$resource', function($resource) {
+  return $resource('${mvcRoot}/menu/item/:id', {'id': '@id'}, {
+    'root': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/menu/menus'},
+    'editor': {'method': 'GET', 'url': '${mvcRoot}/menu/editor'},
+    'add': {'method': 'POST', 'url': '${mvcRoot}/menu/add/:parentId', 'params': {'parentId': '@parentId'}},
+    'update': {'method': 'POST', 'url': '${mvcRoot}/menu/update'},
+    'remove': {'method': 'POST', 'url': '${mvcRoot}/menu/remove'}
+  });
+}])
+.controller('MenuMgrRootCtrl', ['$scope', 'Menu', function($scope, Menu) {
+  $scope.menus = Menu.root();
+}])
+.controller('MenuMgrNewCtrl', ['$scope', '$routeParams', '$location', 'Menu', function($scope, $params, $l, Menu) {
+  $scope.menuItem = {'parentId': $params.parentId};
+  $scope.save = function() {
+    Menu.add({}, $scope.menuItem, function(added) {
+      alert('已保存');
+      var lo = '/editor/' + added.id;
+      $l.path(lo);
+    }, function() {
+      alert('保存失败。');
+    });
+  };
+}])
+.config(['$routeProvider', function($routeProvider) {
+  $routeProvider
+  .when('/', {'templateUrl': '${ajaxRoot}/mgr/menu/view/index'})
+  .when('/new/:parentId', {'templateUrl': '${ajaxRoot}/mgr/menu/view/add', 'controller': 'MenuMgrNewCtrl'})
+  .when('/editor/:itemId', {'templateUrl': '${ajaxRoot}/mgr/menu/view/edit', 'controller': 'MenuMgrEditCtrl'})
+  .otherwise({'redirectTo': '/'});
+}])
+;
