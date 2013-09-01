@@ -194,6 +194,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		BufferedWriter w = new BufferedWriter(resp.getWriter());
 		VelocityContext vctx = new VelocityContext();
 		initVelocityContext(vctx, req);
+		vctx.put("sectionEvaluator", new SectionEvaluator(w, this, vctx));
 		if (logger.isTraceEnabled()) {
 			logger.trace("{}", call);
 			logger.trace(call.getTemplate());
