@@ -32,7 +32,7 @@ public class HibernateDataAccessController {
 	public static final String CRUD_URL = "/d";
 	public static final String QUERY_URL = "/l";
 	
-	@Resource(name="generalDao")
+	@Resource(name="d.dao")
 	private GeneralDao dao;
 	
 	@SuppressWarnings("rawtypes")

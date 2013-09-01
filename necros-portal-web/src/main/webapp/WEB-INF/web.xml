@@ -58,6 +58,14 @@
         <filter-name>openSessionInViewFilter</filter-name>
         <url-pattern>/pm/segment/*</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>openSessionInViewFilter</filter-name>
+        <url-pattern>/pm/menu/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>openSessionInViewFilter</filter-name>
+        <url-pattern>/pm/org/*</url-pattern>
+    </filter-mapping>
 	
 	<servlet>
 		<servlet-name>pm</servlet-name>

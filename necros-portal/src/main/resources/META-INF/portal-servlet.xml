@@ -11,7 +11,7 @@
 	<context:annotation-config/>
 	<mvc:annotation-driven/>
 	<mvc:resources location="classpath:res/" mapping="/res/**"/>
-	<context:component-scan base-package="org.necros.portal.web"></context:component-scan>
+	<context:component-scan base-package="org.necros.portal.**.web"></context:component-scan>
 	
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
