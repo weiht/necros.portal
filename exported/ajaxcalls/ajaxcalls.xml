@@ -6,4 +6,5 @@
     <ajaxCall id="mgr/menu/view/add" displayName="添加菜单项的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/menu/view/edit" displayName="菜单管理中编辑器的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/menu/view/index" displayName="菜单管理的ng-view首页" resultType="text/html"/>
+    <ajaxCall id="mgr/menu/view/view" displayName="菜单子项列表的ng-view" resultType="text/html"/>
 </ajaxCalls>

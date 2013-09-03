@@ -1,30 +1,10 @@
-<!--<div class="navbar navbar-fixed-top" ng-app="DbMenu">
-  <div class="navbar-inner" ng-controller="NavCtrl">
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner" ng-controller="MainMenuCtrl">
       <nav class="nav-menu" menu-data="menu"></nav>
   </div>
 </div>
 <script type="text/javascript">
-  var NavCtrl = function($scope, $location) {
-  $scope.breadcrumbs = [];
-  $scope.menu =   [
-        {text: 'HOME', href:'/app/index.html', children: [
-            {text:'MANAGE Dashboard', href:'/dashb'}
-          ]
-          },
-        {text: 'MANAGE', href:'/manage', children: [
-          {text:'MANAGE PEOPLE', href:'/manage-people', children: [
-              {text:'MANAGE STAFF', href:'/manage-staff'},
-              {text:'MANAGE CLIENTS', href:'/manage-clients'}              
-            ]}
-        ]},
-        {text: 'REPORTS', href:'/reports', children: [
-          {text: 'REPORT NUMERO UNO', href: '#'},
-          {text: 'REP NUMERO 2', href: '#', children: [{text:'Third Tier', href: '#'}, {text:'Another Third Tier', href: '#', children: [
-              {text:'SUB SUB NAV', href:'#'}
-            ]}]}
-        ]},
-        {text: 'MY INFO', href:'/my-info' },
-      ]
-
-    }
-</script>-->
+function MainMenuCtrl($scope, Menu) {
+  $scope.menu = Menu.display({'id': '64c0132d-6db8-4f02-b337-11962fb20fa0'});
+}
+</script>

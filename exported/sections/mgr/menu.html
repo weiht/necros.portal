@@ -1,17 +1,28 @@
-<div class="container-fluid" ng-app="MenuManager">
+<div class="container-fluid">
   <div class="row-fluid">
     <div class="span4" ng-controller="MenuMgrRootCtrl">
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th width="60">名称</th>
-            <th>显示</th>
-            <th width="60">操作<a href="#/new/"><i class="icon-plus"></i></a></th>
+            <th width="80">名称</th>
+            <th>显示文字</th>
+            <th width="70">操作<a href="#/new/"><i class="icon-plus"></i></a></th>
           </tr>
         </thead>
         <tbody>
           <tr ng-show="!menus || !menus.length">
             <td colspan="3">暂无菜单</td>
+          </tr>
+          <tr ng-repeat="mnu in menus">
+            <td>{{mnu.name}}</td>
+            <td>{{mnu.displayName}}</td>
+            <td>
+              <a href="#/view/{{mnu.id}}"><i class="icon-list"></i></a>
+              <span class="divider">&nbsp;</span>
+              <a href="#/edit/{{mnu.id}}"><i class="icon-pencil"></i></a>
+              <span class="divider">&nbsp;</span>
+              <a href="" ng-click="remove(mnu);"><i class="icon-minus"></i></a>
+            </td>
           </tr>
         </tbody>
       </table>

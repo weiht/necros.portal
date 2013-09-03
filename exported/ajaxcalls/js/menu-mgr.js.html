@@ -1,26 +1,76 @@
 $sectionEvaluator.evaluate('context')
-angular.module('MenuManager', ['ngResource'])
-.factory('Menu', ['$resource', function($resource) {
-  return $resource('${mvcRoot}/menu/item/:id', {'id': '@id'}, {
-    'root': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/menu/menus'},
-    'editor': {'method': 'GET', 'url': '${mvcRoot}/menu/editor'},
-    'add': {'method': 'POST', 'url': '${mvcRoot}/menu/add/:parentId', 'params': {'parentId': '@parentId'}},
-    'update': {'method': 'POST', 'url': '${mvcRoot}/menu/update'},
-    'remove': {'method': 'POST', 'url': '${mvcRoot}/menu/remove'}
-  });
-}])
+angular.module('MenuManager', ['DbMenu'])
 .controller('MenuMgrRootCtrl', ['$scope', 'Menu', function($scope, Menu) {
   $scope.menus = Menu.root();
-}])
-.controller('MenuMgrNewCtrl', ['$scope', '$routeParams', '$location', 'Menu', function($scope, $params, $l, Menu) {
-  $scope.menuItem = {'parentId': $params.parentId};
-  $scope.save = function() {
-    Menu.add({}, $scope.menuItem, function(added) {
-      alert('已保存');
-      var lo = '/editor/' + added.id;
-      $l.path(lo);
+  $scope.$on('itemAdded', function(e, itm) {
+    if (itm.parentId) return;
+    $scope.menus.push(itm);
+  });
+  $scope.$on('itemModified', function(e, itm) {
+    if (itm.parentId) return;
+    var menus = $scope.menus;
+    for (var i = 0; i < $scope.menus.length; i ++) {
+      var oitm = menus[i];
+      if (oitm.id == itm.id) {
+        oitm.name = itm.name;
+        oitm.displayName = itm.displayName;
+        return;
+      }
+    }
+    $scope.menus.push(itm);
+  });
+  $scope.remove = function(mnu) {
+    Menu.remove({}, mnu, function() {
+      alert("已删除。");
+      var ix = $scope.menus.indexOf(mnu);
+      if (ix >= 0) {
+        $scope.menus.splice(ix, 1);
+      }
     }, function() {
+      alert('删除失败。');
+    });
+  };
+}])
+.controller('MenuMgrNewCtrl', ['$scope', '$routeParams', '$location', '$rootScope', 'Menu', function($scope, $params, $l, $rootScope, Menu) {
+  $scope.menuItem = {'parentId': $params.parentId};
+  $scope.parent = Menu.editor({'itemId': $params.parentId || '~'});
+  $scope.save = function() {
+    $scope.menuItem.usableStatus = 0;
+    Menu.add({}, $scope.menuItem, function(added) {
+      $rootScope.$broadcast('itemAdded', added);
+      alert('已保存');
+      var lo = added.parentId ? ('/view/' + added.parentId) : '/';
+      $l.path(lo);
+    }, function(b) {
       alert('保存失败。');
+    });
+  };
+}])
+.controller('MenuMgrEditCtrl', ['$scope', '$routeParams', '$location', '$rootScope', 'Menu', function($scope, $params, $l, $rootScope, Menu) {
+  $scope.menuItem = Menu.editor({'itemId': $params.itemId || '~'});
+  $scope.save = function() {
+    Menu.update({}, $scope.menuItem.menuItem, function(itm) {
+      $rootScope.$broadcast('itemModified', itm);
+      alert('已保存');
+      var lo = itm.parentId ? ('/view/' + itm.parentId) : '/';
+      $l.path(lo);
+    }, function(b) {
+    console.log(b.data);
+      alert('保存失败。');
+    });
+  };
+}])
+.controller('MenuMgrViewCtrl', ['$scope', '$routeParams', 'Menu', function($scope, $params, Menu) {
+  $scope.menuItem = Menu.editor({'itemId': $params.itemId || '~'});
+  $scope.remove = function(mnu) {
+    Menu.remove({}, mnu, function() {
+      alert("已删除。");
+      var ix = $scope.menus.indexOf(mnu);
+      if (ix >= 0) {
+        $scope.menus.splice(ix, 1);
+      }
+    }, function() {
+      alert('删除失败。');
     });
   };
 }])
@@ -28,7 +78,8 @@ angular.module('MenuManager', ['ngResource'])
   $routeProvider
   .when('/', {'templateUrl': '${ajaxRoot}/mgr/menu/view/index'})
   .when('/new/:parentId', {'templateUrl': '${ajaxRoot}/mgr/menu/view/add', 'controller': 'MenuMgrNewCtrl'})
-  .when('/editor/:itemId', {'templateUrl': '${ajaxRoot}/mgr/menu/view/edit', 'controller': 'MenuMgrEditCtrl'})
+  .when('/edit/:itemId', {'templateUrl': '${ajaxRoot}/mgr/menu/view/edit', 'controller': 'MenuMgrEditCtrl'})
+  .when('/view/:itemId', {'templateUrl': '${ajaxRoot}/mgr/menu/view/view', 'controller': 'MenuMgrViewCtrl'})
   .otherwise({'redirectTo': '/'});
 }])
 ;

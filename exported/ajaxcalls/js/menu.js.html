@@ -1,17 +1,41 @@
-angular.module('DbMenu', [])
-.directive('navMenu', ['$parse', '$compile', function($parse, $compile) {
+$sectionEvaluator.evaluate('context')
+angular.module('DbMenu', ['ngResource'])
+.factory('Menu', ['$resource', function($resource) {
+  return $resource('${mvcRoot}/menu/item/:id', {'id': '@id'}, {
+    'display': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/menu/display/:id', 'params': {'id': '@id'}},
+    'root': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/menu/menus'},
+    'editor': {'method': 'GET', 'url': '${mvcRoot}/menu/editor/:itemId', 'params': {'itemId': '@itemId'}},
+    'add': {'method': 'POST', 'url': '${mvcRoot}/menu/add/'},
+    'update': {'method': 'POST', 'url': '${mvcRoot}/menu/update'},
+    'remove': {'method': 'POST', 'url': '${mvcRoot}/menu/remove'}
+  });
+}])
+.factory('MakeUrl', function() {
+  function isFull(url) {
+    console.log(url);
+    return /^\s*(http|https|ftp):\/\/.+$/.test(url);
+  }
+  return {'make': function(url) {
+    console.log(url);
+    if (!url) return '';
+    if (isFull(url)) return url;
+    return '${mvcRoot}' + url;
+  }};
+})
+.directive('navMenu', ['$parse', '$compile', 'MakeUrl', function($parse, $compile, MakeUrl) {
   return {
-    'restrict': 'C',
+    'restrict': 'CE',
     'scope': true,
     'link': function(scope, element, attrs) {
       scope.selectedElement = null;
+      scope.MakeUrl = MakeUrl;
       scope.$watch(attrs.menuData, function(val) {
         var template = angular.element(
           '<ul class="nav"><li ng-repeat="node in '
           + attrs.menuData
           + '" ng-class="{active:node.active && node.active==true, \'dropdown\': !!node.children && node.children.length}">'
           + '<a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000"'
-          + ' ng-href="{{node.href}}" ng-click="{{node.click}}" target="{{node.target}}" >{{node.text}}'
+          + ' ng-href="{{MakeUrl.make(node.url)}}" target="{{node.target}}" >{{node.displayName}}'
           + '<b class="caret" ng-show="!!node.children && node.children.length"></b></a>'
           + '<sub-navigation-tree></sub-navigation-tree></li></ul>'
         );
@@ -35,8 +59,8 @@ angular.module('DbMenu', [])
           + attrs.nodeId
           + '}}  ng-class="{active:node.active && node.active==true'
           + ', \'dropdown-submenu\': !!node.children && node.children.length}">'
-          + '<a ng-href="{{node.href}}" ng-click="{{node.click}}"'
-          + ' target="{{node.target}}" ng-bind-html-unsafe="node.text"></a>'
+          + '<a ng-href="{{MakeUrl.make(node.url)}}"'
+          + ' target="{{node.target}}" ng-bind-html-unsafe="node.displayName"></a>'
           + '<sub-navigation-tree tree="node"></sub-navigation-tree></li></ul>');
 
         var linkFunction = $compile(template);

@@ -1,1 +1,39 @@
-编辑
+<ul class="breadcrumb">
+  <li><a href="#/">菜单管理</a></li>
+  <li ng-repeat="itm in menuItem.breadcrumb"><span class="devider">/</span> <a href="#/view/{{itm.id}}">{{itm.displayName}}</a></li>
+  <li class="disabled"><span class="devider">/</span> 编辑</li>
+</ul>
+<form class="form form-horizontal">
+  <div class="control-group">
+    <label class="control-label" for="itmName">名称</label>
+    <div class="controls">
+      <input type="text" name="name" id="itmName" ng-model="menuItem.menuItem.name"/>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="itmDisplayName">显示文字</label>
+    <div class="controls">
+      <input type="text" name="name" id="itmDisplayName" ng-model="menuItem.menuItem.displayName"/>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="itmDisplayOrder">显示序号</label>
+    <div class="controls">
+      <input type="text" name="name" id="itmDisplayOrder" ng-model="menuItem.menuItem.displayOrder"/>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="itmUrl">地址</label>
+    <div class="controls">
+      <input type="text" name="name" id="itmUrl" ng-model="menuItem.menuItem.url"/>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <a ng-click="save();" class="btn btn-primary">保存</a>
+      <span class="divider">&nbsp;</span>
+      <a ng-show="!!menuItem.menuItem.parentId" href="#/view/{{menuItem.menuItem.parentId}}" class="btn">返回</a>
+      <a ng-show="!menuItem.menuItem.parentId" href="#/" class="btn">返回</a>
+    </div>
+  </div>
+</form>

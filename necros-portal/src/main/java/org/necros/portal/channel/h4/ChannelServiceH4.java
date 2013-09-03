@@ -99,7 +99,7 @@ public class ChannelServiceH4 implements ChannelService {
 		String fn = zipExporter.exportZip(f.getAbsolutePath(), new ZipExportCallback() {
 			@Override
 			public void doZip(ZipOutputStream zos) throws IOException {
-				List<Channel> channels = channelsOwnedBy(null);
+				List<Channel> channels = all();
 				if (channels == null || channels.isEmpty()) throw new IOException("未找到任何页面。");
 				zipChannelXml(zos, channels);
 				for (Channel ch: channels) {

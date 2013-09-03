@@ -1,0 +1,32 @@
+<ul class="breadcrumb">
+  <li><a href="#/">菜单管理</a></li>
+  <li ng-repeat="itm in menuItem.breadcrumb"><span class="devider">/</span> <a href="#/view/{{itm.id}}">{{itm.displayName}}</a></li>
+</ul>
+
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>显示文字</th>
+      <th>地址</th>
+      <th>操作&nbsp;<a href="#/new/{{menuItem.menuItem.id}}"><i class="icon-plus"></i></a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-show="!menuItem.children || !menuItem.children.length">
+      <td colspan="4">未找到子菜单项</td>
+    </tr>
+    <tr ng-repeat="mnu in menuItem.children">
+      <td>{{mnu.name}}</td>
+      <td>{{mnu.displayName}}</td>
+      <td>{{mnu.url}}</td>
+      <td>
+        <a href="#/view/{{mnu.id}}"><i class="icon-list"></i></a>
+        <span class="divider">&nbsp;</span>
+        <a href="#/edit/{{mnu.id}}"><i class="icon-pencil"></i></a>
+        <span class="divider">&nbsp;</span>
+        <a href="" ng-click="remove(mnu);"><i class="icon-minus"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
