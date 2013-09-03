@@ -27,6 +27,7 @@ public class BasicObjectServiceH4 implements BasicObjectService {
 		BasicObject obj = get(id);
 		if (obj == null) {
 			obj = new BasicObject();
+			obj.setId(id);
 			obj.setEntity(entity);
 			obj.setOwnerId(personId);
 			obj.setOwnerName(personName);

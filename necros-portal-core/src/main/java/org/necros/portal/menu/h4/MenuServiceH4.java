@@ -87,7 +87,7 @@ public class MenuServiceH4 implements MenuService {
 	}
 	
 	private Criteria rootCriteria() {
-		return createCriteria().add(Restrictions.isNull("parentId"));
+		return createCriteria().add(Restrictions.eqOrIsNull("parentId", ""));
 	}
 	
 	private Criteria childrenCriteria(String id) {

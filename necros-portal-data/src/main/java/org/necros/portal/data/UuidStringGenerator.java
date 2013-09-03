@@ -12,6 +12,6 @@ import java.util.UUID;
  */
 public class UuidStringGenerator implements IdGenerator {
 	public Serializable generate() {
-		return UUID.randomUUID();
+		return UUID.randomUUID().toString();
 	}
 }

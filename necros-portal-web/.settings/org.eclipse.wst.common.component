@@ -7,6 +7,12 @@
         <dependent-module archiveName="necros-portal-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/necros-portal/necros-portal">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="necros-portal-data-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/necros-portal-data/necros-portal-data">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="necros-portal-core-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/necros-portal-core/necros-portal-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="necros-portal-ui-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/necros-portal-ui/necros-portal-ui">
             <dependency-type>uses</dependency-type>
         </dependent-module>
