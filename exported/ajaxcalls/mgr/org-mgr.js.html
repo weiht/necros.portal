@@ -1,0 +1,16 @@
+$sectionEvaluator.evaluate('context')
+angular.module('OrgManager', ['Organization', 'DbMenu'])
+.controller('OrgMgrNewCtrl', ['$scope', 'Org', function($scope, Org) {
+}])
+.controller('OrgMgrEditCtrl', ['$scope', 'Org', function($scope, Org) {
+}])
+.controller('OrgMgrViewCtrl', ['$scope', 'Org', function($scope, Org) {
+}])
+.config(['$routeProvider', function($routeProvider) {
+  $routeProvider
+  .when('/new/:parentId', {'templateUrl': '${ajaxRoot}/mgr/org/view/add', 'controller': 'OrgMgrNewCtrl'})
+  .when('/edit/:orgId', {'templateUrl': '${ajaxRoot}/mgr/org/view/edit', 'controller': 'OrgMgrEditCtrl'})
+  .when('/view/:orgId', {'templateUrl': '${ajaxRoot}/mgr/org/view/view', 'controller': 'OrgMgrViewCtrl'})
+  .otherwise({'redirectTo': '/view/'});
+}])
+;

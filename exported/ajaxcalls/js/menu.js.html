@@ -12,11 +12,9 @@ angular.module('DbMenu', ['ngResource'])
 }])
 .factory('MakeUrl', function() {
   function isFull(url) {
-    console.log(url);
     return /^\s*(http|https|ftp):\/\/.+$/.test(url);
   }
   return {'make': function(url) {
-    console.log(url);
     if (!url) return '';
     if (isFull(url)) return url;
     return '${mvcRoot}' + url;
@@ -34,9 +32,12 @@ angular.module('DbMenu', ['ngResource'])
           '<ul class="nav"><li ng-repeat="node in '
           + attrs.menuData
           + '" ng-class="{active:node.active && node.active==true, \'dropdown\': !!node.children && node.children.length}">'
-          + '<a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000"'
+          + '<a ng-show="!!node.children && node.children.length"'
+          + 'data-toggle="dropdown" data-hover="dropdown" data-delay="1000"'
           + ' ng-href="{{MakeUrl.make(node.url)}}" target="{{node.target}}" >{{node.displayName}}'
           + '<b class="caret" ng-show="!!node.children && node.children.length"></b></a>'
+          + '<a ng-hide="!!node.children && node.children.length"'
+          + ' ng-href="{{MakeUrl.make(node.url)}}" target="{{node.target}}" >{{node.displayName}}</a>'
           + '<sub-navigation-tree></sub-navigation-tree></li></ul>'
         );
         var linkFunction = $compile(template);

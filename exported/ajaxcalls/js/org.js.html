@@ -1,0 +1,11 @@
+$sectionEvaluator.evaluate('context')
+angular.module('Organization', ['ngResource'])
+.factory('Org', ['$resource', function($resource) {
+  return $resource('${mvcRoot}/org/get/:id', {'id': '@id'}, {
+    'list': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/org/children/:parentId', 'params': {'parentId': '@parentId'}},
+    'add': {'method': 'POST', 'url': '${mvcRoot}/org/add/'},
+    'update': {'method': 'POST', 'url': '${mvcRoot}/org/update'},
+    'remove': {'method': 'POST', 'url': '${mvcRoot}/org/remove'}
+  });
+}])
+;

@@ -6,4 +6,5 @@
     <section id="def/mainmenu" displayName="主菜单"/>
     <section id="mgr/menu" displayName="管理菜单的html代码"/>
     <section id="mgr/menu.js" displayName="菜单依赖的js脚本"/>
+    <section id="mgr/org" displayName="组织机构管理"/>
 </sections>
