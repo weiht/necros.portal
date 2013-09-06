@@ -7,8 +7,14 @@
 	<div class="page-header span12">
 		<div class="breadcumb span12">页面</div>
 #if ($channel)
+#if (!$channelTitle)
+  #set ($channelTitle = "页面 - ${channel.id} ${channel.displayName}")
+#end
 		<h3>编辑页面</h3>
 #else
+#if (!$channelTitle)
+  #set ($channelTitle = "页面 ")
+#end
 		<h3>创建页面</h3>
 #end
 	</div>

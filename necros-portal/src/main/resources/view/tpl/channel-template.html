@@ -3,6 +3,9 @@
 #set ($channel = $services.p.channelService.findById($id))
 #end
 #set ($sections = $services.p.sectionService.sectionsOwnedBy(''))
+#if (!$channelTitle)
+  #set ($channelTitle = "页面 - ${channel.id} ${channel.displayName}")
+#end
 <link rel="stylesheet" href="../res/codemirror/codemirror.css"/>
 <link rel="stylesheet" href="../res/codemirror/theme/eclipse.css"/>
 <style>

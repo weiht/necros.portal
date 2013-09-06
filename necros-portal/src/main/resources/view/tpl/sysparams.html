@@ -8,6 +8,9 @@
 #end
 #set ($pager = $qr.pager)
 #set ($sysParams = $qr.result)
+#if (!$channelTitle)
+  #set ($channelTitle = "系统参数")
+#end
 <link rel="stylesheet" href="../res/css/jquery.fileupload-ui.css"/>
 <div class="container">
 	<div class="row page-header">

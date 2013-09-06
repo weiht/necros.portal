@@ -9,8 +9,14 @@
 	<div class="page-header span12">
 		<div class="breadcumb span12">远程片段</div>
 #if ($fragment)
+#if (!$channelTitle)
+  #set ($channelTitle = "片段 - ${fragment.id} ${fragment.displayName}")
+#end
 		<h3>编辑远程片段</h3>
 #else
+#if (!$channelTitle)
+  #set ($channelTitle = "片段")
+#end
 		<h3>创建远程片段</h3>
 #end
 	</div>

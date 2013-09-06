@@ -8,6 +8,9 @@
 #end
 #set ($pager = $qr.pager)
 #set ($calls = $qr.result)
+#if (!$channelTitle)
+  #set ($channelTitle = "调用")
+#end
 <link rel="stylesheet" href="../res/css/jquery.fileupload-ui.css"/>
 <div class="container">
 	<div class="row page-header">

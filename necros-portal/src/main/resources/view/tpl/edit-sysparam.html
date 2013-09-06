@@ -9,9 +9,15 @@
 	<div class="page-header span12">
 		<div class="breadcumb span12">系统参数</div>
 #if ($sysParam)
+#if (!$channelTitle)
+  #set ($channelTitle = "参数 - ${sysParam.key} ${sysParam.vallue}")
+#end
 		<h3>编辑系统参数</h3>
 		<input type="hidden" id="action" value="edit"/>
 #else
+#if (!$channelTitle)
+  #set ($channelTitle = "参数")
+#end
 		<h3>创建系统参数</h3>
 		<input type="hidden" id="action" value="new"/>
 #end

@@ -9,9 +9,15 @@
 	<div class="page-header span12">
 		<div class="breadcumb span12">服务端脚本</div>
 #if ($script)
+#if (!$channelTitle)
+  #set ($channelTitle = "脚本 - ${script.name} ${script.displayName}")
+#end
 		<h3>编辑脚本</h3>
 		<input type="hidden" id="action" value="edit"/>
 #else
+#if (!$channelTitle)
+  #set ($channelTitle = "脚本")
+#end
 		<h3>创建脚本</h3>
 		<input type="hidden" id="action" value="new"/>
 #end

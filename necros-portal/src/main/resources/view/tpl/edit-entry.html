@@ -10,9 +10,15 @@
 		<div class="breadcumb span12">条目</div>
 		<input type="hidden" id="cid" value="$cid"/>
 #if ($entry)
+#if (!$channelTitle)
+  #set ($channelTitle = "字典条目 - ${entry.key} ${entry.displayText}")
+#end
 		<h3>编辑条目</h3>
 		<input type="hidden" id="action" value="edit"/>
 #else
+#if (!$channelTitle)
+  #set ($channelTitle = "字典条目")
+#end
 		<h3>创建条目</h3>
 		<input type="hidden" id="action" value="new"/>
 #end

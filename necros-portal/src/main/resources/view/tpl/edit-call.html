@@ -9,8 +9,14 @@
 	<div class="page-header span12">
 		<div class="breadcumb span12">远程调用</div>
 #if ($call)
+#if (!$channelTitle)
+  #set ($channelTitle = "调用 - ${call.id} ${call.displayName}")
+#end
 		<h3>编辑异步调用</h3>
 #else
+#if (!$channelTitle)
+  #set ($channelTitle = "调用")
+#end
 		<h3>创建异步调用</h3>
 #end
 	</div>

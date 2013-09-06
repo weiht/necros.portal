@@ -9,8 +9,14 @@
 	<div class="page-header span12">
 		<div class="breadcumb span12">组件</div>
 #if ($section)
+#if (!$channelTitle)
+  #set ($channelTitle = "组件 - ${section.id} ${section.displayName}")
+#end
 		<h3>编辑组件</h3>
 #else
+#if (!$channelTitle)
+  #set ($channelTitle = "组件")
+#end
 		<h3>创建组件</h3>
 #end
 	</div>
