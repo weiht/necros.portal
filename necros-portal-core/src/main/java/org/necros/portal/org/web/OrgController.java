@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class OrgController {
 	public static final String BASE_CTX_URL = "/org";
 	
-	@Resource(name="c.menuService")
+	@Resource(name="c.organizationService")
 	private OrganizationService orgService;
 
 	@RequestMapping(value=BASE_CTX_URL + "/children/:id", method=RequestMethod.GET)

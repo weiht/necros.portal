@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PersonController {
 	public static final String BASE_CTX_URL = "/person";
 	
-	@Resource(name="c.menuService")
+	@Resource(name="c.personService")
 	private PersonService personService;
 
 	@RequestMapping(value=BASE_CTX_URL + "/all", method=RequestMethod.GET)
