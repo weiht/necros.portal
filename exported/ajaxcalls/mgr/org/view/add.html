@@ -1,1 +1,114 @@
-创建
+<ul class="breadcrumb">
+  <li><a href="#/">单位管理</a></li>
+  <li ng-repeat="org in breadcrumb"><span class="devider">/</span> <a href="#/view/{{org.id}}">{{org.altName || org.name}}</a></li>
+  <li><span class="devider">/</span> 创建单位</li>
+</ul>
+
+<form class="form form-horizontal">
+  <fieldset>
+    <legend>基础信息</legend>
+    <div class="control-group">
+      <label class="control-label" for="txtname">名称</label>
+      <div class="controls">
+        <input type="text" class="input-xxlarge" id="txtname" ng-model="organization.name"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtaltName">简称</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtaltName" ng-model="organization.altName"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txttype">单位类型</label>
+      <div class="controls">
+        <select id="txttype" ng-model="organization.type">
+          <option ng-repeat="t in orgTypes" value="{{t.key}}">{{t.displayText}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtdisplayOrder">显示顺序</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtdisplayOrder" ng-model="organization.displayOrder"/>
+      </div>
+    </div>
+  </fieldset>
+  
+  <fieldset>
+    <legend>联系方式</legend>
+    <div class="control-group">
+      <label class="control-label" for="txtaddress">地址</label>
+      <div class="controls">
+        <input type="text" class="input-xxlarge" id="txtaddress" ng-model="organization.contact.address"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtpostalCode">邮政编码</label>
+      <div class="controls">
+        <input type="text" id="txtpostalCode" ng-model="organization.contact.postalCode"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txttel">电话</label>
+      <div class="controls">
+        <input type="text" id="txttel" ng-model="organization.contact.tel"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtfax">传真</label>
+      <div class="controls">
+        <input type="text" id="txtfax" ng-model="organization.contact.fax"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtmobile">手机</label>
+      <div class="controls">
+        <input type="text" id="txtmobile" ng-model="organization.contact.mobile"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtemail">电子邮箱</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtemail" ng-model="organization.contact.email"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtqq">QQ</label>
+      <div class="controls">
+        <input type="text" id="txtqq" ng-model="organization.contact.qq"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtliveMessenger">Live Messenger</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtliveMessenger" ng-model="organization.contact.liveMessenger"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtskype">Skype</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtskype" ng-model="organization.contact.skype"/>
+      </div>
+    </div>
+  </fieldset>
+  
+  <fieldset>
+    <legend>说明</legend>
+    <div class="control-group">
+      <div class="controls">
+        <textarea rows="5" class="input-xxlarge" id="txtdescription" ng-model="organization.description"></textarea>
+      </div>
+    </div>
+  </fieldset>
+  
+  <hr/>
+
+  <div class="control-group">
+    <div class="controls">
+      <a class="btn btn-primary" ng-click="save();">保存</a>
+      <span class="divider">&nbsp;</span>
+      <a class="btn" onclick="history.go(-1);">取消</a>
+    </div>
+  </div>
+</form>

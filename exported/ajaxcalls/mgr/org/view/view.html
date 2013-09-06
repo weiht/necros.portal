@@ -1,1 +1,50 @@
-查看
+<ul class="breadcrumb">
+  <li><a href="#/">单位管理</a></li>
+  <li ng-repeat="org in breadcrumb"> <span class="devider">/</span> <a href="#/view/{{org.id}}">{{org.altName || org.name}}</a></li>
+</ul>
+
+<div class="span3">
+  <div ng-show="!orgid">
+    <h3>顶级单位</h3>
+  </div>
+  <div ng-show="!!orgid">
+    <h4>{{organization.name}}</h4>
+    <hr/>
+    <a class="btn" ng-href="#/edit/{{organization.id}}"><i class="icon-pencil"></i>编辑</a>
+    <span class="divider">&nbsp;</span>
+    <a class="btn" ng-click="remove(organization)"><i class="icon-minus"></i>删除</a>
+    <hr/>
+    <div>{{organization.altName}}</div>
+    <div>{{organization.description}}</div>
+  </div>
+</div>
+
+<div class="span8">
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th width="160">名称</th>
+      <th width="120">简称</th>
+      <th>地址</th>
+      <th width="80">操作&nbsp;<a href="#/new/{{organization.id}}"><i class="icon-plus"></i></a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-show="!children || !children.length">
+      <td colspan="4">未找到<span ng-show="!orgid">顶级</span><span ng-show="!!orgid">下级</span>单位。</td>
+    </tr>
+    <tr ng-repeat="org in children">
+      <td>{{org.name}}</td>
+      <td>{{org.altName}}</td>
+      <td>{{org.contact.address}}</td>
+      <td>
+        <a href="#/view/{{org.id}}"><i class="icon-list"></i></a>
+        <span class="divider">&nbsp;</span>
+        <a href="#/edit/{{org.id}}"><i class="icon-pencil"></i></a>
+        <span class="divider">&nbsp;</span>
+        <a href="" ng-click="remove(org);"><i class="icon-minus"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>

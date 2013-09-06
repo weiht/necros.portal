@@ -1,16 +1,34 @@
 $sectionEvaluator.evaluate('context')
 angular.module('OrgManager', ['Organization', 'DbMenu'])
-.controller('OrgMgrNewCtrl', ['$scope', 'Org', function($scope, Org) {
+.controller('OrgMgrNewCtrl', ['$scope', '$routeParams', '$location', 'Org', 'OrgTypes', function($scope, $params, $l, Org, OrgTypes) {
+  $scope.pid = $params.parentId;
+  $scope.breadcrumb = $params.parentId ? Org.path({'id': $params.parentId}) : [];
+  $scope.organization = {'parentId': $params.parentId, 'contact': {}};
+  $scope.orgTypes = OrgTypes.list;
+  $scope.save = function() {
+    Org.add({}, $scope.organization, function(added) {
+      alert('已保存');
+      var lo = added.parentId ? ('/view/' + added.parentId) : '/';
+      $l.path(lo);
+    }, function(b) {
+      console.log(b.data);
+      alert('保存失败。');
+    });
+  };
 }])
 .controller('OrgMgrEditCtrl', ['$scope', 'Org', function($scope, Org) {
 }])
-.controller('OrgMgrViewCtrl', ['$scope', 'Org', function($scope, Org) {
+.controller('OrgMgrViewCtrl', ['$scope', '$routeParams', 'Org', function($scope, $params, Org) {
+  $scope.orgid = $params.id;
+  $scope.breadcrumb = $params.id ? Org.path({'id': $params.id}) : [];
+  $scope.organization = $params.id ? Org.get({'id': $params.id}) : {};
+  $scope.children = $params.id ? Org.children({'parentId': $params.id}) : Org.root();
 }])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider
   .when('/new/:parentId', {'templateUrl': '${ajaxRoot}/mgr/org/view/add', 'controller': 'OrgMgrNewCtrl'})
-  .when('/edit/:orgId', {'templateUrl': '${ajaxRoot}/mgr/org/view/edit', 'controller': 'OrgMgrEditCtrl'})
-  .when('/view/:orgId', {'templateUrl': '${ajaxRoot}/mgr/org/view/view', 'controller': 'OrgMgrViewCtrl'})
+  .when('/edit/:id', {'templateUrl': '${ajaxRoot}/mgr/org/view/edit', 'controller': 'OrgMgrEditCtrl'})
+  .when('/view/:id', {'templateUrl': '${ajaxRoot}/mgr/org/view/view', 'controller': 'OrgMgrViewCtrl'})
   .otherwise({'redirectTo': '/view/'});
 }])
 ;

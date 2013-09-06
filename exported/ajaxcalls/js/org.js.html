@@ -2,10 +2,15 @@ $sectionEvaluator.evaluate('context')
 angular.module('Organization', ['ngResource'])
 .factory('Org', ['$resource', function($resource) {
   return $resource('${mvcRoot}/org/get/:id', {'id': '@id'}, {
-    'list': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/org/children/:parentId', 'params': {'parentId': '@parentId'}},
+    'root': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/org/root'},
+    'children': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/org/children/:parentId', 'params': {'parentId': '@parentId'}},
+    'path': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/org/path/:id', 'params': {'id': '@id'}},
     'add': {'method': 'POST', 'url': '${mvcRoot}/org/add/'},
     'update': {'method': 'POST', 'url': '${mvcRoot}/org/update'},
     'remove': {'method': 'POST', 'url': '${mvcRoot}/org/remove'}
   });
 }])
+.factory('OrgTypes', function() {
+  return {'list': $services.p.jsonUtils.encode($services.p.entryServiceFactory.get("orgType").all())};
+})
 ;
