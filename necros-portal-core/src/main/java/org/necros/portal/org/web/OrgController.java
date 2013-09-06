@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.necros.portal.org.Organization;
 import org.necros.portal.org.OrganizationService;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class OrgController {
 
 	@RequestMapping(value=BASE_CTX_URL + "/children/:id", method=RequestMethod.GET)
 	public @ResponseBody List<Organization> listChildren(@PathVariable String id, HttpServletRequest req) {
-		return orgService.children(id);
+		return StringUtils.hasText(id) ? orgService.children(id) : orgService.root();
 	}
 
 	@RequestMapping(value=BASE_CTX_URL + "/path/:id", method=RequestMethod.GET)
