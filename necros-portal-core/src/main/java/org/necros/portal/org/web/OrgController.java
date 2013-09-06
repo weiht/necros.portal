@@ -26,6 +26,11 @@ public class OrgController {
 		return orgService.children(id);
 	}
 
+	@RequestMapping(value=BASE_CTX_URL + "/path/:id", method=RequestMethod.GET)
+	public @ResponseBody List<Organization> orgPath(@PathVariable String id, HttpServletRequest req) {
+		return orgService.path(id);
+	}
+
 	@RequestMapping(value=BASE_CTX_URL + "/get/:id", method=RequestMethod.GET)
 	public @ResponseBody Organization getOrg(@PathVariable String id, HttpServletRequest req) {
 		return orgService.get(id);
