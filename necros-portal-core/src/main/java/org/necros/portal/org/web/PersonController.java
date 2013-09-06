@@ -26,7 +26,7 @@ public class PersonController {
 		return personService.all();
 	}
 
-	@RequestMapping(value=BASE_CTX_URL + "/get/:id", method=RequestMethod.GET)
+	@RequestMapping(value=BASE_CTX_URL + "/get/{id}", method=RequestMethod.GET)
 	public @ResponseBody Person getPerson(@PathVariable String id, HttpServletRequest req) {
 		return personService.get(id);
 	}

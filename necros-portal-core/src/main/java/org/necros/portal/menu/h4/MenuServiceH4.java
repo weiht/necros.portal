@@ -22,7 +22,7 @@ public class MenuServiceH4 implements MenuService {
 	public static final Class<?> clazz = MenuItem.class;
 	public static final String HQL_PATH_TO_ROOT =
 		"from MenuItem i where ? like concat(i.path, '"
-		+ MenuItem.SPLITTER + "%')";
+		+ MenuItem.SPLITTER + "%') order by i.path asc";
 
 	private BasicObjectService basicObjectService;
 	private IdGenerator idGenerator;

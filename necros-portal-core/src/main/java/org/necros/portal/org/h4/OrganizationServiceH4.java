@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.necros.portal.data.BasicObjectService;
 import org.necros.portal.data.IdGenerator;
@@ -22,14 +23,17 @@ import org.necros.portal.util.SessionFactoryHelper;
  */
 public class OrganizationServiceH4 implements OrganizationService {
 	private static final String HQL_QUERY_PATH = "from Organization o"
-			+ " where ? like o.path + '%'";
+			+ " where ? like concat(o.path, '"
+			+ Organization.SPLITTER
+			+ "%') order by o.path asc";
 	
 	private SessionFactoryHelper sessionFactoryHelper;
 	private BasicObjectService basicObjectService;
 	private IdGenerator idGenerator;
 	
 	protected Criteria createCriteria() {
-		return sessionFactoryHelper.createCriteria(Organization.class);
+		return sessionFactoryHelper.createCriteria(Organization.class)
+				.addOrder(Order.asc("displayOrder"));
 	}
 
 	public Organization get(String id) {
@@ -94,7 +98,7 @@ public class OrganizationServiceH4 implements OrganizationService {
 
 	@SuppressWarnings("unchecked")
 	public List<Organization> root() {
-		return createCriteria().add(Restrictions.isNull("parentId"))
+		return createCriteria().add(Restrictions.eqOrIsNull("parentId", ""))
 				.list();
 	}
 
@@ -119,10 +123,12 @@ public class OrganizationServiceH4 implements OrganizationService {
 		if (org == null) {
 			return new ArrayList<Organization>();
 		} else {
-			return sessionFactoryHelper.getSession()
+			List<Organization> orgs = sessionFactoryHelper.getSession()
 					.createQuery(HQL_QUERY_PATH)
-					.setString(0, id)
+					.setString(0, org.getPath())
 					.list();
+			orgs.add(org);
+			return orgs;
 		}
 	}
 

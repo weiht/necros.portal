@@ -22,17 +22,22 @@ public class OrgController {
 	@Resource(name="c.organizationService")
 	private OrganizationService orgService;
 
-	@RequestMapping(value=BASE_CTX_URL + "/children/:id", method=RequestMethod.GET)
-	public @ResponseBody List<Organization> listChildren(@PathVariable String id, HttpServletRequest req) {
-		return StringUtils.hasText(id) ? orgService.children(id) : orgService.root();
+	@RequestMapping(value=BASE_CTX_URL + "/root", method=RequestMethod.GET)
+	public @ResponseBody List<Organization> root(HttpServletRequest req) {
+		return orgService.root();
 	}
 
-	@RequestMapping(value=BASE_CTX_URL + "/path/:id", method=RequestMethod.GET)
+	@RequestMapping(value=BASE_CTX_URL + "/children/{id}", method=RequestMethod.GET)
+	public @ResponseBody List<Organization> listChildren(@PathVariable String id, HttpServletRequest req) {
+		return orgService.children(id);
+	}
+
+	@RequestMapping(value=BASE_CTX_URL + "/path/{id}", method=RequestMethod.GET)
 	public @ResponseBody List<Organization> orgPath(@PathVariable String id, HttpServletRequest req) {
 		return orgService.path(id);
 	}
 
-	@RequestMapping(value=BASE_CTX_URL + "/get/:id", method=RequestMethod.GET)
+	@RequestMapping(value=BASE_CTX_URL + "/get/{id}", method=RequestMethod.GET)
 	public @ResponseBody Organization getOrg(@PathVariable String id, HttpServletRequest req) {
 		return orgService.get(id);
 	}
