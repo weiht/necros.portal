@@ -22,7 +22,7 @@ public class PersonController {
 	private PersonService personService;
 
 	@RequestMapping(value=BASE_CTX_URL + "/all", method=RequestMethod.GET)
-	public @ResponseBody List<Person> allPersons(@PathVariable String id, HttpServletRequest req) {
+	public @ResponseBody List<Person> allPersons(HttpServletRequest req) {
 		return personService.all();
 	}
 
