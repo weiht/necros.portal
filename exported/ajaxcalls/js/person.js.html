@@ -1,0 +1,11 @@
+$sectionEvaluator.evaluate('context')
+angular.module('OrgPerson', ['ngResource'])
+.factory('Person', ['$resource', function($resource) {
+  return $resource('${mvcRoot}/person/get/:id', {'id': '@id'}, {
+    'all': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/person/all'},
+    'add': {'method': 'POST', 'url': '${mvcRoot}/person/add/'},
+    'update': {'method': 'POST', 'url': '${mvcRoot}/person/update'},
+    'remove': {'method': 'POST', 'url': '${mvcRoot}/person/remove'}
+  });
+}])
+;

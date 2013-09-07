@@ -1,0 +1,21 @@
+$sectionEvaluator.evaluate('context')
+angular.module('PersonManager', ['OrgPerson', 'DbMenu', 'Pagination'])
+.controller('PersonNewCtrl', ['$scope', function($scope) {
+}])
+.controller('PersonEditCtrl', ['$scope', function($scope) {
+}])
+.controller('PersonListCtrl', ['$scope', '$timeout', 'Person', 'PagerFactory', function($scope, $timeout, Person, PagerFactory) {
+  $scope.persons = Person.all({}, function(lst) {
+    $timeout(function() {
+      $scope.pager = PagerFactory.getPager(lst);
+    });
+  });
+}])
+.config(['$routeProvider', function($routeProvider) {
+  $routeProvider
+  .when('/new/:parentId', {'templateUrl': '${ajaxRoot}/mgr/person/view/add', 'controller': 'PersonNewCtrl'})
+  .when('/edit/:id', {'templateUrl': '${ajaxRoot}/mgr/person/view/edit', 'controller': 'PersonEditCtrl'})
+  .when('/list/:pn', {'templateUrl': '${ajaxRoot}/mgr/person/view/list', 'controller': 'PersonListCtrl'})
+  .otherwise({'redirectTo': '/list/'});
+}])
+;

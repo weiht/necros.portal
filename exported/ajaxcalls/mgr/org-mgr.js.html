@@ -26,7 +26,6 @@ angular.module('OrgManager', ['Organization', 'DbMenu'])
       alert('已保存');
       $window.history.go(-1);
     }, function(b) {
-      console.log(b.data);
       alert('保存失败。');
     });
   };
@@ -43,7 +42,7 @@ angular.module('OrgManager', ['Organization', 'DbMenu'])
         var orgPath = $scope.breadcrumb;
         var purl = '';
         if (orgPath.length > 1) {
-          purl = orgPath[orgPath.length - 2].id;
+        	purl = orgPath[orgPath.length - 2].id;
         }
         $l.path(purl);
       } else {
@@ -57,7 +56,6 @@ angular.module('OrgManager', ['Organization', 'DbMenu'])
         }
       }
     }, function(b) {
-      console.log(b.data);
       alert('删除失败。');
     });
   };
