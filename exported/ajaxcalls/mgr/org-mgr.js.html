@@ -16,13 +16,51 @@ angular.module('OrgManager', ['Organization', 'DbMenu'])
     });
   };
 }])
-.controller('OrgMgrEditCtrl', ['$scope', 'Org', function($scope, Org) {
+.controller('OrgMgrEditCtrl', ['$scope', '$routeParams', '$window', 'Org', 'OrgTypes', function($scope, $params, $window, Org, OrgTypes) {
+  $scope.orgid = $params.id;
+  $scope.breadcrumb = $params.id ? Org.path({'id': $params.id}) : [];
+  $scope.organization = $params.id ? Org.get({'id': $params.id}) : {};
+  $scope.orgTypes = OrgTypes.list;
+  $scope.save = function() {
+    Org.update({}, $scope.organization, function(edited) {
+      alert('已保存');
+      $window.history.go(-1);
+    }, function(b) {
+      console.log(b.data);
+      alert('保存失败。');
+    });
+  };
 }])
-.controller('OrgMgrViewCtrl', ['$scope', '$routeParams', 'Org', function($scope, $params, Org) {
+.controller('OrgMgrViewCtrl', ['$scope', '$routeParams', '$location', 'Org', function($scope, $params, $l, Org) {
   $scope.orgid = $params.id;
   $scope.breadcrumb = $params.id ? Org.path({'id': $params.id}) : [];
   $scope.organization = $params.id ? Org.get({'id': $params.id}) : {};
   $scope.children = $params.id ? Org.children({'parentId': $params.id}) : Org.root();
+  $scope.remove = function(org) {
+    Org.remove({}, org, function(removed) {
+      alert('已删除。');
+      if (removed.id == $scope.orgid) {
+        var orgPath = $scope.breadcrumb;
+        var purl = '';
+        if (orgPath.length > 1) {
+          purl = orgPath[orgPath.length - 2].id;
+        }
+        $l.path(purl);
+      } else {
+        var children = $scope.children;
+        for (var i = 0; i < children.length; i ++) {
+          var c = children[i];
+          if (c.id == removed.id) {
+            children.splice(i, 1);
+            break;
+          }
+        }
+      }
+    }, function(b) {
+      console.log(b.data);
+      alert('删除失败。');
+    });
+  };
 }])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider
