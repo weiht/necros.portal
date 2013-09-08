@@ -1,1 +1,113 @@
-person-add
+<form class="form form-horizontal">
+  <fieldset>
+    <legend>账号</legend>
+    <div class="control-group">
+      <label class="control-label" for="txtloginName">登录名</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge" id="txtloginName" ng-model="person.loginName"/>
+      </div>
+    </div>
+  </fieldset>
+  
+  <fieldset>
+    <legend>基础信息</legend>
+    <div class="control-group">
+      <label class="control-label" for="txtname">姓名</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtname" ng-model="person.info.name"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtaltName">称谓</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtaltName" ng-model="person.info.altName"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtgender">性别</label>
+      <div class="controls">
+        <select id="txtgender" ng-model="person.info.gender" ng-options="t.key as t.displayText for t in genders"></select>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtbirthDate">出生日期</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtbirthDate" ng-model="person.info.birthDate"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtdisplayOrder">显示顺序</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtdisplayOrder" ng-model="person.displayOrder"/>
+      </div>
+    </div>
+  </fieldset>
+  
+  <fieldset>
+    <legend>联系方式</legend>
+    <div class="control-group">
+      <label class="control-label" for="txtaddress">地址</label>
+      <div class="controls">
+        <input type="text" class="input-xxlarge" id="txtaddress" ng-model="person.contact.address"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtpostalCode">邮政编码</label>
+      <div class="controls">
+        <input type="text" id="txtpostalCode" ng-model="person.contact.postalCode"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txttel">电话</label>
+      <div class="controls">
+        <input type="text" id="txttel" ng-model="person.contact.tel"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtfax">传真</label>
+      <div class="controls">
+        <input type="text" id="txtfax" ng-model="person.contact.fax"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtmobile">手机</label>
+      <div class="controls">
+        <input type="text" id="txtmobile" ng-model="person.contact.mobile"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtemail">电子邮箱</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtemail" ng-model="person.contact.email"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtqq">QQ</label>
+      <div class="controls">
+        <input type="text" id="txtqq" ng-model="person.contact.qq"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtliveMessenger">Live Messenger</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtliveMessenger" ng-model="person.contact.liveMessenger"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="txtskype">Skype</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="txtskype" ng-model="person.contact.skype"/>
+      </div>
+    </div>
+  </fieldset>
+  
+  <hr/>
+
+  <div class="control-group">
+    <div class="controls">
+      <a class="btn btn-primary" ng-click="save();">保存</a>
+      <span class="divider">&nbsp;</span>
+      <a class="btn" onclick="history.go(-1);">取消</a>
+    </div>
+  </div>
+</form>
