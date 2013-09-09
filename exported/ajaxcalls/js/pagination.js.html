@@ -20,9 +20,9 @@ angular.module('Pagination', [])
         'recalc': function() {
           var a = this.list, c = this;
           if (a.length > 0) {
-            c.pageCount = (a.length + c.pageSize - 1 ) / 2
+            c.pageCount = Math.round((a.length + c.pageSize - 1 ) / 2)
           }
-          var diff = (c.listSize + 1) / 2;
+          var diff = Math.round((c.listSize + 1) / 2);
           var listFirst = c.pageNum - diff;
           if (listFirst < 1) listFirst = 1;
           var listLast = listFirst + c.listSize - 1;
@@ -34,6 +34,11 @@ angular.module('Pagination', [])
           }
           c.listFirst = listFirst;
           c.listLast = listLast;
+          var range = [];
+          for (var i = listFirst; i <= listLast; i ++) {
+            range.push(i);
+          }
+          this.listRange = range;
         }
       };
       conf.recalc();
@@ -41,4 +46,17 @@ angular.module('Pagination', [])
     }
   };
 }])
+.filter('paging', function() {
+  return function(list, pager, pnum) {
+    var pn = pnum ? pnum - 1 : 0;
+    if (!pager) return list;
+    pager.pageNum = pn + 1;
+    pager.recalc();
+    var start = pager.pageSize * pn;
+    var end = start + pager.pageSize;
+    if (start >= list.length) return [];
+    if (end >= list.length) end = list.length;
+    return list.slice(start, end);
+  };
+})
 ;

@@ -13,7 +13,7 @@
     <tr ng-show="!persons || !persons.length">
       <td colspan="5">未找到子菜单项</td>
     </tr>
-    <tr ng-repeat="p in persons">
+    <tr ng-repeat="p in persons | paging:pager:pn">
       <td>{{p.loginName}}</td>
       <td>{{p.info.name}}</td>
       <td>{{p.info.altName}}</td>
@@ -28,4 +28,13 @@
     </tr>
   </tbody>
 </table>
+<div ng-show="pager.pageCount > 1" class="pagination pagination-centered">
+  <ul>
+    <li><a ng-click="pn = 1;" ng-hide="pn <= 1">&laquo;</a><span ng-show="pn <= 1">&laquo;</span></li>
+    <li><a ng-click="pn = pn-1;" ng-hide="pn <= 1">&lsaquo;</a><span ng-show="pn <= 1">&lsaquo;</span></li>
+    <li ng-repeat="n in pager.listRange" ng-class="{active:pn == n}"><a ng-click="gotoPage(n);" ng-bind="n"></a></li>
+    <li><span ng-show="pn >= pager.pageCount">&rsaquo;</span><a ng-click="pn = pn + 1;" ng-hide="pn >= pager.pageCount">&rsaquo;</a></li>
+    <li><span ng-show="pn >= pager.pageCount">&raquo;</span><a ng-click="pn = pager.pageCount;" ng-hide="pn >= pager.pageCount">&raquo;</a></li>
+  </ul>
+</div>
 </div>

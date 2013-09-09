@@ -12,7 +12,6 @@ angular.module('PersonManager', ['OrgPerson', 'DbMenu', 'Pagination'])
       alert('已保存。');
       $window.history.go(-1);
     }, function(b) {
-      console.log(b.data);
       alert('保存失败。');
     });
   };
@@ -27,18 +26,21 @@ angular.module('PersonManager', ['OrgPerson', 'DbMenu', 'Pagination'])
       alert('已保存。');
       $window.history.go(-1);
     }, function(b) {
-      console.log(b.data);
       alert('保存失败。');
     });
   };
 }])
 .controller('PersonListCtrl', ['$scope', '$timeout', 'Person', 'Gender', 'PagerFactory', function($scope, $timeout, Person, Gender, PagerFactory) {
+  $scope.pn = 1;
   $scope.persons = Person.all({}, function(lst) {
     $timeout(function() {
-      $scope.pager = PagerFactory.getPager(lst);
+      $scope.pager = PagerFactory.getPager(lst, {'pageSize': 2, 'listSize': 5});
     });
   });
   $scope.genders = Gender.list;
+  $scope.gotoPage = function(n) {
+    $scope.pn = n;
+  };
 }])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider
