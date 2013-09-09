@@ -15,31 +15,31 @@
     <div class="control-group">
       <label class="control-label" for="txtname">姓名</label>
       <div class="controls">
-        <input type="text" class="input-large" id="txtname" ng-model="person.info.name" required/>
+        <label class="checkbox" ng-bind="person.info.name"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtaltName">称谓</label>
       <div class="controls">
-        <input type="text" class="input-large" id="txtaltName" ng-model="person.info.altName"/>
+        <label class="checkbox" ng-bind="person.info.altName"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtgender">性别</label>
       <div class="controls">
-        <select id="txtgender" ng-model="person.info.gender" ng-options="t.key as t.displayText for t in genders"></select>
+        <label class="checkbox" ng-bind="person.info.gender"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtbirthDate">出生日期</label>
       <div class="controls">
-        <input type="text" class="input-large" id="txtbirthDate" ng-model="person.info.birthDate"/>
+        <label class="checkbox" ng-bind="person.info.birthDate"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtdisplayOrder">显示顺序</label>
       <div class="controls">
-        <input type="text" class="input-large" id="txtdisplayOrder" ng-model="person.displayOrder" required/>
+        <label class="checkbox" ng-bind="person.displayOrder"></label>
       </div>
     </div>
   </fieldset>
@@ -49,55 +49,55 @@
     <div class="control-group">
       <label class="control-label" for="txtaddress">地址</label>
       <div class="controls">
-        <input type="text" class="input-xxlarge" id="txtaddress" ng-model="person.contact.address"/>
+        <label class="checkbox" ng-bind="person.contact.address"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtpostalCode">邮政编码</label>
       <div class="controls">
-        <input type="text" id="txtpostalCode" ng-model="person.contact.postalCode"/>
+        <label class="checkbox" ng-bind="person.contact.postalCode"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txttel">电话</label>
       <div class="controls">
-        <input type="text" id="txttel" ng-model="person.contact.tel"/>
+        <label class="checkbox" ng-bind="person.contact.tel"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtfax">传真</label>
       <div class="controls">
-        <input type="text" id="txtfax" ng-model="person.contact.fax"/>
+        <label class="checkbox" ng-bind="person.contact.fax"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtmobile">手机</label>
       <div class="controls">
-        <input type="text" id="txtmobile" ng-model="person.contact.mobile"/>
+        <label class="checkbox" ng-bind="person.contact.mobile"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtemail">电子邮箱</label>
       <div class="controls">
-        <input type="text" class="input-large" id="txtemail" ng-model="person.contact.email"/>
+        <label class="checkbox" ng-bind="person.contact.email"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtqq">QQ</label>
       <div class="controls">
-        <input type="text" id="txtqq" ng-model="person.contact.qq"/>
+        <label class="checkbox" ng-bind="person.contact.qq"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtliveMessenger">Live Messenger</label>
       <div class="controls">
-        <input type="text" class="input-large" id="txtliveMessenger" ng-model="person.contact.liveMessenger"/>
+        <label class="checkbox" ng-bind="person.contact.liveMessenger"></label>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="txtskype">Skype</label>
       <div class="controls">
-        <input type="text" class="input-large" id="txtskype" ng-model="person.contact.skype"/>
+        <label class="checkbox" ng-bind="person.contact.skype"></label>
       </div>
     </div>
   </fieldset>
@@ -106,9 +106,7 @@
 
   <div class="control-group">
     <div class="controls">
-      <button class="btn btn-primary" ng-click="save();" ng-disabled="form.$invalid">保存</button>
-      <span class="divider">&nbsp;</span>
-      <a class="btn" onclick="history.go(-1);">取消</a>
+      <a class="btn" onclick="history.go(-1);">返回</a>
     </div>
   </div>
 </form>

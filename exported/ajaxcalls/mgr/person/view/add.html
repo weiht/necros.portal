@@ -1,10 +1,11 @@
-<form class="form form-horizontal">
+<div class="offset2 span8">
+<form class="form form-horizontal" name="form">
   <fieldset>
     <legend>账号</legend>
     <div class="control-group">
       <label class="control-label" for="txtloginName">登录名</label>
       <div class="controls">
-        <input type="text" class="input-xlarge" id="txtloginName" ng-model="person.loginName"/>
+        <input type="text" class="input-xlarge" id="txtloginName" ng-model="person.loginName" required/>
       </div>
     </div>
   </fieldset>
@@ -14,7 +15,7 @@
     <div class="control-group">
       <label class="control-label" for="txtname">姓名</label>
       <div class="controls">
-        <input type="text" class="input-large" id="txtname" ng-model="person.info.name"/>
+        <input type="text" class="input-large" id="txtname" ng-model="person.info.name" required/>
       </div>
     </div>
     <div class="control-group">
@@ -38,7 +39,7 @@
     <div class="control-group">
       <label class="control-label" for="txtdisplayOrder">显示顺序</label>
       <div class="controls">
-        <input type="text" class="input-large" id="txtdisplayOrder" ng-model="person.displayOrder"/>
+        <input type="text" class="input-large" id="txtdisplayOrder" ng-model="person.displayOrder" required/>
       </div>
     </div>
   </fieldset>
@@ -105,9 +106,10 @@
 
   <div class="control-group">
     <div class="controls">
-      <a class="btn btn-primary" ng-click="save();">保存</a>
+      <button class="btn btn-primary" ng-click="save();" ng-disabled="form.$invalid">保存</button>
       <span class="divider">&nbsp;</span>
       <a class="btn" onclick="history.go(-1);">取消</a>
     </div>
   </div>
 </form>
+</div>

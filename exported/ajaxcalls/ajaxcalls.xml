@@ -18,4 +18,5 @@
     <ajaxCall id="mgr/person/view/add" displayName="添加人员的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/person/view/edit" displayName="修改人员的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/person/view/list" displayName="人员列表的ng-view" resultType="text/html"/>
+    <ajaxCall id="mgr/person/view/view" displayName="查看用户的ng-view" resultType="text/html"/>
 </ajaxCalls>

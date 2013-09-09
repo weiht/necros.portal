@@ -8,4 +8,9 @@ angular.module('OrgPerson', ['ngResource'])
     'remove': {'method': 'POST', 'url': '${mvcRoot}/person/remove'}
   });
 }])
+.factory('Gender', function() {
+  return {
+    'list': $services.p.jsonUtils.encode($services.p.entryServiceFactory.get("gender").all())
+  };
+})
 ;

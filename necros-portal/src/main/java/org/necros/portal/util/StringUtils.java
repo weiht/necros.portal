@@ -14,8 +14,8 @@ public class StringUtils {
 	public static String bytesToString(byte[] src) {
 		StringBuilder buff = new StringBuilder();
 		for (byte b: src) {
-			buff.append(HEX_CHARS[b >> 4]);
-			buff.append(HEX_CHARS[b % 16]);
+			buff.append(HEX_CHARS[(byte)(b >> 4) & 0x0f]);
+			buff.append(HEX_CHARS[b & 0x0f]);
 		}
 		return buff.toString();
 	}
