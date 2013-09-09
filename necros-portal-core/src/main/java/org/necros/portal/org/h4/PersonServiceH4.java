@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.necros.pagination.PageQueryResult;
 import org.necros.pagination.Pager;
@@ -36,7 +37,8 @@ public class PersonServiceH4 implements PersonService {
 	}
 	
 	protected Criteria createCriteria() {
-		return sessionFactoryHelper.createCriteria(clazz);
+		return sessionFactoryHelper.createCriteria(clazz)
+				.addOrder(Order.asc("displayOrder"));
 	}
 	
 	protected Criteria filterCriteria(Criteria c, String filterText) {
