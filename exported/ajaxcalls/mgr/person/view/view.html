@@ -27,7 +27,7 @@
     <div class="control-group">
       <label class="control-label" for="txtgender">性别</label>
       <div class="controls">
-        <label class="checkbox" ng-bind="person.info.gender"></label>
+        <label class="checkbox" ng-bind="person.info.gender | entryText:genders"></label>
       </div>
     </div>
     <div class="control-group">

@@ -1,5 +1,5 @@
 $sectionEvaluator.evaluate('context')
-angular.module('PersonManager', ['OrgPerson', 'DbMenu', 'Pagination'])
+angular.module('PersonManager', ['OrgPerson', 'DbMenu', 'Pagination', 'Dict'])
 .controller('PersonNewCtrl', ['$scope', '$window', 'Person', 'Gender', function($scope, $window, Person, Gender) {
   $scope.genders = Gender.list;
   $scope.person = {
@@ -34,21 +34,18 @@ angular.module('PersonManager', ['OrgPerson', 'DbMenu', 'Pagination'])
   $scope.pn = 1;
   $scope.persons = Person.all({}, function(lst) {
     $timeout(function() {
-      $scope.pager = PagerFactory.getPager(lst);
+      $scope.pager = PagerFactory.getPager(lst, {'pageSize': 10, 'listSize': 10});
     });
   });
   $scope.genders = Gender.list;
   $scope.gotoPage = function(n) {
     $scope.pn = n;
   };
-  $scope.remove = function(p) {
-    Person.remove({}, p, function(removed) {
-      var ix = $scope.persons.indexOf(p);
-      if (ix >= 0) {
-        $scope.persons.splice(ix, 1);
-      }
+  $scope.resetPassword = function(p) {
+    Person.resetPassword({'id': p.id}, {}, function(newPwd) {
+      alert('登录口令已重置为：\n' + newPwd.password);
     }, function(b) {
-      alert('删除失败。');
+      alert('重置失败。');
     });
   };
 }])
@@ -57,6 +54,7 @@ angular.module('PersonManager', ['OrgPerson', 'DbMenu', 'Pagination'])
   .when('/new/:parentId', {'templateUrl': '${ajaxRoot}/mgr/person/view/add', 'controller': 'PersonNewCtrl'})
   .when('/edit/:id', {'templateUrl': '${ajaxRoot}/mgr/person/view/edit', 'controller': 'PersonEditCtrl'})
   .when('/view/:id', {'templateUrl': '${ajaxRoot}/mgr/person/view/view', 'controller': 'PersonEditCtrl'})
+  .when('/passwd/:id', {'templateUrl': '${ajaxRoot}/mgr/person/view/passwd', 'controller': 'PersonPasswdCtrl'})
   .when('/list/:pn', {'templateUrl': '${ajaxRoot}/mgr/person/view/list', 'controller': 'PersonListCtrl'})
   .otherwise({'redirectTo': '/list/'});
 }])

@@ -5,7 +5,8 @@ angular.module('OrgPerson', ['ngResource'])
     'all': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/person/all'},
     'add': {'method': 'POST', 'url': '${mvcRoot}/person/add/'},
     'update': {'method': 'POST', 'url': '${mvcRoot}/person/update'},
-    'remove': {'method': 'POST', 'url': '${mvcRoot}/person/remove'}
+    'remove': {'method': 'POST', 'url': '${mvcRoot}/person/remove'},
+    'resetPassword': {'method': 'POST', 'url': '${mvcRoot}/person/resetPassword/:id', 'params': {'id': '@id'}}
   });
 }])
 .factory('Gender', function() {

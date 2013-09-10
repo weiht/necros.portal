@@ -1,0 +1,12 @@
+angular.module('Dict', [])
+.filter('entryText', function() {
+  return function(k, entries) {
+    if (!k || !entries || !entries.length) return '';
+    for (var i = 0; i < entries.length; i ++) {
+      var e = entries[i];
+      if (e.key == k) return e.displayText;
+    }
+    return '';
+  };
+})
+;

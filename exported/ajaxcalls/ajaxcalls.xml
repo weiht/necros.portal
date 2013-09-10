@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ajaxCalls xmlns="http://portal.necros.org/ajaxcalls">
     <ajaxCall id="js/bootstrap-dropdown-on-hover.js" displayName="bootstrap下拉菜单插件" resultType="text/javascript"/>
+    <ajaxCall id="js/dict-entry.js" displayName="字典相关的angular模块" resultType="text/javascript"/>
     <ajaxCall id="js/menu-mgr.js" displayName="菜单管理的Angular模块" resultType="text/javascript"/>
     <ajaxCall id="js/menu.js" displayName="显示菜单的脚本" resultType="text/javascript"/>
     <ajaxCall id="js/org.js" displayName="单位的angular模块" resultType="text/javascript"/>

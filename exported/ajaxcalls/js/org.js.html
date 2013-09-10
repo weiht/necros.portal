@@ -13,4 +13,10 @@ angular.module('Organization', ['ngResource'])
 .factory('OrgTypes', function() {
   return {'list': $services.p.jsonUtils.encode($services.p.entryServiceFactory.get("orgType").all())};
 })
+.filter('orgName', ['Org', function(Org) {
+  return function(orgId) {
+    if (!orgId) return '';
+    return Org.get({'id': orgId}).name;
+  };
+}])
 ;
