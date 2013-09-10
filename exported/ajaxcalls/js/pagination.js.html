@@ -8,21 +8,23 @@ angular.module('Pagination', [])
   };
   return {
     'getPager': function(arr, config) {
-      var pageSize = config && config.pageSize && config.pageSize > defConfig.MIN_PAGE_SIZE ? config.pageSize : defConfig.MIN_PAGE_SIZE;
+      var pageSize = config && config.pageSize ? (config.pageSize > defConfig.MIN_PAGE_SIZE ? config.pageSize : defConfig.MIN_PAGE_SIZE) : defConfig.DEFAULT_PAGE_SIZE;
       var conf = {
         'pageNum': config && config.pageNum > 1 ? config.pageNum : 1,
         'pageSize': pageSize,
         'pageCount': 0,
-        'listSize': config && config.listSize && config.listSize > defConfig.MIN_LIST_SIZE ? config.listSize : defConfig.MIN_LIST_SIZE,
+        'listSize': config && config.listSize ? (config.listSize > defConfig.MIN_LIST_SIZE ? config.listSize : defConfig.MIN_LIST_SIZE) : defConfig.DEFAUTL_LIST_SIZE,
         'listFirst': 0,
         'listLast': 0,
         'list': arr,
         'recalc': function() {
           var a = this.list, c = this;
           if (a.length > 0) {
-            c.pageCount = Math.round((a.length + c.pageSize - 1 ) / 2)
+            c.pageCount = Math.floor((a.length + c.pageSize - 1 ) / c.pageSize)
+          } else {
+            c.pageCount = 0;
           }
-          var diff = Math.round((c.listSize + 1) / 2);
+          var diff = Math.floor((c.listSize + 1) / 2);
           var listFirst = c.pageNum - diff;
           if (listFirst < 1) listFirst = 1;
           var listLast = listFirst + c.listSize - 1;

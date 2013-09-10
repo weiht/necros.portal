@@ -34,12 +34,22 @@ angular.module('PersonManager', ['OrgPerson', 'DbMenu', 'Pagination'])
   $scope.pn = 1;
   $scope.persons = Person.all({}, function(lst) {
     $timeout(function() {
-      $scope.pager = PagerFactory.getPager(lst, {'pageSize': 2, 'listSize': 5});
+      $scope.pager = PagerFactory.getPager(lst);
     });
   });
   $scope.genders = Gender.list;
   $scope.gotoPage = function(n) {
     $scope.pn = n;
+  };
+  $scope.remove = function(p) {
+    Person.remove({}, p, function(removed) {
+      var ix = $scope.persons.indexOf(p);
+      if (ix >= 0) {
+        $scope.persons.splice(ix, 1);
+      }
+    }, function(b) {
+      alert('删除失败。');
+    });
   };
 }])
 .config(['$routeProvider', function($routeProvider) {
