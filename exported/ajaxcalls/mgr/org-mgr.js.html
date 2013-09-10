@@ -60,11 +60,18 @@ angular.module('OrgManager', ['Organization', 'DbMenu'])
     });
   };
 }])
+.controller('OrgMgrPersonsCtrl', ['$scope', '$routeParams', '$location', 'Org', function($scope, $params, $l, Org) {
+  $scope.orgid = $params.id;
+  $scope.breadcrumb = $params.id ? Org.path({'id': $params.id}) : [];
+  $scope.organization = $params.id ? Org.get({'id': $params.id}) : {};
+  $scope.persons = $params.id ? Org.persons({'id': $params.id}) : [];
+}])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider
   .when('/new/:parentId', {'templateUrl': '${ajaxRoot}/mgr/org/view/add', 'controller': 'OrgMgrNewCtrl'})
   .when('/edit/:id', {'templateUrl': '${ajaxRoot}/mgr/org/view/edit', 'controller': 'OrgMgrEditCtrl'})
   .when('/view/:id', {'templateUrl': '${ajaxRoot}/mgr/org/view/view', 'controller': 'OrgMgrViewCtrl'})
+  .when('/persons/:id', {'templateUrl': '${ajaxRoot}/mgr/org/view/persons', 'controller': 'OrgMgrPersonsCtrl'})
   .otherwise({'redirectTo': '/view/'});
 }])
 ;
