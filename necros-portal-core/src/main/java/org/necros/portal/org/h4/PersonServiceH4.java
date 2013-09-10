@@ -9,6 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.HibernateException;
 import org.necros.pagination.PageQueryResult;
 import org.necros.pagination.Pager;
 import org.necros.portal.data.BasicObjectService;
@@ -88,19 +89,27 @@ public class PersonServiceH4 implements PersonService {
 		return p;
 	}
 
-	public void changePassword(String id, String oldPwd, String newPwd) {
+	public void changePassword(String id, String oldPwd, String newPwd, Person editor) {
 		Person p = get(id);
 		String op = passwordEncoder.encode(oldPwd, p.getLoginName(), p);
 		if (op.equals(p.getLoginPassword())) {
 			p.setLoginPassword(passwordEncoder.encode(newPwd, p.getLoginName(), p));
+			basicObjectService.touch(id, clazz.getName(),
+					editor == null ? null : editor.getId(),
+					editor == null ? null : editor.getInfo().getName());
+			doUpdate(p);
+		} else {
+			throw new HibernateException("Old password does not match.");
 		}
-		doUpdate(p);
 	}
 
-	public String resetPassword(String id) {
+	public String resetPassword(String id, Person editor) {
 		Person p = get(id);
 		String newPwd = passwordGenerator.generate();
 		p.setLoginPassword(passwordEncoder.encode(newPwd, p.getLoginName(), p));
+		basicObjectService.touch(id, clazz.getName(),
+				editor == null ? null : editor.getId(),
+				editor == null ? null : editor.getInfo().getName());
 		doUpdate(p);
 		return newPwd;
 	}

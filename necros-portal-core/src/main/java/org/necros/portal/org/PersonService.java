@@ -18,8 +18,8 @@ public interface PersonService {
 	public abstract Person update(Person p, Person editor);
 	public abstract Person remove(String id, Person editor);
 	
-	public abstract void changePassword(String id, String oldPwd, String newPwd);
-	public abstract String resetPassword(String id);
+	public abstract void changePassword(String id, String oldPwd, String newPwd, Person editor);
+	public abstract String resetPassword(String id, Person editor);
 	
 	public abstract List<Person> all();
 	public abstract int countAll();
