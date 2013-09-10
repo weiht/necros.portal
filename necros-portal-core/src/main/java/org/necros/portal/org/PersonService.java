@@ -28,4 +28,22 @@ public interface PersonService {
 	public abstract List<Person> filter(String filterText);
 	public abstract int countFiltered(String filterText);
 	public abstract PageQueryResult<Person> pageFiltered(Pager p, String filterText);
+	
+	public abstract Person updateMembership(Person p, String orgId, Person editor);
+	
+	public abstract List<Person> orgAllDirectMembers(String orgId);
+	public abstract int countOrgAllDirectMembers(String orgId);
+	public abstract PageQueryResult<Person> pageOrgAllDirectMembers(Pager p, String orgId);
+	
+	public abstract List<Person> orgAllDescendMembers(String orgId);
+	public abstract int countOrgAllDescendMembers(String orgId);
+	public abstract PageQueryResult<Person> pageOrgAllDescendMembers(Pager p, String orgId);
+	
+	public abstract List<Person> orgFilteredDirectMembers(String orgId, String filter);
+	public abstract int countOrgFilteredDirectMembers(String orgId, String filter);
+	public abstract PageQueryResult<Person> pageOrgFilteredDirectMembers(Pager p, String orgId, String filter);
+	
+	public abstract List<Person> orgFilteredDescendMembers(String orgId, String filter);
+	public abstract int countOrgFilteredDescendMembers(String orgId, String filter);
+	public abstract PageQueryResult<Person> pageOrgFilteredDescendMembers(Pager p, String orgId, String filter);
 }

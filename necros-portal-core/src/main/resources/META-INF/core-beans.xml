@@ -30,6 +30,7 @@
 		<property name="basicObjectService" ref="d.basicObjectService"></property>
 		<property name="passwordEncoder" ref="passwordEncoder"></property>
 		<property name="passwordGenerator" ref="passwordGenerator"></property>
+		<property name="organizationService" ref="c.organizationService"></property>
 	</bean>
 	
 	<bean parent="p.pageServiceBeansInjecter">
