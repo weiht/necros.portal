@@ -15,6 +15,7 @@
     <ajaxCall id="mgr/org-mgr.js" displayName="单位管理的angular模块" resultType="text/javascript"/>
     <ajaxCall id="mgr/org/view/add" displayName="创建单位的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/org/view/edit" displayName="单位编辑的ng-view" resultType="text/html"/>
+    <ajaxCall id="mgr/org/view/newmembers" displayName="单位添加人员的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/org/view/persons" displayName="单位人员管理的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/org/view/view" displayName="单位管理的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/person-mgr.js" displayName="人员管理的angular模块" resultType="text/javascript"/>

@@ -21,12 +21,16 @@ import org.necros.portal.org.PasswordGenerator;
 import org.necros.portal.org.Person;
 import org.necros.portal.org.PersonService;
 import org.necros.portal.util.SessionFactoryHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author weiht
  *
  */
 public class PersonServiceH4 implements PersonService {
+	private static final Logger logger = LoggerFactory.getLogger(PersonServiceH4.class);
+	
 	protected static final Class<?> clazz = Person.class;
 	
 	protected SessionFactoryHelper sessionFactoryHelper;
@@ -151,13 +155,16 @@ public class PersonServiceH4 implements PersonService {
 
 	public Person updateMembership(Person p, String orgId, Person editor) {
 		Person orig = findOriginalPerson(p.getId());
+		logger.debug("Original person: {}, org id: {}", orig.getInfo().getName(), orgId);
 		if (orgId == null) {
-			p.setOrgId(null);
-			p.setOrgPath(null);
+			orig.setOrgId(null);
+			orig.setOrgPath(null);
 		} else {
 			Organization org = findOrg(orgId);
-			p.setOrgId(org.getId());
-			p.setOrgPath(org.getPath());
+			logger.debug("Organization: {}", org.getName());
+			orig.setOrgId(org.getId());
+			orig.setOrgPath(org.getPath());
+			logger.debug("Person orgId: {}, orgPath: {}", orig.getOrgId(), orig.getOrgPath());
 		}
 		
 		basicObjectService.touch(orig.getId(), clazz.getName(),

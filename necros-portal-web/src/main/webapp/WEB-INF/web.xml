@@ -68,6 +68,10 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>openSessionInViewFilter</filter-name>
+        <url-pattern>/pm/orgmembers/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>openSessionInViewFilter</filter-name>
         <url-pattern>/pm/person/*</url-pattern>
     </filter-mapping>
 	

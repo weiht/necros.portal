@@ -1,0 +1,36 @@
+$sectionEvaluator.evaluate('context')
+#set ($personViewRoot = "$mvcRoot/mgr/person")
+<ul class="breadcrumb">
+  <li><a href="#/">单位管理</a></li>
+  <li ng-repeat="org in breadcrumb"> <span class="devider">/</span> <a href="#/view/{{org.id}}">{{org.altName || org.name}}</a></li>
+  <li> <span class="devider">/</span> 直属人员</li>
+</ul>
+
+<div class="offset2 span8">
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th width="180">登录名</th>
+      <th>姓名</th>
+      <th width="120">称谓</th>
+      <th width="60">性别</th>
+      <th width="80">操作&nbsp;<a href="#/newmember/{{organization.id}}"><i class="icon-plus"></i></a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-show="!members || !members.length">
+      <td colspan="5">未找到人员</td>
+    </tr>
+    <tr ng-repeat="p in members">
+      <td>{{p.loginName}}</td>
+      <td>{{p.info.name}}</td>
+      <td>{{p.info.altName}}</td>
+      <td>{{p.info.gender | entryText:genders}}</td><td>
+        <a href="${personViewRoot}#/view/{{p.id}}"><i class="icon-user"></i></a>
+        <span class="divider">&nbsp;</span>
+        <a href="" ng-click="remove(p);"><i class="icon-minus"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>

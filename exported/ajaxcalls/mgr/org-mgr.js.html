@@ -1,5 +1,5 @@
 $sectionEvaluator.evaluate('context')
-angular.module('OrgManager', ['Organization', 'DbMenu'])
+angular.module('OrgManager', ['Organization', 'DbMenu', 'OrganizedPersons', 'Dict', 'OrgPerson', 'Pagination'])
 .controller('OrgMgrNewCtrl', ['$scope', '$routeParams', '$location', 'Org', 'OrgTypes', function($scope, $params, $l, Org, OrgTypes) {
   $scope.pid = $params.parentId;
   $scope.breadcrumb = $params.parentId ? Org.path({'id': $params.parentId}) : [];
@@ -60,18 +60,43 @@ angular.module('OrgManager', ['Organization', 'DbMenu'])
     });
   };
 }])
-.controller('OrgMgrPersonsCtrl', ['$scope', '$routeParams', '$location', 'Org', function($scope, $params, $l, Org) {
+.controller('OrgMgrMembersCtrl', ['$scope', '$routeParams', '$location', 'Org', 'OrgMembers', 'Gender', function($scope, $params, $l, Org, OrgMembers, Gender) {
   $scope.orgid = $params.id;
+  $scope.genders = Gender.list;
   $scope.breadcrumb = $params.id ? Org.path({'id': $params.id}) : [];
   $scope.organization = $params.id ? Org.get({'id': $params.id}) : {};
-  $scope.persons = $params.id ? Org.persons({'id': $params.id}) : [];
+  $scope.members = $params.id ? OrgMembers.direct({'orgId': $params.id}) : [];
+}])
+.controller('OrgMgrAddMembersCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'Org', 'OrgMembers', 'Person', 'Gender', 'PagerFactory', function($scope, $params, $l, $timeout, Org, OrgMembers, Person, Gender, PagerFactory) {
+  $scope.orgid = $params.id;
+  $scope.genders = Gender.list;
+  $scope.breadcrumb = $params.id ? Org.path({'id': $params.id}) : [];
+  $scope.organization = $params.id ? Org.get({'id': $params.id}) : {};
+  $scope.members = $params.id ? OrgMembers.direct({'orgId': $params.id}) : [];
+  $scope.pn = 1;
+  $scope.persons = Person.all({}, function(lst) {
+    $timeout(function() {
+      $scope.pager = PagerFactory.getPager(lst, {'pageSize': 10, 'listSize': 10});
+    });
+  });
+  $scope.gotoPage = function(n) {
+    $scope.pn = n;
+  };
+  $scope.addMember = function(m) {
+    OrgMembers.update({'orgId': $scope.orgid}, m, function(added) {
+      $scope.members.push(added);
+    }, function(b) {
+      alert('添加失败。');
+    });
+  };
 }])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider
   .when('/new/:parentId', {'templateUrl': '${ajaxRoot}/mgr/org/view/add', 'controller': 'OrgMgrNewCtrl'})
   .when('/edit/:id', {'templateUrl': '${ajaxRoot}/mgr/org/view/edit', 'controller': 'OrgMgrEditCtrl'})
   .when('/view/:id', {'templateUrl': '${ajaxRoot}/mgr/org/view/view', 'controller': 'OrgMgrViewCtrl'})
-  .when('/persons/:id', {'templateUrl': '${ajaxRoot}/mgr/org/view/persons', 'controller': 'OrgMgrPersonsCtrl'})
+  .when('/members/:id', {'templateUrl': '${ajaxRoot}/mgr/org/view/persons', 'controller': 'OrgMgrMembersCtrl'})
+  .when('/newmember/:id', {'templateUrl': '${ajaxRoot}/mgr/org/view/newmembers', 'controller': 'OrgMgrAddMembersCtrl'})
   .otherwise({'redirectTo': '/view/'});
 }])
 ;

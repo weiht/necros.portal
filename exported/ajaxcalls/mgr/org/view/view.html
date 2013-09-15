@@ -13,6 +13,8 @@
     <a class="btn" ng-href="#/edit/{{organization.id}}"><i class="icon-pencil"></i>编辑</a>
     <span class="divider">&nbsp;</span>
     <a class="btn" ng-click="remove(organization)"><i class="icon-minus"></i>删除</a>
+    <span class="divider">&nbsp;</span>
+    <a class="btn btn-primary" ng-href="#/members/{{organization.id}}"><i class="icon-user icon-white"></i>人员</a>
     <hr/>
     <div>{{organization.altName}}</div>
     <div>{{organization.description}}</div>
@@ -26,7 +28,7 @@
       <th width="160">名称</th>
       <th width="120">简称</th>
       <th>地址</th>
-      <th width="80">操作&nbsp;<a href="#/new/{{organization.id}}"><i class="icon-plus"></i></a></th>
+      <th width="100">操作&nbsp;<a href="#/new/{{organization.id}}"><i class="icon-plus"></i></a></th>
     </tr>
   </thead>
   <tbody>
@@ -39,6 +41,8 @@
       <td>{{org.contact.address}}</td>
       <td>
         <a href="#/view/{{org.id}}"><i class="icon-list"></i></a>
+        <span class="divider">&nbsp;</span>
+        <a href="#/members/{{org.id}}"><i class="icon-user"></i></a>
         <span class="divider">&nbsp;</span>
         <a href="#/edit/{{org.id}}"><i class="icon-pencil"></i></a>
         <span class="divider">&nbsp;</span>

@@ -1,2 +1,29 @@
-angular.module('OrganizedPersons', ['$resource'])
+$sectionEvaluator.evaluate('context')
+angular.module('OrganizedPersons', ['ngResource'])
+.factory('OrgMembers', ['$resource', function($resource) {
+  return $resource('${mvcRoot}/orgmembers/direct/:id', {'id': '@id'}, {
+    'direct': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/orgmembers/direct/:orgId', 'params': {'orgId': '@orgId'}},
+    'decend': {'isArray': true, 'method': 'GET', 'url': '${mvcRoot}/orgmembers/decend/:orgId', 'params': {'orgId': '@orgId'}},
+    'update': {'method': 'POST', 'url': '${mvcRoot}/orgmembers/update/:orgId', 'params': {'orgId': '@orgId'}}
+  });
+}])
+.filter('notMembers', function() {
+  return function(all, members) {
+    if (!members || !members.length) return all;
+    var r = [];
+    for (var i = 0; i < all.length; i ++) {
+      var p = all[i];
+      var found = false;
+      for (var j = 0; j < members.length; j ++) {
+        var m = members[j];
+        if (m.id == p.id) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) r.push(p);
+    }
+    return r;
+  };
+})
 ;

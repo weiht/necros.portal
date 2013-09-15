@@ -16,13 +16,13 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class PersonInfo implements Serializable {
 	@Column(name="full_name", length=200, nullable=false)
-	public String name;
+	private String name;
 	@Column(name="alt_name", length=200)
-	public String altName;
+	private String altName;
 	@Column(name="person_gender", length=10)
-	public String gender;
+	private String gender;
 	@Column(name="birth_date")
-	public Date birthDate;
+	private Date birthDate;
 	
 	public String getName() {
 		return name;
