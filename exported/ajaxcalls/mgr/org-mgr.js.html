@@ -66,6 +66,19 @@ angular.module('OrgManager', ['Organization', 'DbMenu', 'OrganizedPersons', 'Dic
   $scope.breadcrumb = $params.id ? Org.path({'id': $params.id}) : [];
   $scope.organization = $params.id ? Org.get({'id': $params.id}) : {};
   $scope.members = $params.id ? OrgMembers.direct({'orgId': $params.id}) : [];
+  $scope.remove = function(m) {
+    OrgMembers.update({'orgId': ''}, m, function(removed) {
+      var members = $scope.members;
+      for (var i = 0; i < members.length; i ++) {
+        if (members[i].id = removed.id) {
+          members.splice(i, 1);
+          break;
+        }
+      }
+    }, function(b) {
+      alert('删除失败。');
+    });
+  };
 }])
 .controller('OrgMgrAddMembersCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'Org', 'OrgMembers', 'Person', 'Gender', 'PagerFactory', function($scope, $params, $l, $timeout, Org, OrgMembers, Person, Gender, PagerFactory) {
   $scope.orgid = $params.id;

@@ -1,5 +1,5 @@
 $sectionEvaluator.evaluate('context')
-#set ($personViewRoot = "$mvcRoot/mgr/person")
+#set ($personViewRoot = "$mvcRoot/channel/mgr/person")
 <ul class="breadcrumb">
   <li><a href="#/">单位管理</a></li>
   <li ng-repeat="org in breadcrumb"> <span class="devider">/</span> <a href="#/view/{{org.id}}">{{org.altName || org.name}}</a></li>
