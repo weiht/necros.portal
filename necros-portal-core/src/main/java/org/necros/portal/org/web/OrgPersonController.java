@@ -36,11 +36,16 @@ public class OrgPersonController {
 	}
 
 	@RequestMapping(value=BASE_CTX_URL + "/update/{orgId}", method=RequestMethod.POST)
-	public @ResponseBody Person updateMembers(@PathVariable String orgId, @RequestBody Person p, HttpServletRequest req) {
+	public @ResponseBody Person updateMember(@PathVariable String orgId, @RequestBody Person p, HttpServletRequest req) {
 		Person editor = SessionContext.getCurrentContext(req).getCurrentUser();
 		logger.debug("Updating person {} to org {}.", p.getId(), orgId);
 		Person updated = personService.updateMembership(p, orgId, editor);
 		logger.debug("Org id: {}, org path: {}", updated.getOrgId(), updated.getOrgPath());
 		return updated;
+	}
+
+	@RequestMapping(value=BASE_CTX_URL + "/update", method=RequestMethod.POST)
+	public @ResponseBody Person removeMember(@RequestBody Person p, HttpServletRequest req) {
+		return updateMember(null, p, req);
 	}
 }
