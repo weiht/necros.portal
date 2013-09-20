@@ -48,7 +48,7 @@ public class OrganizationServiceH4 implements OrganizationService {
 
 	public Organization create(Organization org, Person editor) {
 		String id = (String) idGenerator.generate();
-		basicObjectService.touch(id, Organization.class.getName(),
+		basicObjectService.touch(id, Organization.ENTITY_NAME,
 				editor == null ? null : editor.getId(),
 				editor == null ? null : editor.getInfo().getName());
 		org.setId(id);
@@ -72,7 +72,7 @@ public class OrganizationServiceH4 implements OrganizationService {
 	public Organization update(Organization org, Person editor) {
 		String id = org.getId();
 		Organization orig = get(id);
-		basicObjectService.touch(id, Organization.class.getName(),
+		basicObjectService.touch(id, Organization.ENTITY_NAME,
 				editor == null ? null : editor.getId(),
 				editor == null ? null : editor.getInfo().getName());
 		orig.setName(org.getName());
@@ -88,7 +88,7 @@ public class OrganizationServiceH4 implements OrganizationService {
 	public Organization remove(String id, Person editor) {
 		Organization org = get(id);
 		if (org != null) {
-			basicObjectService.touch(id, Organization.class.getName(),
+			basicObjectService.touch(id, Organization.ENTITY_NAME,
 					editor == null ? null : editor.getId(),
 					editor == null ? null : editor.getInfo().getName());
 			sessionFactoryHelper.getSession().delete(org);

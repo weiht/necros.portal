@@ -63,7 +63,7 @@ public class PersonServiceH4 implements PersonService {
 
 	public Person create(Person p, Person editor) {
 		String id = (String) idGenerator.generate();
-		basicObjectService.touch(id, clazz.getName(),
+		basicObjectService.touch(id, Person.ENTITY_NAME,
 				editor == null ? null : editor.getId(),
 				editor == null ? null : editor.getInfo().getName());
 		p.setId(id);
@@ -75,7 +75,7 @@ public class PersonServiceH4 implements PersonService {
 	public Person update(Person p, Person editor) {
 		String id = p.getId();
 		Person orig = findOriginalPerson(id);
-		basicObjectService.touch(id, clazz.getName(),
+		basicObjectService.touch(id, Person.ENTITY_NAME,
 				editor == null ? null : editor.getId(),
 				editor == null ? null : editor.getInfo().getName());
 		orig.setInfo(p.getInfo());
@@ -88,7 +88,7 @@ public class PersonServiceH4 implements PersonService {
 	public Person remove(String id, Person editor) {
 		Person p = findOriginalPerson(id);
 		if (p != null) {
-			basicObjectService.touch(id, clazz.getName(),
+			basicObjectService.touch(id, Person.ENTITY_NAME,
 					editor == null ? null : editor.getId(),
 					editor == null ? null : editor.getInfo().getName());
 			sessionFactoryHelper.getSession().delete(p);
@@ -101,7 +101,7 @@ public class PersonServiceH4 implements PersonService {
 		String op = passwordEncoder.encode(oldPwd, p.getLoginName(), p);
 		if (op.equals(p.getLoginPassword())) {
 			p.setLoginPassword(passwordEncoder.encode(newPwd, p.getLoginName(), p));
-			basicObjectService.touch(id, clazz.getName(),
+			basicObjectService.touch(id, Person.ENTITY_NAME,
 					editor == null ? null : editor.getId(),
 					editor == null ? null : editor.getInfo().getName());
 			doUpdate(p);
@@ -114,7 +114,7 @@ public class PersonServiceH4 implements PersonService {
 		Person p = findOriginalPerson(id);
 		String newPwd = passwordGenerator.generate();
 		p.setLoginPassword(passwordEncoder.encode(newPwd, p.getLoginName(), p));
-		basicObjectService.touch(id, clazz.getName(),
+		basicObjectService.touch(id, Person.ENTITY_NAME,
 				editor == null ? null : editor.getId(),
 				editor == null ? null : editor.getInfo().getName());
 		doUpdate(p);
@@ -167,7 +167,7 @@ public class PersonServiceH4 implements PersonService {
 			logger.debug("Person orgId: {}, orgPath: {}", orig.getOrgId(), orig.getOrgPath());
 		}
 		
-		basicObjectService.touch(orig.getId(), clazz.getName(),
+		basicObjectService.touch(orig.getId(), Person.ENTITY_NAME,
 				editor == null ? null : editor.getId(),
 				editor == null ? null : editor.getInfo().getName());
 		doUpdate(orig);

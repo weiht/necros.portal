@@ -16,8 +16,9 @@ import javax.persistence.Table;
  *
  */
 @SuppressWarnings("serial")
-@Entity @Table(name="portal_organizations")
+@Entity(name=Organization.ENTITY_NAME) @Table(name="portal_organizations")
 public class Organization implements Serializable {
+	public static final String ENTITY_NAME = "Organization";
 	public static final String SPLITTER = "/";
 	
 	@Id @Column(name="org_id", length=64)

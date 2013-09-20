@@ -17,8 +17,9 @@ import javax.persistence.Transient;
  *
  */
 @SuppressWarnings("serial")
-@Entity @Table(name="portal_menu_items")
+@Entity(name=MenuItem.ENTITY_NAME) @Table(name="portal_menu_items")
 public class MenuItem implements Serializable {
+	public static final String ENTITY_NAME = "MenuItem";
 	public static final String SPLITTER = "/";
 	public static final Integer USABLE = 0;
 	

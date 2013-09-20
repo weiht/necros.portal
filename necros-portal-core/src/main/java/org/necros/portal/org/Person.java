@@ -16,8 +16,10 @@ import javax.persistence.Table;
  *
  */
 @SuppressWarnings("serial")
-@Entity @Table(name="portal_persons")
+@Entity(name=Person.ENTITY_NAME) @Table(name="portal_persons")
 public class Person implements Serializable {
+	public static final String ENTITY_NAME = "Person";
+	
 	@Id @Column(name="person_id", length=200)
 	private String id;
 	@Column(name="login_name", length=200, nullable=false)

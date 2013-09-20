@@ -35,7 +35,7 @@ public class MenuServiceH4 implements MenuService {
 
 	public MenuItem create(MenuItem itm, Person editor) {
 		String id = (String) idGenerator.generate();
-		basicObjectService.touch(id, clazz.getName(),
+		basicObjectService.touch(id, MenuItem.ENTITY_NAME,
 				editor == null ? null : editor.getId(),
 				editor == null ? null : editor.getInfo().getName());
 		itm.setId(id);
@@ -57,7 +57,7 @@ public class MenuServiceH4 implements MenuService {
 	public MenuItem update(MenuItem itm, Person editor) {
 		String id = itm.getId();
 		MenuItem orig = get(id);
-		basicObjectService.touch(id, clazz.getName(),
+		basicObjectService.touch(id, MenuItem.ENTITY_NAME,
 				editor == null ? null : editor.getId(),
 				editor == null ? null : editor.getInfo().getName());
 		orig.setName(itm.getName());
@@ -74,7 +74,7 @@ public class MenuServiceH4 implements MenuService {
 	public MenuItem remove(String id, Person editor) {
 		MenuItem orig = get(id);
 		if (orig != null) {
-			basicObjectService.touch(id, clazz.getName(),
+			basicObjectService.touch(id, MenuItem.ENTITY_NAME,
 					editor == null ? null : editor.getId(),
 					editor == null ? null : editor.getInfo().getName());
 			sessionFactoryHelper.getSession().delete(orig);
