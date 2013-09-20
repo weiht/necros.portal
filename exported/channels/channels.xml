@@ -4,4 +4,5 @@
     <channel id="mgr/menu" displayName="菜单管理"/>
     <channel id="mgr/org" displayName="组织机构管理"/>
     <channel id="mgr/person" displayName="人员管理"/>
+    <channel id="mgr/role" displayName="角色管理"/>
 </channels>
