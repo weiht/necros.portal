@@ -74,6 +74,10 @@
         <filter-name>openSessionInViewFilter</filter-name>
         <url-pattern>/pm/person/*</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>openSessionInViewFilter</filter-name>
+        <url-pattern>/pm/role/*</url-pattern>
+    </filter-mapping>
 	
 	<servlet>
 		<servlet-name>pm</servlet-name>

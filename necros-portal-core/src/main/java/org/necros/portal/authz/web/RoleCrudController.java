@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class RoleCrudController {
-	public static final String BASE_CTX_URL = "/menu";
+	public static final String BASE_CTX_URL = "/role";
 
 	@Resource(name="c.roleCrudService")
 	private RoleCrudService roleCrudService;
