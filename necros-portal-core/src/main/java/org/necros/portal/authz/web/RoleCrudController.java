@@ -32,17 +32,17 @@ public class RoleCrudController {
 	}
 
 	@RequestMapping(value=BASE_CTX_URL + "/get/{id}", method=RequestMethod.GET)
-	public @ResponseBody Role getPerson(@PathVariable String id, HttpServletRequest req) {
+	public @ResponseBody Role getRole(@PathVariable String id, HttpServletRequest req) {
 		return roleCrudService.get(id);
 	}
 
 	@RequestMapping(value=BASE_CTX_URL + "/add", method=RequestMethod.POST)
-	public @ResponseBody Role addPerson(@RequestBody Role r, HttpServletRequest req) {
+	public @ResponseBody Role addRole(@RequestBody Role r, HttpServletRequest req) {
 		return roleCrudService.create(r, SessionContext.getCurrentContext(req).getCurrentUser());
 	}
 
 	@RequestMapping(value=BASE_CTX_URL + "/update", method=RequestMethod.POST)
-	public @ResponseBody Role updatePerson(@RequestBody Role r, HttpServletRequest req) {
+	public @ResponseBody Role updateRole(@RequestBody Role r, HttpServletRequest req) {
 		return roleCrudService.update(r, SessionContext.getCurrentContext(req).getCurrentUser());
 	}
 

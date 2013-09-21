@@ -50,6 +50,7 @@ public class RoleCrudServiceH4 implements RoleCrudService {
 				.getName());
 		orig.setName(r.getName());
 		orig.setDisplayName(r.getDisplayName());
+		orig.setDescription(r.getDescription());
 		sessionFactoryHelper.getSession().update(orig);
 		return orig;
 	}
