@@ -33,11 +33,18 @@
 		<property name="organizationService" ref="c.organizationService"></property>
 	</bean>
 	
+	<bean name="c.roleCrudService" class="org.necros.portal.authz.h4.RoleCrudServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="idGenerator" ref="d.uuidGenerator"></property>
+		<property name="basicObjectService" ref="d.basicObjectService"></property>
+	</bean>
+	
 	<bean parent="p.pageServiceBeansInjecter">
 		<property name="serviceBeans"><map>
 			<entry key="c.menuService" value-ref="c.menuService"></entry>
 			<entry key="c.organizationService" value-ref="c.organizationService"></entry>
 			<entry key="c.personService" value-ref="c.personService"></entry>
+			<entry key="c.roleCrudService" value-ref="c.roleCrudService"></entry>
 		</map></property>
 	</bean>
 	
