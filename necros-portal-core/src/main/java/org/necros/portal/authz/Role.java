@@ -22,6 +22,8 @@ public class Role {
 	private String name;
 	@Column(name="display_name", length=200)
 	private String displayName;
+	@Column(name="role_description", length=200)
+	private String description;
 
 	public String getId() {
 		return id;
@@ -45,5 +47,13 @@ public class Role {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
