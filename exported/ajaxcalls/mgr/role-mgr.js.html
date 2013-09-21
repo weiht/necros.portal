@@ -1,3 +1,57 @@
 $sectionEvaluator.evaluate('context')
-angular.module('RoleManager', ['Role', 'DbMenu', 'Pagination'])
+angular.module('RoleManager', ['AuthzRole', 'DbMenu', 'Pagination'])
+.controller('RoleNewCtrl', ['$scope', '$window', 'Role', function($scope, $window, Role) {
+  $scope.role = {};
+  $scope.save = function() {
+    Role.add({}, $scope.role, function(added) {
+      alert('已保存。');
+      $window.history.go(-1);
+    }, function(b) {
+      alert('保存失败。');
+    });
+  };
+}])
+.controller('RoleEditCtrl', ['$scope', '$window', '$routeParams', 'Role', function($scope, $window, $params, Role) {
+  $scope.role = Role.get({'id': $params.id});
+  $scope.save = function() {
+    Role.update({}, $scope.role, function(added) {
+      alert('已保存。');
+      $window.history.go(-1);
+    }, function(b) {
+      alert('保存失败。');
+    });
+  };
+}])
+.controller('RoleListCtrl', ['$scope', '$timeout', 'Role', 'PagerFactory', function($scope, $timeout, Role, PagerFactory) {
+  $scope.pn = 1;
+  $scope.roles = Role.all({}, function(lst) {
+    $timeout(function() {
+      $scope.pager = PagerFactory.getPager(lst, {'pageSize': 10, 'listSize': 10});
+    });
+  });
+  $scope.remove = function(r) {
+    Role.remove({}, r, function(removed) {
+      var roles = $scope.roles;
+      for (var i = 0; i < roles.length; i ++) {
+        var role = roles[i];
+        if (role.id == removed.id) {
+          roles.splice(i, 1);
+          break;
+        }
+      };
+    }, function() {
+      alert('删除失败。');
+    });
+  };
+  $scope.gotoPage = function(n) {
+    $scope.pn = n;
+  };
+}])
+.config(['$routeProvider', function($routeProvider) {
+  $routeProvider
+  .when('/new/', {'templateUrl': '${ajaxRoot}/mgr/role/view/add', 'controller': 'RoleNewCtrl'})
+  .when('/edit/:id', {'templateUrl': '${ajaxRoot}/mgr/role/view/edit', 'controller': 'RoleEditCtrl'})
+  .when('/list/:pn', {'templateUrl': '${ajaxRoot}/mgr/role/view/list', 'controller': 'RoleListCtrl'})
+  .otherwise({'redirectTo': '/list/'});
+}])
 ;

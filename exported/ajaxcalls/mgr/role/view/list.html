@@ -1,0 +1,36 @@
+<div class="offset2 span8">
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th width="120">名称</th>
+      <th width="140">显示名</th>
+      <th>说明</th>
+      <th width="60">操作&nbsp;<a href="#/new/"><i class="icon-plus"></i></a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-show="!roles || !roles.length">
+      <td colspan="4">未找到角色</td>
+    </tr>
+    <tr ng-repeat="r in roles | paging:pager:pn">
+      <td>{{r.name}}</td>
+      <td>{{r.displayName}}</td>
+      <td>{{r.description}}</td>
+      <td>
+        <a href="#/edit/{{r.id}}" title="编辑"><i class="icon-pencil"></i></a>
+        <span class="divider">&nbsp;</span>
+        <a ng-click="remove(r);" title="删除"><i class="icon-minus"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div ng-show="pager.pageCount > 1" class="pagination pagination-centered">
+  <ul>
+    <li><a ng-click="pn = 1;" ng-hide="pn <= 1">&laquo;</a><span ng-show="pn <= 1">&laquo;</span></li>
+    <li><a ng-click="pn = pn-1;" ng-hide="pn <= 1">&lsaquo;</a><span ng-show="pn <= 1">&lsaquo;</span></li>
+    <li ng-repeat="n in pager.listRange" ng-class="{active:pn == n}"><a ng-click="gotoPage(n);" ng-bind="n"></a></li>
+    <li><span ng-show="pn >= pager.pageCount">&rsaquo;</span><a ng-click="pn = pn + 1;" ng-hide="pn >= pager.pageCount">&rsaquo;</a></li>
+    <li><span ng-show="pn >= pager.pageCount">&raquo;</span><a ng-click="pn = pager.pageCount;" ng-hide="pn >= pager.pageCount">&raquo;</a></li>
+  </ul>
+</div>
+</div>

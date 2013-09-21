@@ -1,3 +1,12 @@
 $sectionEvaluator.evaluate('context')
-angular.module('Role', ['ngResource'])
+#set ($roleRoot = "$mvcRoot/role")
+angular.module('AuthzRole', ['ngResource'])
+.factory('Role', ['$resource', function($resource) {
+  return $resource('${roleRoot}/get/:id', {'id': '@id'}, {
+    'all': {'isArray': true, 'method': 'GET', 'url': '${roleRoot}/all'},
+    'add': {'method': 'POST', 'url': '${roleRoot}/add/'},
+    'update': {'method': 'POST', 'url': '${roleRoot}/update'},
+    'remove': {'method': 'POST', 'url': '${roleRoot}/remove'}
+  });
+}])
 ;

@@ -25,4 +25,7 @@
     <ajaxCall id="mgr/person/view/list" displayName="人员列表的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/person/view/view" displayName="查看用户的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/role-mgr.js" displayName="角色管理的angular模块" resultType="text/javascript"/>
+    <ajaxCall id="mgr/role/view/add" displayName="添加角色的ng-view" resultType="text/html"/>
+    <ajaxCall id="mgr/role/view/edit" displayName="编辑角色的ng-view" resultType="text/html"/>
+    <ajaxCall id="mgr/role/view/list" displayName="角色列表的ng-view" resultType="text/html"/>
 </ajaxCalls>
