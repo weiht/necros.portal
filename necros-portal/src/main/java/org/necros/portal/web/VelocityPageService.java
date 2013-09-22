@@ -82,6 +82,7 @@ public class VelocityPageService implements PageService, InitializingBean {
 		if (StringUtils.hasText(config.getManagerFooterFile())) {
 			evaluateResource(w, vctx, config.getTemplatePath() + config.getManagerFooterFile());
 		}
+		evaluateResource(w, vctx, config.getTemplatePath() + config.getFooterFile());
 	}
 
 	@Override
