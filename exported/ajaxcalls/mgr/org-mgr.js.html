@@ -30,12 +30,13 @@ angular.module('OrgManager', ['Organization', 'DbMenu', 'OrganizedPersons', 'Dic
     });
   };
 }])
-.controller('OrgMgrViewCtrl', ['$scope', '$routeParams', '$location', 'Org', function($scope, $params, $l, Org) {
+.controller('OrgMgrViewCtrl', ['$scope', '$routeParams', '$location', '$window', 'Org', function($scope, $params, $l, $window, Org) {
   $scope.orgid = $params.id;
   $scope.breadcrumb = $params.id ? Org.path({'id': $params.id}) : [];
   $scope.organization = $params.id ? Org.get({'id': $params.id}) : {};
   $scope.children = $params.id ? Org.children({'parentId': $params.id}) : Org.root();
   $scope.remove = function(org) {
+    if (!$window.confirm('确定要删除此单位么？')) return;
     Org.remove({}, org, function(removed) {
       alert('已删除。');
       if (removed.id == $scope.orgid) {
@@ -60,13 +61,14 @@ angular.module('OrgManager', ['Organization', 'DbMenu', 'OrganizedPersons', 'Dic
     });
   };
 }])
-.controller('OrgMgrMembersCtrl', ['$scope', '$routeParams', '$location', 'Org', 'OrgMembers', 'Gender', function($scope, $params, $l, Org, OrgMembers, Gender) {
+.controller('OrgMgrMembersCtrl', ['$scope', '$routeParams', '$location', '$window', 'Org', 'OrgMembers', 'Gender', function($scope, $params, $l, $window, Org, OrgMembers, Gender) {
   $scope.orgid = $params.id;
   $scope.genders = Gender.list;
   $scope.breadcrumb = $params.id ? Org.path({'id': $params.id}) : [];
   $scope.organization = $params.id ? Org.get({'id': $params.id}) : {};
   $scope.members = $params.id ? OrgMembers.direct({'orgId': $params.id}) : [];
   $scope.remove = function(m) {
+    if (!$window.confirm('确定要从单位成员中删除此人么？')) return;
     OrgMembers.update({'orgId': ''}, m, function(removed) {
       var members = $scope.members;
       for (var i = 0; i < members.length; i ++) {

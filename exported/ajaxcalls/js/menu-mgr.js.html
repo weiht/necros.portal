@@ -1,6 +1,6 @@
 $sectionEvaluator.evaluate('context')
 angular.module('MenuManager', ['DbMenu'])
-.controller('MenuMgrRootCtrl', ['$scope', 'Menu', function($scope, Menu) {
+.controller('MenuMgrRootCtrl', ['$scope', '$location', '$window', 'Menu', function($scope, $l, $window, Menu) {
   $scope.menus = Menu.root();
   $scope.$on('itemAdded', function(e, itm) {
     if (itm.parentId) return;
@@ -20,12 +20,14 @@ angular.module('MenuManager', ['DbMenu'])
     $scope.menus.push(itm);
   });
   $scope.remove = function(mnu) {
+    if (!$window.confirm('确定要删除此菜单么？')) return;
     Menu.remove({}, mnu, function() {
       alert("已删除。");
       var ix = $scope.menus.indexOf(mnu);
       if (ix >= 0) {
         $scope.menus.splice(ix, 1);
       }
+      $l.path('/');
     }, function() {
       alert('删除失败。');
     });
@@ -60,14 +62,15 @@ angular.module('MenuManager', ['DbMenu'])
     });
   };
 }])
-.controller('MenuMgrViewCtrl', ['$scope', '$routeParams', 'Menu', function($scope, $params, Menu) {
+.controller('MenuMgrViewCtrl', ['$scope', '$routeParams', '$window', 'Menu', function($scope, $params, $window, Menu) {
   $scope.menuItem = Menu.editor({'itemId': $params.itemId || '~'});
   $scope.remove = function(mnu) {
+    if (!$window.confirm('确定要删除此菜单么？')) return;
     Menu.remove({}, mnu, function() {
       alert("已删除。");
-      var ix = $scope.menus.indexOf(mnu);
+      var ix = $scope.menuItem.children.indexOf(mnu);
       if (ix >= 0) {
-        $scope.menus.splice(ix, 1);
+        $scope.menuItem.children.splice(ix, 1);
       }
     }, function() {
       alert('删除失败。');

@@ -22,7 +22,7 @@ angular.module('RoleManager', ['AuthzRole', 'DbMenu', 'Pagination'])
     });
   };
 }])
-.controller('RoleListCtrl', ['$scope', '$timeout', 'Role', 'PagerFactory', function($scope, $timeout, Role, PagerFactory) {
+.controller('RoleListCtrl', ['$scope', '$timeout', '$window', 'Role', 'PagerFactory', function($scope, $timeout, $window, Role, PagerFactory) {
   $scope.pn = 1;
   $scope.roles = Role.all({}, function(lst) {
     $timeout(function() {
@@ -30,6 +30,7 @@ angular.module('RoleManager', ['AuthzRole', 'DbMenu', 'Pagination'])
     });
   });
   $scope.remove = function(r) {
+    if (!$window.confirm('确定要删除此角色么？')) return;
     Role.remove({}, r, function(removed) {
       var roles = $scope.roles;
       for (var i = 0; i < roles.length; i ++) {
