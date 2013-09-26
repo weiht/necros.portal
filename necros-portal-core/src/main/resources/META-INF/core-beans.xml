@@ -39,6 +39,12 @@
 		<property name="basicObjectService" ref="d.basicObjectService"></property>
 	</bean>
 	
+	<bean name="c.roleMemberService" class="org.necros.portal.authz.h4.RoleMemberServiceH4">
+		<property name="sessionFactoryHelper" ref="sessionFactoryHelper"></property>
+		<property name="idGenerator" ref="d.uuidGenerator"></property>
+		<property name="basicObjectService" ref="d.basicObjectService"></property>
+	</bean>
+	
 	<bean parent="p.pageServiceBeansInjecter">
 		<property name="serviceBeans"><map>
 			<entry key="c.menuService" value-ref="c.menuService"></entry>
