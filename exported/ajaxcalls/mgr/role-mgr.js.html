@@ -1,5 +1,5 @@
 $sectionEvaluator.evaluate('context')
-angular.module('RoleManager', ['AuthzRole', 'DbMenu', 'Pagination'])
+angular.module('RoleManager', ['AuthzRole', 'RoleMembers', 'OrgPerson', 'Dict', 'DbMenu', 'Pagination'])
 .controller('RoleNewCtrl', ['$scope', '$window', 'Role', function($scope, $window, Role) {
   $scope.role = {};
   $scope.save = function() {
@@ -19,6 +19,48 @@ angular.module('RoleManager', ['AuthzRole', 'DbMenu', 'Pagination'])
       $window.history.go(-1);
     }, function(b) {
       alert('保存失败。');
+    });
+  };
+}])
+.controller('RoleMembersCtrl', ['$scope', '$routeParams', '$location', '$window', 'Role', 'RoleMember', 'Gender', function($scope, $params, $l, $window, Role, RoleMember, Gender) {
+  $scope.roleId = $params.id;
+  $scope.genders = Gender.list;
+  $scope.role = $params.id ? Role.get({'id': $params.id}) : {};
+  $scope.members = RoleMember.all({'id': $params.id}, function() {}, function(b) {console.log(b.data);});
+  $scope.remove = function(m) {
+    if (!$window.confirm('确定要从角色成员中删除此人么？')) return;
+    RoleMember.remove({'roleId': $scope.roleId, 'personId': m.id}, m, function(removed) {
+      var members = $scope.members;
+      for (var i = 0; i < members.length; i ++) {
+        if (members[i].id = removed.id) {
+          members.splice(i, 1);
+          break;
+        }
+      }
+    }, function(b) {
+      alert('删除失败。');
+    });
+  };
+}])
+.controller('RoleAddMembersCtrl', ['$scope', '$routeParams', '$location', '$window', '$timeout', 'Role', 'RoleMember', 'Person', 'Gender', 'PagerFactory', function($scope, $params, $l, $window, $timeout, Role, RoleMember, Person, Gender, PagerFactory) {
+  $scope.roleId = $params.id;
+  $scope.genders = Gender.list;
+  $scope.role = $params.id ? Role.get({'id': $params.id}) : {};
+  $scope.members = RoleMember.all({'id': $params.id});
+  $scope.pn = 1;
+  $scope.persons = Person.all({}, function(lst) {
+    $timeout(function() {
+      $scope.pager = PagerFactory.getPager(lst, {'pageSize': 10, 'listSize': 10});
+    });
+  });
+  $scope.gotoPage = function(n) {
+    $scope.pn = n;
+  };
+  $scope.addMember = function(m) {
+    RoleMember.add({'roleId': $scope.roleId, 'personId': m.id}, m, function(added) {
+      $scope.members.push(m);
+    }, function(b) {
+      alert('添加失败。');
     });
   };
 }])
@@ -52,6 +94,8 @@ angular.module('RoleManager', ['AuthzRole', 'DbMenu', 'Pagination'])
   $routeProvider
   .when('/new/', {'templateUrl': '${ajaxRoot}/mgr/role/view/add', 'controller': 'RoleNewCtrl'})
   .when('/edit/:id', {'templateUrl': '${ajaxRoot}/mgr/role/view/edit', 'controller': 'RoleEditCtrl'})
+  .when('/members/:id', {'templateUrl': '${ajaxRoot}/mgr/role/view/members', 'controller': 'RoleMembersCtrl'})
+  .when('/addmembers/:id', {'templateUrl': '${ajaxRoot}/mgr/role/view/addmembers', 'controller': 'RoleAddMembersCtrl'})
   .when('/list/:pn', {'templateUrl': '${ajaxRoot}/mgr/role/view/list', 'controller': 'RoleListCtrl'})
   .otherwise({'redirectTo': '/list/'});
 }])

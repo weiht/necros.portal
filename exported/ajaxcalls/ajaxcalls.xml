@@ -8,6 +8,7 @@
     <ajaxCall id="js/org.js" displayName="单位的angular模块" resultType="text/javascript"/>
     <ajaxCall id="js/pagination.js" displayName="分页的angularjs模块" resultType="text/javascript"/>
     <ajaxCall id="js/person.js" displayName="人员的angular模块" resultType="text/javascript"/>
+    <ajaxCall id="js/role-members.js" displayName="角色成员的angular模块" resultType="text/javascript"/>
     <ajaxCall id="js/role.js" displayName="角色的angular模块" resultType="text/javascript"/>
     <ajaxCall id="mgr/menu/view/add" displayName="添加菜单项的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/menu/view/edit" displayName="菜单管理中编辑器的ng-view" resultType="text/html"/>
@@ -26,6 +27,9 @@
     <ajaxCall id="mgr/person/view/view" displayName="查看用户的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/role-mgr.js" displayName="角色管理的angular模块" resultType="text/javascript"/>
     <ajaxCall id="mgr/role/view/add" displayName="添加角色的ng-view" resultType="text/html"/>
+    <ajaxCall id="mgr/role/view/addmembers" displayName="增加人员的angular视图" resultType="text/html"/>
     <ajaxCall id="mgr/role/view/edit" displayName="编辑角色的ng-view" resultType="text/html"/>
     <ajaxCall id="mgr/role/view/list" displayName="角色列表的ng-view" resultType="text/html"/>
+    <ajaxCall id="mgr/role/view/members" displayName="人员的angular视图" resultType="text/html"/>
+    <ajaxCall id="_test" displayName="测试用" resultType="text/html"/>
 </ajaxCalls>

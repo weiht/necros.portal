@@ -1,0 +1,39 @@
+$sectionEvaluator.evaluate('context')
+#set ($personViewRoot = "$mvcRoot/channel/mgr/person")
+<div class="page-header"><h4>为角色<span ng-bind="role.name"></span>添加成员</h4></div>
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th width="180">登录名</th>
+      <th>姓名</th>
+      <th width="120">称谓</th>
+      <th width="60">性别</th>
+      <th width="60">操作&nbsp;<a href="javascript:history.go(-1);" title="返回"><i class="icon-arrow-left"></i></a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-show="!persons || !persons.length">
+      <td colspan="5">未找到人员</td>
+    </tr>
+    <tr ng-repeat="p in persons | notMembers:members | paging:pager:pn">
+      <td>{{p.loginName}}</td>
+      <td>{{p.info.name}}</td>
+      <td>{{p.info.altName}}</td>
+      <td>{{p.info.gender | entryText:genders}}</td>
+      <td>
+        <a href="${personViewRoot}#/view/{{p.id}}" title="查看"><i class="icon-user"></i></a>
+        <span class="divider">&nbsp;</span>
+        <a href="" ng-click="addMember(p)"><i class="icon-plus"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div ng-show="pager.pageCount > 1" class="pagination pagination-centered">
+  <ul>
+    <li><a ng-click="pn = 1;" ng-hide="pn <= 1">&laquo;</a><span ng-show="pn <= 1">&laquo;</span></li>
+    <li><a ng-click="pn = pn-1;" ng-hide="pn <= 1">&lsaquo;</a><span ng-show="pn <= 1">&lsaquo;</span></li>
+    <li ng-repeat="n in pager.listRange" ng-class="{active:pn == n}"><a ng-click="gotoPage(n);" ng-bind="n"></a></li>
+    <li><span ng-show="pn >= pager.pageCount">&rsaquo;</span><a ng-click="pn = pn + 1;" ng-hide="pn >= pager.pageCount">&rsaquo;</a></li>
+    <li><span ng-show="pn >= pager.pageCount">&raquo;</span><a ng-click="pn = pager.pageCount;" ng-hide="pn >= pager.pageCount">&raquo;</a></li>
+  </ul>
+</div>

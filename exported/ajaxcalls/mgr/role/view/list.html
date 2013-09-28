@@ -4,7 +4,7 @@
       <th width="120">名称</th>
       <th width="140">显示名</th>
       <th>说明</th>
-      <th width="60">操作&nbsp;<a href="#/new/"><i class="icon-plus"></i></a></th>
+      <th width="80">操作&nbsp;<a href="#/new/"><i class="icon-plus"></i></a></th>
     </tr>
   </thead>
   <tbody>
@@ -16,6 +16,8 @@
       <td>{{r.displayName}}</td>
       <td>{{r.description}}</td>
       <td>
+        <a href="#/members/{{r.id}}" title="成员"><i class="icon-user"></i></a>
+        <span class="divider">&nbsp;</span>
         <a href="#/edit/{{r.id}}" title="编辑"><i class="icon-pencil"></i></a>
         <span class="divider">&nbsp;</span>
         <a href="" ng-click="remove(r);" title="删除"><i class="icon-minus"></i></a>

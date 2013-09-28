@@ -1,0 +1,31 @@
+$sectionEvaluator.evaluate('context')
+angular.module('RoleMembers', ['ngResource'])
+.factory('RoleMember', ['$resource', function($resource) {
+  return $resource('${mvcRoot}/rolemember/all/:id', {'id': '@id'}, {
+    'all': {'isArray': true, 'method': 'GET'},
+    'add': {'isArray': true, 'method': 'POST', 'url': '${mvcRoot}/rolemember/add/:roleId/:personId',
+            'params': {'roleId': '@roleId', 'personId': '@personId'}},
+    'remove': {'method': 'POST', 'url': '${mvcRoot}/rolemember/remove/:roleId/:personId',
+            'params': {'roleId': '@roleId', 'personId': '@personId'}}
+  });
+}])
+.filter('notMembers', function() {
+  return function(all, members) {
+    if (!members || !members.length) return all;
+    var r = [];
+    for (var i = 0; i < all.length; i ++) {
+      var p = all[i];
+      var found = false;
+      for (var j = 0; j < members.length; j ++) {
+        var m = members[j];
+        if (m.id == p.id) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) r.push(p);
+    }
+    return r;
+  };
+})
+;
