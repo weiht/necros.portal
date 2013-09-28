@@ -26,7 +26,7 @@ public class RoleMemberController {
 	@Resource(name="c.roleMemberService")
 	private RoleMemberService roleMemberService;
 
-	@RequestMapping(value=BASE_CTX_URL + "/all/{roldId}", method=RequestMethod.GET)
+	@RequestMapping(value=BASE_CTX_URL + "/all/{roleId}", method=RequestMethod.GET)
 	public @ResponseBody List<Person> allMembers(
 			@PathVariable String roleId, HttpServletRequest req) {
 		return roleMemberService.allMembers(roleId);

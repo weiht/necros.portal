@@ -51,6 +51,7 @@
 			<entry key="c.organizationService" value-ref="c.organizationService"></entry>
 			<entry key="c.personService" value-ref="c.personService"></entry>
 			<entry key="c.roleCrudService" value-ref="c.roleCrudService"></entry>
+			<entry key="c.roleMemberService" value-ref="c.roleMemberService"></entry>
 		</map></property>
 	</bean>
 	

@@ -4,6 +4,7 @@
 package org.necros.portal.authz.h4;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.hibernate.criterion.Restrictions;
 import org.necros.portal.authz.Role;
@@ -13,12 +14,16 @@ import org.necros.portal.data.BasicObjectService;
 import org.necros.portal.data.IdGenerator;
 import org.necros.portal.org.Person;
 import org.necros.portal.util.SessionFactoryHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author weiht
  *
  */
 public class RoleMemberServiceH4 implements RoleMemberService {
+	private static final Logger logger = LoggerFactory.getLogger(RoleMemberServiceH4.class);
+
 	private static final String HQL_QUERY_PERSON_IDS =
 			"select m.personId from RoleMember m where m.roleId = ?";
 	private static final String HQL_QUERY_ROLE_IDS =
@@ -36,6 +41,9 @@ public class RoleMemberServiceH4 implements RoleMemberService {
 				.createQuery(HQL_QUERY_PERSON_IDS)
 				.setString(0, roleId)
 				.list();
+		if (rids == null | rids.isEmpty()) {
+			return new ArrayList<Person>();
+		}
 		return sessionFactoryHelper.createCriteria(Person.class)
 				.add(Restrictions.in("id", rids))
 				.list();
@@ -55,6 +63,7 @@ public class RoleMemberServiceH4 implements RoleMemberService {
 	public RoleMember addMember(String roleId, String personId, Person editor) {
 		RoleMember m = getMembership(roleId, personId);
 		if (m == null) {
+			logger.debug("No such membership. Creating...");
 			String id = (String) idGenerator.generate();
 			basicObjectService.touch(id, RoleMember.ENTITY_NAME, editor == null ? null
 					: editor.getId(), editor == null ? null : editor.getInfo()
@@ -64,6 +73,7 @@ public class RoleMemberServiceH4 implements RoleMemberService {
 			m.setRoleId(roleId);
 			m.setPersonId(personId);
 			sessionFactoryHelper.getSession().save(m);
+			logger.debug("Membership created.");
 		}
 		return m;
 	}
@@ -84,10 +94,12 @@ public class RoleMemberServiceH4 implements RoleMemberService {
 	}
 
 	public RoleMember getMembership(String roleId, String personId) {
-		return (RoleMember) sessionFactoryHelper.getSession().createCriteria(clazz)
+		RoleMember m = (RoleMember) sessionFactoryHelper.getSession().createCriteria(clazz)
 			.add(Restrictions.eq("roleId", roleId))
 			.add(Restrictions.eq("personId", personId))
 			.uniqueResult();
+		logger.trace("Membership found for role {} and person {}: {}", roleId, personId, m);
+		return m;
 	}
 
 	public void setSessionFactoryHelper(SessionFactoryHelper sessionFactoryHelper) {
