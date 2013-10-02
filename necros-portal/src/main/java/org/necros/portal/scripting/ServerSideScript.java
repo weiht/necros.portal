@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity @Table(name="portal_server_side_scripts")
 public class ServerSideScript implements Serializable {
-	@Id @Column(name="script_name", length=2000)
+	@Id @Column(name="script_name", length=200)
 	private String name;
 	@Column(name="script_engine", length=50, nullable=false)
 	private String engine;
