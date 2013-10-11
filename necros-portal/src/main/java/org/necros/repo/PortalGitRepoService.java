@@ -5,21 +5,27 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.necros.portal.util.SessionFactoryHelper;
 import org.springframework.util.StringUtils;
 
 public class PortalGitRepoService implements RepoService {
 	private static final String DEF_FILE_NAME_PROPERTY = "id";
 	private static final String DEF_FILE_CONTENT_PROPERTY = "template";
+	private static final String DEF_FILTER_PROPERTIES = "id,displayName";
 	private String entityName;
 	private SessionFactoryHelper sessionFactoryHelper;
 	private String repoPath;
 	private String fileNamePattern;
 	private String fileContentPattern;
+	private List<String> filterProperties;
 	
 	private Criteria createCriteria() {
 		return sessionFactoryHelper.createCriteria(entityName);
@@ -33,7 +39,19 @@ public class PortalGitRepoService implements RepoService {
 	
 	@SuppressWarnings("rawtypes")
 	private List filterEntities(String filter) {
-		throw new RuntimeException("Not implemented.");
+		return createCriteria().add(Restrictions.or(filterRestrictions(filter))).list();
+	}
+
+	/**
+	 * @return
+	 */
+	private Criterion[] filterRestrictions(String filterText) {
+		List<String> props = getFilterProperties();
+		Criterion[] restrictions = new Criterion[props.size()];
+		for (int i = 0; i < restrictions.length; i ++) {
+			restrictions[i] = Restrictions.like(props.get(i), filterText, MatchMode.ANYWHERE);
+		}
+		return restrictions;
 	}
 
 	private File ensureRepoPath() throws IOException {
@@ -142,5 +160,21 @@ public class PortalGitRepoService implements RepoService {
 
 	public void setFileContentPattern(String fileContentPattern) {
 		this.fileContentPattern = fileContentPattern;
+	}
+
+	public List<String> getFilterProperties() {
+		if (filterProperties == null) {
+			String[] fps = DEF_FILTER_PROPERTIES.split(",");
+			List<String> props = new ArrayList<String>();
+			for (String fp: fps) {
+				if (!fp.isEmpty()) props.add(fp);
+			}
+			filterProperties = props;
+		}
+		return filterProperties;
+	}
+
+	public void setFilterProperties(List<String> filterProperties) {
+		this.filterProperties = filterProperties;
 	}
 }
